@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { personal } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 
@@ -92,16 +93,13 @@ export default function Hero() {
             flexShrink: 0,
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/photo.jpg"
             alt="Andre Milan Arañas"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "50% 18%",
-            }}
+            fill
+            sizes="96px"
+            priority
+            style={{ objectFit: "cover", objectPosition: "50% 18%" }}
           />
           <div
             style={{
