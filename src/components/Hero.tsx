@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { personal } from "@/lib/data";
+import ScrollReveal from "./ScrollReveal";
 
 const roles = [
   "Frontend Developer",
@@ -14,7 +15,6 @@ export default function Hero() {
   const [roleIdx, setRoleIdx] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
-  const [showCursor, setShowCursor] = useState(true);
   const tickRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -43,13 +43,12 @@ export default function Hero() {
   return (
     <section
       id="about"
-      className="grid-bg"
+      className="grid-bg hero-pad"
       style={{
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: "120px 64px 80px",
         position: "relative",
         overflow: "hidden",
       }}
@@ -79,6 +78,43 @@ export default function Hero() {
       />
 
       <div style={{ maxWidth: "900px", animation: "slide-up 0.8s ease forwards" }}>
+        {/* Profile avatar */}
+        <div
+          style={{
+            width: "88px",
+            height: "88px",
+            borderRadius: "50%",
+            background:
+              "linear-gradient(135deg, rgba(127,255,111,0.12) 0%, rgba(79,255,191,0.12) 100%)",
+            border: "2px solid var(--accent)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "28px",
+            fontFamily: "var(--font-display)",
+            fontSize: "26px",
+            fontWeight: 800,
+            color: "var(--accent)",
+            letterSpacing: "-0.04em",
+            boxShadow: "0 0 32px rgba(127,255,111,0.1)",
+            position: "relative",
+          }}
+        >
+          AM
+          <div
+            style={{
+              position: "absolute",
+              bottom: "5px",
+              right: "5px",
+              width: "12px",
+              height: "12px",
+              background: "var(--accent)",
+              borderRadius: "50%",
+              border: "2px solid var(--bg)",
+            }}
+          />
+        </div>
+
         <div className="section-label" style={{ marginBottom: "32px" }}>
           available for internship · cebu city, ph
         </div>
@@ -97,7 +133,7 @@ export default function Hero() {
         <h1
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(56px, 8vw, 100px)",
+            fontSize: "clamp(52px, 8vw, 100px)",
             fontWeight: 800,
             lineHeight: 0.95,
             letterSpacing: "-0.04em",
@@ -112,7 +148,7 @@ export default function Hero() {
         <div
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "clamp(16px, 2.5vw, 22px)",
+            fontSize: "clamp(15px, 2.5vw, 22px)",
             color: "var(--muted)",
             marginBottom: "40px",
             height: "32px",
@@ -198,6 +234,7 @@ export default function Hero() {
 
         {/* Quick stats */}
         <div
+          className="hero-stats"
           style={{
             display: "flex",
             gap: "48px",
@@ -244,7 +281,7 @@ export default function Hero() {
         style={{
           position: "absolute",
           bottom: "40px",
-          right: "64px",
+          right: "clamp(20px, 5vw, 64px)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

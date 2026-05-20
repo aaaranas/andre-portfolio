@@ -10,8 +10,8 @@ export default function Skills() {
   return (
     <section
       id="skills"
+      className="s-pad"
       style={{
-        padding: "120px 64px",
         background: "var(--bg2)",
         borderTop: "1px solid var(--border)",
         borderBottom: "1px solid var(--border)",
@@ -112,7 +112,8 @@ export default function Skills() {
         {/* Visual skill bars for frontend */}
         {active === "Frontend" && (
           <div
-            style={{
+            className="skills-bars"
+          style={{
               marginTop: "64px",
               display: "grid",
               gridTemplateColumns: "1fr 1fr",

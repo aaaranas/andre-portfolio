@@ -5,7 +5,8 @@ export default function Education() {
   return (
     <section
       id="education"
-      style={{ padding: "120px 64px", maxWidth: "1200px", margin: "0 auto" }}
+      className="s-pad"
+      style={{ maxWidth: "1200px", margin: "0 auto" }}
     >
       <div className="section-label" style={{ marginBottom: "16px" }}>
         04 / education

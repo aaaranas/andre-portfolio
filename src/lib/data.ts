@@ -23,6 +23,8 @@ export const projects = [
     role: "Frontend Lead",
     highlight: "Led frontend",
     color: "#7fff6f",
+    github: "https://github.com/aaaranas",
+    live: "",
   },
   {
     id: "donezo",
@@ -35,6 +37,8 @@ export const projects = [
     role: "Full Stack",
     highlight: "WebSocket sync",
     color: "#4fffbf",
+    github: "https://github.com/aaaranas",
+    live: "",
   },
   {
     id: "sanbidet",
@@ -47,6 +51,8 @@ export const projects = [
     role: "Sole Full Stack",
     highlight: "Solo project",
     color: "#ffdf5f",
+    github: "https://github.com/aaaranas",
+    live: "",
   },
   {
     id: "scheduling",
@@ -59,6 +65,8 @@ export const projects = [
     role: "Solo Dev",
     highlight: "Public tool",
     color: "#ff8f6f",
+    github: "https://github.com/aaaranas",
+    live: "",
   },
   {
     id: "heartbeat",
@@ -71,6 +79,8 @@ export const projects = [
     role: "Frontend Dev",
     highlight: "E-commerce UX",
     color: "#ff6faf",
+    github: "https://github.com/aaaranas",
+    live: "",
   },
   {
     id: "tacfinity",
@@ -92,6 +102,8 @@ export const projects = [
     role: "Full Stack",
     highlight: "ELO + WebSockets",
     color: "#bf6fff",
+    github: "https://github.com/aaaranas",
+    live: "",
   },
 ];
 

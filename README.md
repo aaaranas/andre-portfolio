@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Andre Milan Arañas — Personal Portfolio
 
-## Getting Started
+Personal portfolio website built for the Maya Technologies Skills Showcase Challenge.
 
-First, run the development server:
+## Description
+
+A modern, responsive portfolio showcasing web development skills — from layout and interactivity to GitHub API integration and dark/light mode. Built with Next.js 16, TypeScript, and Tailwind CSS v4.
+
+## Technologies Used
+
+| Layer | Tech |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 + CSS Custom Properties |
+| Fonts | Syne (display) · Space Mono (mono) |
+| Animations | CSS Keyframes · Intersection Observer API |
+
+## Features
+
+- **Home** — name, profile avatar, typewriter animation, short bio
+- **Projects** — 6 projects with title, description, tech stack, and GitHub links
+- **Skills** — tabbed skill list with visual proficiency bars
+- **Education** — timeline of academic background
+- **Contact** — form with name / email / message and success state (no email sent)
+- **GitHub API** — live public repos fetched from the GitHub API
+- **Dark / Light mode** — toggle in the nav bar, preference saved to `localStorage`
+- **Scroll animations** — fade-in via `IntersectionObserver` on each section
+- **Responsive** — works on mobile and desktop; hamburger nav on small screens
+- **Custom cursor** — accent-colored cursor with blend-mode effect (desktop only)
+
+## Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+Ready for Vercel — connect the GitHub repo and deploy with zero config.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Live site: *(add URL after deployment)*
