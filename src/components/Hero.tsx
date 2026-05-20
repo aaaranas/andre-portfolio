@@ -81,33 +81,35 @@ export default function Hero() {
         {/* Profile avatar */}
         <div
           style={{
-            width: "88px",
-            height: "88px",
+            width: "96px",
+            height: "96px",
             borderRadius: "50%",
-            background:
-              "linear-gradient(135deg, rgba(127,255,111,0.12) 0%, rgba(79,255,191,0.12) 100%)",
             border: "2px solid var(--accent)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            boxShadow: "0 0 32px rgba(127,255,111,0.12)",
             marginBottom: "28px",
-            fontFamily: "var(--font-display)",
-            fontSize: "26px",
-            fontWeight: 800,
-            color: "var(--accent)",
-            letterSpacing: "-0.04em",
-            boxShadow: "0 0 32px rgba(127,255,111,0.1)",
             position: "relative",
+            overflow: "hidden",
+            flexShrink: 0,
           }}
         >
-          AM
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/photo.jpg"
+            alt="Andre Milan Arañas"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "50% 18%",
+            }}
+          />
           <div
             style={{
               position: "absolute",
-              bottom: "5px",
-              right: "5px",
-              width: "12px",
-              height: "12px",
+              bottom: "6px",
+              right: "6px",
+              width: "13px",
+              height: "13px",
               background: "var(--accent)",
               borderRadius: "50%",
               border: "2px solid var(--bg)",

@@ -24,7 +24,7 @@ export const projects = [
     highlight: "Led frontend",
     color: "#7fff6f",
     github: "https://github.com/aaaranas",
-    live: "",
+    live: "https://iskoarena-upc.vercel.app/",
   },
   {
     id: "donezo",
@@ -52,7 +52,7 @@ export const projects = [
     highlight: "Solo project",
     color: "#ffdf5f",
     github: "https://github.com/aaaranas",
-    live: "",
+    live: "https://san-bidet-cebu-admin.vercel.app/",
   },
   {
     id: "scheduling",
@@ -66,7 +66,7 @@ export const projects = [
     highlight: "Public tool",
     color: "#ff8f6f",
     github: "https://github.com/aaaranas",
-    live: "",
+    live: "https://cpu-schedule-calculator.vercel.app/",
   },
   {
     id: "heartbeat",
@@ -80,7 +80,7 @@ export const projects = [
     highlight: "E-commerce UX",
     color: "#ff6faf",
     github: "https://github.com/aaaranas",
-    live: "",
+    live: "https://heartbeat-flower-shop.vercel.app/",
   },
   {
     id: "tacfinity",
@@ -103,7 +103,7 @@ export const projects = [
     highlight: "ELO + WebSockets",
     color: "#bf6fff",
     github: "https://github.com/aaaranas",
-    live: "",
+    live: "https://tacfinity-web.vercel.app/",
   },
 ];
 

@@ -220,6 +220,14 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 .nav-mobile-link:hover { color: var(--accent); }
 
 /* Mobile breakpoint */
+/* Force dark background when printing / saving to PDF */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
 @media (max-width: 768px) {
   body { cursor: auto; }
   .cursor, .cursor-ring { display: none; }
