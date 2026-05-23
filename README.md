@@ -1,6 +1,5 @@
 # Andre Milan Arañas — Personal Portfolio
 
-Personal portfolio website built for the Maya Technologies Skills Showcase Challenge.
 
 ## Description
 
