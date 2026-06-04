@@ -80,7 +80,7 @@ export default function Contact() {
           {submitted ? (
             <div
               style={{
-                background: "rgba(127,255,111,0.07)",
+                background: "rgba(232,168,56,0.07)",
                 border: "1px solid var(--accent)",
                 borderRadius: "8px",
                 padding: "40px",

@@ -93,7 +93,7 @@ export default function Skills() {
                 const el = e.currentTarget as HTMLElement;
                 el.style.borderColor = "var(--accent)";
                 el.style.color = "var(--accent)";
-                el.style.background = "rgba(127,255,111,0.05)";
+                el.style.background = "rgba(232,168,56,0.07)";
                 el.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
