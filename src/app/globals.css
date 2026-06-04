@@ -23,12 +23,12 @@
   --bg2:    #f3ede4;
   --bg3:    #ece4d8;
   --text:   #1e1b12;
-  --muted:  #7a7060;
-  --accent: #c47f1a;
-  --accent2: #2a9d82;
-  --accent3: #c05a38;
-  --border: rgba(30, 27, 18, 0.10);
-  --card:   rgba(30, 27, 18, 0.04);
+  --muted:  #5c5244;
+  --accent: #b87214;
+  --accent2: #1e8f72;
+  --accent3: #b84a2a;
+  --border: rgba(30, 27, 18, 0.18);
+  --card:   rgba(30, 27, 18, 0.06);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
