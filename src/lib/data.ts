@@ -9,23 +9,10 @@ export const personal = {
   githubUrl: "https://github.com/aaaranas",
   location: "Cebu City, Philippines",
   bio: "Third-year BS Computer Science student at UP Cebu. I build things for the web — primarily owning frontend architecture with React and Next.js, while shipping full-stack features end-to-end. Currently seeking a software developer internship.",
+  portfolioUrl: "https://andre-milan-aranas.vercel.app/",
 };
 
 export const projects = [
-  {
-    id: "iskoarena",
-    name: "IskoArena",
-    emoji: "🏟️",
-    tagline: "Live intramurals management system for UP Cebu",
-    description:
-      "Led frontend development for UP Cebu's Iskolaro intramurals — serving as a live score tracking and results hub. Built leaderboard UI with sorting and filtering, player profile pages, and full match management (create, edit, delete, finalize). Also contributed to database design.",
-    stack: ["TypeScript", "React", "Tailwind CSS", "PostgreSQL"],
-    role: "Frontend Lead",
-    highlight: "Led frontend",
-    color: "#7fff6f",
-    github: "https://github.com/aaaranas",
-    live: "https://iskoarena-upc.vercel.app/",
-  },
   {
     id: "donezo",
     name: "Donezo",
@@ -104,6 +91,48 @@ export const projects = [
     color: "#bf6fff",
     github: "https://github.com/aaaranas",
     live: "https://tacfinity-web.vercel.app/",
+  },
+  {
+    id: "irregskolar",
+    name: "IrregSkolar",
+    emoji: "🎓",
+    tagline: "Academic schedule planner for irregular students",
+    description:
+      "Web app that helps irregular students plan and visualize their course load each semester. Handles conflict detection, unit load computation, and schedule grid visualization. Built to ease the manual burden of enrollment planning at UP.",
+    stack: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Vercel"],
+    role: "Solo Dev",
+    highlight: "Student tool",
+    color: "#5fb3ff",
+    github: "https://github.com/aaaranas",
+    live: "https://irregskolar.vercel.app/",
+  },
+  {
+    id: "7gb-construction",
+    name: "7GB Construction",
+    emoji: "🏗️",
+    tagline: "Company website for a construction services firm",
+    description:
+      "Professional company website for 7GB Construction Services, featuring project showcases, service listings, and a contact section. Built for a real client with a focus on clean design, fast load times, and mobile responsiveness.",
+    stack: ["React", "Next.js", "Tailwind CSS", "Vercel"],
+    role: "Sole Developer",
+    highlight: "Client project",
+    color: "#ffb347",
+    github: "https://github.com/aaaranas",
+    live: "https://7gb-construction-services.vercel.app/",
+  },
+  {
+    id: "myle-photography",
+    name: "Myle Photography",
+    emoji: "📷",
+    tagline: "Photography portfolio & booking site",
+    description:
+      "Portfolio and booking website for a photographer client. Features a masonry gallery, service packages, and a contact/booking form. Designed to showcase the photographer's style with a minimal, image-forward layout.",
+    stack: ["React", "Next.js", "Tailwind CSS", "Vercel"],
+    role: "Sole Developer",
+    highlight: "Client project",
+    color: "#c8a97e",
+    github: "https://github.com/aaaranas",
+    live: "https://myle-photography.vercel.app/",
   },
 ];
 
