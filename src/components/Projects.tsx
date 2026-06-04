@@ -3,6 +3,156 @@ import { useState } from "react";
 import { projects } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 
+const vercelProjects = projects.filter((p) => p.live !== "");
+
+function BrowserPreview({ url, color, name }: { url: string; color: string; name: string }) {
+  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      style={{ display: "block", textDecoration: "none", marginBottom: "20px" }}
+    >
+      {/* Browser chrome */}
+      <div
+        style={{
+          borderRadius: "8px 8px 0 0",
+          background: "var(--bg3)",
+          border: `1px solid ${color}33`,
+          borderBottom: "none",
+          padding: "8px 12px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
+        {/* Traffic lights */}
+        <div style={{ display: "flex", gap: "5px" }}>
+          {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+            <div
+              key={c}
+              style={{ width: "10px", height: "10px", borderRadius: "50%", background: c }}
+            />
+          ))}
+        </div>
+        {/* URL bar */}
+        <div
+          style={{
+            flex: 1,
+            background: "var(--bg)",
+            borderRadius: "4px",
+            padding: "3px 10px",
+            fontFamily: "var(--font-mono)",
+            fontSize: "9px",
+            color: "var(--muted)",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            border: "1px solid var(--border)",
+          }}
+        >
+          {url.replace("https://", "")}
+        </div>
+        {/* External link icon */}
+        <span style={{ fontSize: "10px", color: color, opacity: 0.7 }}>↗</span>
+      </div>
+
+      {/* Screenshot viewport */}
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "16/9",
+          overflow: "hidden",
+          border: `1px solid ${color}33`,
+          borderRadius: "0 0 6px 6px",
+          background: "var(--bg)",
+        }}
+      >
+        {!imgError ? (
+          <img
+            src={screenshotUrl}
+            alt={`${name} preview`}
+            onError={() => setImgError(true)}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "top",
+              display: "block",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              color: "var(--muted)",
+            }}
+          >
+            <span style={{ fontSize: "28px" }}>🌐</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px" }}>
+              Preview unavailable
+            </span>
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "9px",
+                color: color,
+                opacity: 0.7,
+              }}
+            >
+              Click to visit →
+            </span>
+          </div>
+        )}
+
+        {/* Hover overlay */}
+        <div
+          className="preview-overlay"
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: `${color}15`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: 0,
+            transition: "opacity 0.2s",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              color: color,
+              background: "var(--bg)",
+              padding: "6px 14px",
+              borderRadius: "4px",
+              border: `1px solid ${color}55`,
+            }}
+          >
+            Open site ↗
+          </span>
+        </div>
+      </div>
+
+      <style>{`
+        a:hover .preview-overlay { opacity: 1 !important; }
+      `}</style>
+    </a>
+  );
+}
+
 export default function Projects() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -35,18 +185,18 @@ export default function Projects() {
             fontFamily: "var(--font-mono)",
           }}
         >
-          Click any card to see more details.
+          Click any card to see more details. Live previews link to deployed sites.
         </p>
       </ScrollReveal>
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-          gap: "20px",
+          gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
+          gap: "24px",
         }}
       >
-        {projects.map((proj, i) => {
+        {vercelProjects.map((proj, i) => {
           const isHovered = hovered === proj.id;
           const isExpanded = expanded === proj.id;
 
@@ -60,8 +210,8 @@ export default function Projects() {
                 style={{
                   background: isHovered || isExpanded ? "var(--bg3)" : "var(--card)",
                   border: `1px solid ${isHovered || isExpanded ? proj.color : "var(--border)"}`,
-                  borderRadius: "8px",
-                  padding: "28px",
+                  borderRadius: "10px",
+                  padding: "24px",
                   cursor: "pointer",
                   transition: "all 0.25s ease",
                   transform: isHovered ? "translateY(-4px)" : "translateY(0)",
@@ -83,6 +233,9 @@ export default function Projects() {
                     transition: "opacity 0.25s",
                   }}
                 />
+
+                {/* Live site preview */}
+                <BrowserPreview url={proj.live} color={proj.color} name={proj.name} />
 
                 {/* Header */}
                 <div
