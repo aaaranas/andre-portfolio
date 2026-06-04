@@ -6,7 +6,7 @@ import ScrollReveal from "./ScrollReveal";
 const vercelProjects = projects.filter((p) => p.live !== "");
 
 function BrowserPreview({ url, color, name }: { url: string; color: string; name: string }) {
-  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+  const screenshotUrl = `https://image.thum.io/get/width/800/crop/450/noanimate/allowJPG/${url}`;
   const [imgError, setImgError] = useState(false);
 
   return (
