@@ -62,7 +62,7 @@ export default function Hero() {
           right: "10%",
           width: "400px",
           height: "400px",
-          background: "radial-gradient(circle, rgba(127,255,111,0.06) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(232,168,56,0.07) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -73,7 +73,7 @@ export default function Hero() {
           left: "5%",
           width: "300px",
           height: "300px",
-          background: "radial-gradient(circle, rgba(79,255,191,0.05) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(94,207,176,0.05) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -86,7 +86,7 @@ export default function Hero() {
             height: "96px",
             borderRadius: "50%",
             border: "2px solid var(--accent)",
-            boxShadow: "0 0 32px rgba(127,255,111,0.12)",
+            boxShadow: "0 0 32px rgba(232,168,56,0.15)",
             marginBottom: "28px",
             position: "relative",
             overflow: "hidden",
