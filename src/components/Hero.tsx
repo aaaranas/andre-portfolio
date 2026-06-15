@@ -5,11 +5,11 @@ import { personal } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 
 const roles = [
-  "Frontend Developer",
-  "React Enthusiast",
+  "Web Developer Intern",
+  "Frontend Engineer",
+  "React & Next.js Dev",
   "Full Stack Builder",
   "UI Craftsman",
-  "CS Intern Candidate",
 ];
 
 export default function Hero() {
@@ -49,19 +49,21 @@ export default function Hero() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
         justifyContent: "center",
         position: "relative",
         overflow: "hidden",
+        textAlign: "center",
       }}
     >
       {/* Glow blobs */}
       <div
         style={{
           position: "absolute",
-          top: "20%",
-          right: "10%",
-          width: "400px",
-          height: "400px",
+          top: "15%",
+          right: "5%",
+          width: "500px",
+          height: "500px",
           background: "radial-gradient(circle, rgba(232,168,56,0.07) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
@@ -69,24 +71,33 @@ export default function Hero() {
       <div
         style={{
           position: "absolute",
-          bottom: "20%",
-          left: "5%",
-          width: "300px",
-          height: "300px",
+          bottom: "15%",
+          left: "0%",
+          width: "400px",
+          height: "400px",
           background: "radial-gradient(circle, rgba(94,207,176,0.05) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
 
-      <div style={{ maxWidth: "900px", animation: "slide-up 0.8s ease forwards" }}>
+      <div
+        style={{
+          maxWidth: "760px",
+          width: "100%",
+          animation: "slide-up 0.8s ease forwards",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         {/* Profile avatar */}
         <div
           style={{
-            width: "96px",
-            height: "96px",
+            width: "108px",
+            height: "108px",
             borderRadius: "50%",
             border: "2px solid var(--accent)",
-            boxShadow: "0 0 32px rgba(232,168,56,0.15)",
+            boxShadow: "0 0 40px rgba(232,168,56,0.18)",
             marginBottom: "28px",
             position: "relative",
             overflow: "hidden",
@@ -97,26 +108,57 @@ export default function Hero() {
             src="/photo.jpg"
             alt="Andre Milan Arañas"
             fill
-            sizes="96px"
+            sizes="108px"
             priority
             style={{ objectFit: "cover", objectPosition: "50% 18%" }}
           />
           <div
             style={{
               position: "absolute",
-              bottom: "6px",
-              right: "6px",
+              bottom: "7px",
+              right: "7px",
               width: "13px",
               height: "13px",
-              background: "var(--accent)",
+              background: "#4ade80",
               borderRadius: "50%",
               border: "2px solid var(--bg)",
             }}
           />
         </div>
 
-        <div className="section-label" style={{ marginBottom: "32px" }}>
-          available for internship · cebu city, ph
+        {/* Internship badge */}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "6px 16px",
+            border: "1px solid var(--accent)",
+            borderRadius: "999px",
+            marginBottom: "32px",
+            background: "rgba(232,168,56,0.08)",
+          }}
+        >
+          <span
+            style={{
+              width: "7px",
+              height: "7px",
+              borderRadius: "50%",
+              background: "#4ade80",
+              display: "inline-block",
+              boxShadow: "0 0 6px #4ade80",
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              color: "var(--accent)",
+              letterSpacing: "0.12em",
+            }}
+          >
+            Web Developer Intern · eComia · Cebu City, PH
+          </span>
         </div>
 
         <div
@@ -124,7 +166,8 @@ export default function Hero() {
             fontFamily: "var(--font-mono)",
             fontSize: "13px",
             color: "var(--accent)",
-            marginBottom: "16px",
+            marginBottom: "14px",
+            letterSpacing: "0.06em",
           }}
         >
           &gt; hello, I&apos;m
@@ -133,11 +176,11 @@ export default function Hero() {
         <h1
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(52px, 8vw, 100px)",
-            fontWeight: 800,
-            lineHeight: 0.95,
+            fontSize: "clamp(52px, 9vw, 110px)",
+            fontWeight: 900,
+            lineHeight: 0.92,
             letterSpacing: "-0.04em",
-            marginBottom: "24px",
+            marginBottom: "28px",
           }}
         >
           Andre Milan
@@ -145,49 +188,49 @@ export default function Hero() {
           <span style={{ color: "var(--accent)" }}>Arañas</span>
         </h1>
 
+        {/* Typewriter */}
         <div
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "clamp(15px, 2.5vw, 22px)",
+            fontSize: "clamp(14px, 2.2vw, 20px)",
             color: "var(--muted)",
-            marginBottom: "40px",
-            height: "32px",
+            marginBottom: "36px",
+            height: "30px",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             gap: "2px",
           }}
         >
           <span style={{ color: "var(--accent2)" }}>{displayed}</span>
-          <span
-            className="blink"
-            style={{ color: "var(--accent2)", fontWeight: 700 }}
-          >
+          <span className="blink" style={{ color: "var(--accent2)", fontWeight: 700 }}>
             _
           </span>
         </div>
 
         <p
           style={{
-            maxWidth: "560px",
+            maxWidth: "520px",
             color: "var(--muted)",
             fontSize: "15px",
-            lineHeight: 1.8,
-            marginBottom: "48px",
+            lineHeight: 1.85,
+            marginBottom: "44px",
           }}
         >
           {personal.bio}
         </p>
 
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+        {/* CTA buttons */}
+        <div style={{ display: "flex", gap: "14px", flexWrap: "wrap", justifyContent: "center" }}>
           <a
             href="#projects"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "12px",
               letterSpacing: "0.08em",
-              padding: "14px 28px",
+              padding: "14px 32px",
               background: "var(--accent)",
-              color: "#000",
+              color: "#1e1b12",
               borderRadius: "3px",
               fontWeight: 700,
               transition: "opacity 0.2s, transform 0.2s",
@@ -212,7 +255,7 @@ export default function Hero() {
               fontFamily: "var(--font-mono)",
               fontSize: "12px",
               letterSpacing: "0.08em",
-              padding: "14px 28px",
+              padding: "14px 32px",
               border: "1px solid var(--border)",
               color: "var(--text)",
               borderRadius: "3px",
@@ -237,25 +280,27 @@ export default function Hero() {
           className="hero-stats"
           style={{
             display: "flex",
-            gap: "48px",
-            marginTop: "80px",
+            gap: "56px",
+            marginTop: "72px",
             paddingTop: "40px",
             borderTop: "1px solid var(--border)",
+            justifyContent: "center",
           }}
         >
           {[
-            { n: "6", label: "Projects Built" },
-            { n: "3rd", label: "Year CS Student" },
-            { n: "UP", label: "Cebu Campus" },
+            { n: "8+", label: "Projects Built" },
+            { n: "3rd", label: "Year CS · UP Cebu" },
+            { n: "1", label: "Internship Active" },
           ].map(({ n, label }) => (
-            <div key={label}>
+            <div key={label} style={{ textAlign: "center" }}>
               <div
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "36px",
+                  fontSize: "38px",
                   fontWeight: 800,
                   color: "var(--accent)",
                   lineHeight: 1,
+                  fontStyle: "italic",
                 }}
               >
                 {n}
@@ -265,7 +310,7 @@ export default function Hero() {
                   fontFamily: "var(--font-mono)",
                   fontSize: "11px",
                   color: "var(--muted)",
-                  marginTop: "4px",
+                  marginTop: "6px",
                   letterSpacing: "0.05em",
                 }}
               >

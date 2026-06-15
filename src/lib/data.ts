@@ -2,13 +2,13 @@ export const personal = {
   name: "Andre Milan A. Arañas",
   shortName: "Andre",
   title: "BS Computer Science",
-  subtitle: "Frontend-leaning Full Stack Developer",
+  subtitle: "Web Developer Intern · eComia",
   email: "aaaranas@up.edu.ph",
   phone: "+639287056564",
   github: "github.com/aaaranas",
   githubUrl: "https://github.com/aaaranas",
   location: "Cebu City, Philippines",
-  bio: "Third-year BS Computer Science student at UP Cebu. I build things for the web — primarily owning frontend architecture with React and Next.js, while shipping full-stack features end-to-end. Currently seeking a software developer internship.",
+  bio: "Third-year BS Computer Science student at UP Cebu, currently interning as a Web Developer at eComia. I build things for the web — primarily owning frontend architecture with React and Next.js, while shipping full-stack features end-to-end.",
   portfolioUrl: "https://andre-milan-aranas.vercel.app/",
 };
 
