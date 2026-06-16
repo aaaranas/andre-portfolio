@@ -5,9 +5,20 @@ import ScrollReveal from "./ScrollReveal";
 
 const vercelProjects = projects.filter((p) => p.live !== "");
 
+type Filter = "all" | "deployed" | "client";
+
+const filters: { key: Filter; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "deployed", label: "Deployed" },
+  { key: "client", label: "Client Work" },
+];
+
+const clientIds = new Set(["7gb-construction", "myle-photography"]);
+
 function BrowserPreview({ url, color, name }: { url: string; color: string; name: string }) {
   const screenshotUrl = `https://image.thum.io/get/width/800/crop/450/noanimate/allowJPG/${url}`;
   const [imgError, setImgError] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   return (
     <a
@@ -16,6 +27,8 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
       rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()}
       style={{ display: "block", textDecoration: "none", marginBottom: "20px" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Browser chrome */}
       <div
@@ -30,16 +43,11 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
           gap: "8px",
         }}
       >
-        {/* Traffic lights */}
         <div style={{ display: "flex", gap: "5px" }}>
           {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
-            <div
-              key={c}
-              style={{ width: "10px", height: "10px", borderRadius: "50%", background: c }}
-            />
+            <div key={c} style={{ width: "10px", height: "10px", borderRadius: "50%", background: c }} />
           ))}
         </div>
-        {/* URL bar */}
         <div
           style={{
             flex: 1,
@@ -57,7 +65,6 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
         >
           {url.replace("https://", "")}
         </div>
-        {/* External link icon */}
         <span style={{ fontSize: "10px", color: color, opacity: 0.7 }}>↗</span>
       </div>
 
@@ -84,60 +91,40 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
               objectFit: "cover",
               objectPosition: "top",
               display: "block",
+              transition: "transform 0.4s ease",
+              transform: hovered ? "scale(1.03)" : "scale(1)",
             }}
           />
         ) : (
           <div
             style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-              color: "var(--muted)",
+              width: "100%", height: "100%",
+              display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+              gap: "8px", color: "var(--muted)",
             }}
           >
             <span style={{ fontSize: "28px" }}>🌐</span>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px" }}>
-              Preview unavailable
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "9px",
-                color: color,
-                opacity: 0.7,
-              }}
-            >
-              Click to visit →
-            </span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px" }}>Preview unavailable</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: color, opacity: 0.7 }}>Click to visit →</span>
           </div>
         )}
 
         {/* Hover overlay */}
         <div
-          className="preview-overlay"
           style={{
-            position: "absolute",
-            inset: 0,
-            background: `${color}15`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: 0,
+            position: "absolute", inset: 0,
+            background: `${color}18`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            opacity: hovered ? 1 : 0,
             transition: "opacity 0.2s",
           }}
         >
           <span
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "11px",
-              color: color,
-              background: "var(--bg)",
-              padding: "6px 14px",
-              borderRadius: "4px",
+              fontFamily: "var(--font-mono)", fontSize: "11px",
+              color: color, background: "var(--bg)",
+              padding: "6px 14px", borderRadius: "4px",
               border: `1px solid ${color}55`,
             }}
           >
@@ -145,10 +132,6 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
           </span>
         </div>
       </div>
-
-      <style>{`
-        a:hover .preview-overlay { opacity: 1 !important; }
-      `}</style>
     </a>
   );
 }
@@ -156,6 +139,13 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
 export default function Projects() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [filter, setFilter] = useState<Filter>("all");
+
+  const filtered = vercelProjects.filter((p) => {
+    if (filter === "client") return clientIds.has(p.id);
+    if (filter === "deployed") return !clientIds.has(p.id);
+    return true;
+  });
 
   return (
     <section
@@ -181,12 +171,39 @@ export default function Projects() {
           style={{
             color: "var(--muted)",
             fontSize: "14px",
-            marginBottom: "64px",
+            marginBottom: "32px",
             fontFamily: "var(--font-mono)",
           }}
         >
-          Click any card to see more details. Live previews link to deployed sites.
+          Click any card to expand details. Previews link to live deployments.
         </p>
+
+        {/* Filter tabs */}
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "48px" }}>
+          {filters.map(({ key, label }) => (
+            <button
+              key={key}
+              className={`filter-tab${filter === key ? " active" : ""}`}
+              onClick={() => setFilter(key)}
+            >
+              {label}
+              <span
+                style={{
+                  marginLeft: "6px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  opacity: 0.7,
+                }}
+              >
+                {key === "all"
+                  ? vercelProjects.length
+                  : key === "client"
+                  ? vercelProjects.filter((p) => clientIds.has(p.id)).length
+                  : vercelProjects.filter((p) => !clientIds.has(p.id)).length}
+              </span>
+            </button>
+          ))}
+        </div>
       </ScrollReveal>
 
       <div
@@ -196,7 +213,7 @@ export default function Projects() {
           gap: "24px",
         }}
       >
-        {vercelProjects.map((proj, i) => {
+        {filtered.map((proj, i) => {
           const isHovered = hovered === proj.id;
           const isExpanded = expanded === proj.id;
 
@@ -210,11 +227,12 @@ export default function Projects() {
                 style={{
                   background: isHovered || isExpanded ? "var(--bg3)" : "var(--card)",
                   border: `1px solid ${isHovered || isExpanded ? proj.color : "var(--border)"}`,
-                  borderRadius: "10px",
+                  borderRadius: "12px",
                   padding: "24px",
                   cursor: "pointer",
                   transition: "all 0.25s ease",
-                  transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+                  transform: isHovered ? "translateY(-5px)" : "translateY(0)",
+                  boxShadow: isHovered ? `0 12px 40px ${proj.color}18` : "none",
                   position: "relative",
                   overflow: "hidden",
                   height: "100%",
@@ -224,11 +242,9 @@ export default function Projects() {
                 <div
                   style={{
                     position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
+                    top: 0, left: 0, right: 0,
                     height: "2px",
-                    background: proj.color,
+                    background: `linear-gradient(90deg, ${proj.color}, transparent)`,
                     opacity: isHovered || isExpanded ? 1 : 0,
                     transition: "opacity 0.25s",
                   }}
@@ -272,7 +288,6 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  {/* Highlight badge */}
                   <span
                     style={{
                       fontFamily: "var(--font-mono)",
@@ -304,7 +319,7 @@ export default function Projects() {
                 {/* Expanded description */}
                 <div
                   style={{
-                    maxHeight: isExpanded ? "200px" : "0",
+                    maxHeight: isExpanded ? "300px" : "0",
                     overflow: "hidden",
                     transition: "max-height 0.4s ease",
                   }}
@@ -316,7 +331,7 @@ export default function Projects() {
                       color: "var(--text)",
                       lineHeight: 1.8,
                       marginBottom: "16px",
-                      paddingTop: "8px",
+                      paddingTop: "12px",
                       borderTop: "1px solid var(--border)",
                     }}
                   >
@@ -327,9 +342,7 @@ export default function Projects() {
                 {/* Tech stack */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
                   {proj.stack.map((tech) => (
-                    <span key={tech} className="tag">
-                      {tech}
-                    </span>
+                    <span key={tech} className="tag">{tech}</span>
                   ))}
                 </div>
 
@@ -353,12 +366,8 @@ export default function Projects() {
                         color: proj.color,
                         transition: "background 0.2s",
                       }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = `${proj.color}18`;
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "transparent";
-                      }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = `${proj.color}18`; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
                     >
                       GitHub ↗
                     </a>
@@ -378,12 +387,8 @@ export default function Projects() {
                         color: proj.color,
                         transition: "background 0.2s",
                       }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = `${proj.color}18`;
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "transparent";
-                      }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = `${proj.color}18`; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
                     >
                       Live ↗
                     </a>
@@ -399,8 +404,8 @@ export default function Projects() {
                     fontFamily: "var(--font-mono)",
                     fontSize: "10px",
                     color: "var(--muted)",
-                    transition: "opacity 0.2s",
                     opacity: isHovered ? 1 : 0,
+                    transition: "opacity 0.2s",
                   }}
                 >
                   {isExpanded ? "[ collapse ]" : "[ expand ]"}

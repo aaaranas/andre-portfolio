@@ -3,10 +3,71 @@ import { useState } from "react";
 import { personal } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 
+function CopyField({ label, value, href, isExternal }: {
+  label: string;
+  value: string;
+  href: string;
+  isExternal?: boolean;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const copy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: "10px",
+          color: "var(--muted)",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          marginBottom: "6px",
+        }}
+      >
+        {label}
+      </div>
+      <a
+        href={href}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: "13px",
+          color: "var(--accent2)",
+          transition: "color 0.2s",
+          display: "block",
+          marginBottom: "6px",
+        }}
+        onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
+        onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--accent2)"; }}
+      >
+        {value}
+      </a>
+      {!isExternal && (
+        <button
+          className={`copy-btn${copied ? " copied" : ""}`}
+          onClick={copy}
+          title="Copy to clipboard"
+        >
+          {copied ? "✓ copied" : "copy"}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -20,12 +81,10 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs);
-      return;
-    }
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setErrors({});
-    setSubmitted(true);
+    setSending(true);
+    setTimeout(() => { setSending(false); setSubmitted(true); }, 800);
   };
 
   return (
@@ -39,13 +98,9 @@ export default function Contact() {
     >
       <div style={{ maxWidth: "660px", margin: "0 auto" }}>
         <ScrollReveal>
-          <div
-            className="section-label"
-            style={{ marginBottom: "16px", justifyContent: "center" }}
-          >
+          <div className="section-label" style={{ marginBottom: "16px", justifyContent: "center" }}>
             05 / contact
           </div>
-
           <h2
             style={{
               fontFamily: "var(--font-display)",
@@ -60,7 +115,6 @@ export default function Contact() {
             <br />
             <span style={{ color: "var(--accent)" }}>Together.</span>
           </h2>
-
           <p
             style={{
               fontFamily: "var(--font-mono)",
@@ -71,8 +125,8 @@ export default function Contact() {
               textAlign: "center",
             }}
           >
-            I&apos;m actively looking for a software developer internship.
-            Fill in the form below or reach me directly.
+            Currently interning at eComia and open to exciting opportunities.
+            Fill in the form or reach me directly.
           </p>
         </ScrollReveal>
 
@@ -82,17 +136,17 @@ export default function Contact() {
               style={{
                 background: "rgba(232,168,56,0.07)",
                 border: "1px solid var(--accent)",
-                borderRadius: "8px",
-                padding: "40px",
+                borderRadius: "12px",
+                padding: "48px 40px",
                 textAlign: "center",
                 marginBottom: "48px",
               }}
             >
-              <div style={{ fontSize: "40px", marginBottom: "16px" }}>✓</div>
+              <div style={{ fontSize: "48px", marginBottom: "16px" }}>✓</div>
               <h3
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "22px",
+                  fontSize: "24px",
                   fontWeight: 700,
                   marginBottom: "10px",
                   color: "var(--accent)",
@@ -100,47 +154,38 @@ export default function Contact() {
               >
                 Message Sent!
               </h3>
-              <p
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "13px",
-                  color: "var(--muted)",
-                }}
-              >
+              <p style={{ fontFamily: "var(--font-mono)", fontSize: "13px", color: "var(--muted)" }}>
                 Thanks, {form.name}! I&apos;ll get back to you soon.
               </p>
             </div>
           ) : (
             <form
               onSubmit={handleSubmit}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-                marginBottom: "48px",
-              }}
+              style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}
             >
-              <div>
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  autoComplete="name"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="form-input"
-                />
-                {errors.name && <div className="form-error">{errors.name}</div>}
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  autoComplete="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="form-input"
-                />
-                {errors.email && <div className="form-error">{errors.email}</div>}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    autoComplete="name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="form-input"
+                  />
+                  {errors.name && <div className="form-error">{errors.name}</div>}
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email Address"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="form-input"
+                  />
+                  {errors.email && <div className="form-error">{errors.email}</div>}
+                </div>
               </div>
               <div>
                 <textarea
@@ -148,105 +193,77 @@ export default function Contact() {
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="form-input"
+                  style={{ minHeight: "140px" }}
                 />
-                {errors.message && (
-                  <div className="form-error">{errors.message}</div>
-                )}
+                {errors.message && <div className="form-error">{errors.message}</div>}
               </div>
               <button
                 type="submit"
+                disabled={sending}
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "13px",
                   letterSpacing: "0.08em",
                   padding: "14px 32px",
                   background: "var(--accent)",
-                  color: "#000",
+                  color: "#1e1b12",
                   border: "none",
                   borderRadius: "4px",
                   fontWeight: 700,
-                  cursor: "pointer",
+                  cursor: sending ? "wait" : "pointer",
+                  opacity: sending ? 0.7 : 1,
                   transition: "opacity 0.2s, transform 0.2s",
                   alignSelf: "flex-end",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.opacity = "0.85";
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+                  if (!sending) (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.opacity = "1";
                   (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
                 }}
               >
-                Send Message →
+                {sending ? "Sending…" : "Send Message →"}
               </button>
             </form>
           )}
         </ScrollReveal>
 
+        {/* Contact links */}
         <div
           className="contact-links"
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "32px",
+            gap: "40px",
             paddingTop: "40px",
             borderTop: "1px solid var(--border)",
           }}
         >
-          {[
-            { label: "Email", value: personal.email, href: `mailto:${personal.email}` },
-            { label: "GitHub", value: personal.github, href: personal.githubUrl },
-            { label: "Phone", value: personal.phone, href: `tel:${personal.phone}` },
-          ].map(({ label, value, href }) => (
-            <div key={label} style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  color: "var(--muted)",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  marginBottom: "6px",
-                }}
-              >
-                {label}
-              </div>
-              <a
-                href={href}
-                target={label === "GitHub" ? "_blank" : undefined}
-                rel={label === "GitHub" ? "noopener noreferrer" : undefined}
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "13px",
-                  color: "var(--accent2)",
-                  transition: "color 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLElement).style.color = "var(--accent)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLElement).style.color = "var(--accent2)";
-                }}
-              >
-                {value}
-              </a>
-            </div>
-          ))}
+          <CopyField label="Email" value={personal.email} href={`mailto:${personal.email}`} />
+          <CopyField label="GitHub" value={personal.github} href={personal.githubUrl} isExternal />
+          <CopyField label="Phone" value={personal.phone} href={`tel:${personal.phone}`} />
         </div>
 
+        {/* Footer */}
         <div
           style={{
             marginTop: "64px",
+            paddingTop: "32px",
+            borderTop: "1px solid var(--border)",
             fontFamily: "var(--font-mono)",
             fontSize: "11px",
             color: "var(--muted)",
             textAlign: "center",
+            lineHeight: 2,
           }}
         >
-          Built with Next.js · TypeScript · Tailwind CSS
-          <br />
-          Andre Milan A. Arañas · {new Date().getFullYear()}
+          <div>
+            Designed &amp; Built by{" "}
+            <span style={{ color: "var(--accent)" }}>Andre Milan A. Arañas</span>
+          </div>
+          <div style={{ opacity: 0.6 }}>
+            Next.js · TypeScript · Tailwind CSS · {new Date().getFullYear()}
+          </div>
         </div>
       </div>
     </section>

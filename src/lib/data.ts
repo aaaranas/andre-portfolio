@@ -162,6 +162,20 @@ export const skills = {
   Tools: ["Git", "GitHub", "Vercel", "Docker", "Postman", "VS Code"],
 };
 
+export const experience = [
+  {
+    company: "eComia",
+    role: "Web Developer Intern",
+    period: "2026 · Present",
+    type: "internship",
+    highlights: [
+      "Building and maintaining web features for production e-commerce systems",
+      "Working with React, Next.js, and REST APIs in a professional team environment",
+      "Contributing to code reviews and collaborative development workflows",
+    ],
+  },
+];
+
 export const education = [
   {
     school: "University of the Philippines Cebu",
