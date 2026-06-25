@@ -14,6 +14,21 @@ export const personal = {
 
 export const projects = [
   {
+    id: "event-qr",
+    name: "Event QR Admission",
+    emoji: "🎟️",
+    tagline: "Full-screen kiosk that celebrates guests as they arrive",
+    description:
+      "Guest-facing display screen for an event check-in system built during my internship at eComia. When a guest's QR code is scanned at the door, this full-screen kiosk reveals their name, photo, and table assignment with a celebratory animated reveal. The QR scanner is a separate Flutter mobile app; the admin panel runs on JetAdmin — all three talk to the same Firebase/Firestore project. This screen simply listens to real-time Firestore writes and reacts instantly.",
+    stack: ["React", "Vite", "Tailwind CSS", "Firebase", "Firestore"],
+    role: "Sole Developer",
+    highlight: "eComia Internship",
+    color: "#fbbf24",
+    github: "https://github.com/aaaranas",
+    live: "",
+    featured: true,
+  },
+  {
     id: "donezo",
     name: "Donezo",
     emoji: "✅",
@@ -76,16 +91,7 @@ export const projects = [
     tagline: "Multiplayer Tic Tac Toe with ELO ranking",
     description:
       "Online multiplayer Tic Tac Toe with private room codes, live WebSocket sync, and an offline AI opponent. Handled frontend UI and contributed to backend logic including an ELO-based ranking system and player stats. Used Prisma ORM; learned real-time state management across connected clients.",
-    stack: [
-      "TypeScript",
-      "React",
-      "Vite",
-      "Tailwind CSS",
-      "Express.js",
-      "Socket.io",
-      "PostgreSQL",
-      "Prisma",
-    ],
+    stack: ["TypeScript", "React", "Vite", "Tailwind CSS", "Express.js", "Socket.io", "PostgreSQL", "Prisma"],
     role: "Full Stack",
     highlight: "ELO + WebSockets",
     color: "#bf6fff",
@@ -153,13 +159,15 @@ export const skills = {
     "Node.js",
     "Express.js",
     "PostgreSQL",
+    "Firebase",
+    "Firestore",
     "Supabase",
     "tRPC",
     "bcrypt",
     "Socket.io Server",
     "Prisma ORM",
   ],
-  Tools: ["Git", "GitHub", "Vercel", "Docker", "Postman", "VS Code"],
+  Tools: ["Git", "GitHub", "GitLab", "Vercel", "JetAdmin", "Docker", "Postman", "VS Code"],
 };
 
 export const experience = [
@@ -169,9 +177,9 @@ export const experience = [
     period: "2026 · Present",
     type: "internship",
     highlights: [
-      "Building and maintaining web features for production e-commerce systems",
-      "Working with React, Next.js, and REST APIs in a professional team environment",
-      "Contributing to code reviews and collaborative development workflows",
+      "Building production web features including a real-time event check-in kiosk (React + Firebase/Firestore)",
+      "Working with JetAdmin for admin panel management alongside a Flutter mobile QR scanner",
+      "Collaborating on React/Next.js e-commerce systems in a professional team environment",
     ],
   },
 ];
