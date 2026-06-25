@@ -25,7 +25,7 @@ export const projects = [
     highlight: "WIP · Civic Tech",
     color: "#34d399",
     github: "https://github.com/aaaranas/komyut-ta-bai",
-    live: "https://komyut-ta-bai.vercel.app/",
+    live: "https://komyut-ta-bai-cebu.vercel.app/",
   },
   {
     id: "donezo",
