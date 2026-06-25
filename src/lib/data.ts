@@ -148,29 +148,28 @@ export const skills = {
     "Firestore",
     "Supabase",
     "tRPC",
-    "bcrypt",
     "Socket.io Server",
     "Prisma ORM",
   ],
-  Tools: ["Git", "GitHub", "GitLab", "Vercel", "JetAdmin", "Docker", "Postman", "VS Code"],
+  Tools: ["Git", "GitHub", "GitLab", "Vercel", "JetAdmin", "Docker", "Postman"],
 };
 
 export const experience = [
   {
     company: "eComia",
-    role: "Project Manager & Front-End Developer",
+    role: "Web Developer Intern",
     period: "2026 · Present",
     type: "internship",
     highlights: [
-      "Led the Event QR Admission system end-to-end — full-screen kiosk display (React + Vite) that reacts to real-time Firestore writes and celebrates guests with animated reveals when their QR is scanned at the door",
-      "Managed the full system: web display, Flutter mobile QR scanner app, and JetAdmin-powered admin panel all wired to the same Firebase/Firestore project",
-      "Wore both hats as PM and front-end developer across web and mobile — coordinating features, timelines, and shipping production code",
+      "Acting as Project Manager & Frontend Developer across projects — owning both coordination and hands-on implementation",
+      "Built the Event QR Admission system end-to-end: full-screen kiosk display (React + Vite) reacting to real-time Firestore writes with celebratory animated reveals",
+      "Managed a multi-platform system: web display, Flutter mobile QR scanner, and JetAdmin admin panel — all wired to the same Firebase/Firestore project",
       "Collaborating on React/Next.js e-commerce systems in a professional team environment",
     ],
     project: {
       name: "Event QR Admission",
       stack: ["React", "Vite", "Tailwind CSS", "Firebase", "Firestore", "Flutter", "JetAdmin"],
-      description: "Full-screen guest check-in kiosk. QR scanned → Firestore write → celebratory animated reveal in under 20ms.",
+      description: "Full-screen guest check-in kiosk. Role: Project Manager & Frontend Developer (Web + Mobile). QR scanned → Firestore write → celebratory animated reveal in under 20ms.",
     },
   },
 ];
