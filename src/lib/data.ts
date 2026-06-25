@@ -14,6 +14,20 @@ export const personal = {
 
 export const projects = [
   {
+    id: "komyut-ta-bai",
+    name: "Komyut ta Bai",
+    emoji: "🚌",
+    tagline: "Province-wide multimodal transit planner for Cebu",
+    description:
+      "Public transport directions app covering Cebu's entire network — buses, v-hires, jeepneys, and island ferries. Users input an origin and destination and get multi-leg journey plans with transfer points, fares, and travel times. Fills a real gap where Google Maps transit data is absent. Fully client-side with a Dijkstra-based transit graph, offline-capable as a PWA via a Serwist service worker.",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "MapLibre GL", "OpenStreetMap", "Serwist", "Vercel"],
+    role: "Solo Dev",
+    highlight: "WIP · Civic Tech",
+    color: "#34d399",
+    github: "https://github.com/aaaranas/komyut-ta-bai",
+    live: "https://komyut-ta-bai.vercel.app/",
+  },
+  {
     id: "donezo",
     name: "Donezo",
     emoji: "✅",
