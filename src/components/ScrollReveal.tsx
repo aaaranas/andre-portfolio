@@ -20,7 +20,7 @@ export default function ScrollReveal({ children, delay = 0 }: Props) {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();

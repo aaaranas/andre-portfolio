@@ -102,11 +102,30 @@ function TiltCard({ children, style }: { children: React.ReactNode; style?: Reac
 
 /* ── Project detail modal ── */
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
+
+    /* Focus trap */
+    const focusable = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const trap = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { onClose(); return; }
+      if (e.key !== "Tab") return;
+      const modal = modalRef.current;
+      if (!modal) return;
+      const els = Array.from(modal.querySelectorAll<HTMLElement>(focusable)).filter(el => !el.hasAttribute("disabled"));
+      if (!els.length) return;
+      const first = els[0], last = els[els.length - 1];
+      if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+      else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+    };
+
+    window.addEventListener("keydown", trap);
+    /* Move focus into modal */
+    setTimeout(() => modalRef.current?.querySelector<HTMLElement>("button")?.focus(), 50);
+
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", trap); };
   }, [onClose]);
 
   return (
@@ -117,11 +136,15 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       onClick={onClose}
     >
       <motion.div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={project.name}
         className="modal-box"
         initial={{ opacity: 0, y: 48, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 48, scale: 0.95 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
         style={{ borderTop: `3px solid ${project.color}` }}
       >
@@ -233,7 +256,7 @@ export default function Projects() {
         </ScrollReveal>
 
         {/* Cards grid with 3D tilt */}
-        <motion.div layout style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "20px" }}>
+        <motion.div layout className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "20px" }}>
           <AnimatePresence mode="popLayout">
             {filtered.map((proj, i) => (
               <motion.div key={proj.id} layout
@@ -279,8 +302,30 @@ export default function Projects() {
                         {proj.stack.length > 4 && <span className="tag">+{proj.stack.length - 4}</span>}
                       </div>
 
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--accent)", opacity: hovered === proj.id ? 1 : 0, transition: "opacity 0.2s", letterSpacing: "0.05em" }}>
-                        Click to view →
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--accent)", opacity: hovered === proj.id ? 1 : 0, transition: "opacity 0.2s", letterSpacing: "0.05em" }}>
+                          Click for details →
+                        </div>
+                        {proj.github && (
+                          <a
+                            href={proj.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`View ${proj.name} source on GitHub`}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                              fontFamily: "var(--font-mono)", fontSize: "10px",
+                              color: "var(--muted)", padding: "4px 10px",
+                              border: "1px solid var(--border)", borderRadius: "6px",
+                              transition: "color 0.2s, border-color 0.2s",
+                              letterSpacing: "0.05em",
+                            }}
+                            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; }}
+                            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
+                          >
+                            GitHub ↗
+                          </a>
+                        )}
                       </div>
                     </div>
                   </TiltCard>

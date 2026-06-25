@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { personal } from "@/lib/data";
 
 const links = ["about", "projects", "skills", "education", "contact"];
 
@@ -134,9 +135,26 @@ export default function Nav() {
             </a>
           ))}
 
+          {/* Resume */}
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-mono)", fontSize: "11px",
+              letterSpacing: "0.1em", textTransform: "uppercase",
+              color: "var(--muted)", transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
+          >
+            résumé ↗
+          </a>
+
           {/* Theme toggle */}
           <button
             onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             style={{
               background: "none",
@@ -166,7 +184,7 @@ export default function Nav() {
           </button>
 
           <a
-            href="mailto:aaaranas@up.edu.ph"
+            href={`mailto:${personal.email}`}
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "11px",
