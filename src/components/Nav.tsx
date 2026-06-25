@@ -59,8 +59,8 @@ export default function Nav() {
 
   const navBg = scrolled
     ? theme === "dark"
-      ? "rgba(24,22,15,0.90)"
-      : "rgba(250,247,242,0.92)"
+      ? "rgba(13,17,23,0.92)"
+      : "rgba(255,255,255,0.92)"
     : "transparent";
 
   return (
