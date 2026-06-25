@@ -134,7 +134,7 @@ export default function Contact() {
           {submitted ? (
             <div
               style={{
-                background: "rgba(232,168,56,0.07)",
+                background: "rgba(45,212,191,0.07)",
                 border: "1px solid var(--accent)",
                 borderRadius: "12px",
                 padding: "48px 40px",
@@ -206,7 +206,7 @@ export default function Contact() {
                   letterSpacing: "0.08em",
                   padding: "14px 32px",
                   background: "var(--accent)",
-                  color: "#1e1b12",
+                  color: "#0d1117",
                   border: "none",
                   borderRadius: "4px",
                   fontWeight: 700,

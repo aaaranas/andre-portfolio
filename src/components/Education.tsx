@@ -115,7 +115,7 @@ export default function Education() {
                         border: "1px solid var(--accent)",
                         borderRadius: "999px",
                         color: "var(--accent)",
-                        background: "rgba(232,168,56,0.08)",
+                        background: "rgba(45,212,191,0.08)",
                         letterSpacing: "0.08em",
                         whiteSpace: "nowrap",
                       }}
