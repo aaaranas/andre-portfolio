@@ -2,6 +2,8 @@
 import { education, experience } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 
+type ExpEntry = (typeof experience)[0];
+
 export default function Education() {
   return (
     <section
@@ -41,7 +43,7 @@ export default function Education() {
         <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
 
           {/* Experience entries */}
-          {experience.map((exp, i) => (
+          {experience.map((exp: ExpEntry, i) => (
             <ScrollReveal key={i} delay={i * 80}>
               <div style={{ paddingLeft: "56px", position: "relative" }}>
                 {/* Pulsing dot for current */}
@@ -123,7 +125,7 @@ export default function Education() {
                       Current
                     </span>
                   </div>
-                  <ul style={{ paddingLeft: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <ul style={{ paddingLeft: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", marginBottom: exp.project ? "24px" : "0" }}>
                     {exp.highlights.map((h, j) => (
                       <li
                         key={j}
@@ -141,6 +143,35 @@ export default function Education() {
                       </li>
                     ))}
                   </ul>
+
+                  {/* Flagship project card */}
+                  {exp.project && (
+                    <div style={{
+                      marginTop: "8px",
+                      padding: "18px 20px",
+                      background: "rgba(251,191,36,0.05)",
+                      border: "1px solid rgba(251,191,36,0.25)",
+                      borderRadius: "8px",
+                    }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                        <span style={{ fontSize: "16px" }}>🎟️</span>
+                        <span style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 700, color: "#fbbf24" }}>
+                          {exp.project.name}
+                        </span>
+                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", padding: "2px 8px", border: "1px solid rgba(251,191,36,0.3)", borderRadius: "999px", color: "#fbbf24" }}>
+                          Flagship Project
+                        </span>
+                      </div>
+                      <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)", lineHeight: 1.6, marginBottom: "12px" }}>
+                        {exp.project.description}
+                      </p>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                        {exp.project.stack.map((t) => (
+                          <span key={t} className="tag" style={{ borderColor: "rgba(251,191,36,0.25)", color: "#fbbf24" }}>{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </ScrollReveal>

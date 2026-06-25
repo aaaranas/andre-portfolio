@@ -14,21 +14,6 @@ export const personal = {
 
 export const projects = [
   {
-    id: "event-qr",
-    name: "Event QR Admission",
-    emoji: "🎟️",
-    tagline: "Full-screen kiosk that celebrates guests as they arrive",
-    description:
-      "Guest-facing display screen for an event check-in system built during my internship at eComia. When a guest's QR code is scanned at the door, this full-screen kiosk reveals their name, photo, and table assignment with a celebratory animated reveal. The QR scanner is a separate Flutter mobile app; the admin panel runs on JetAdmin — all three talk to the same Firebase/Firestore project. This screen simply listens to real-time Firestore writes and reacts instantly.",
-    stack: ["React", "Vite", "Tailwind CSS", "Firebase", "Firestore"],
-    role: "Sole Developer",
-    highlight: "eComia Internship",
-    color: "#fbbf24",
-    github: "https://github.com/aaaranas",
-    live: "",
-    featured: true,
-  },
-  {
     id: "donezo",
     name: "Donezo",
     emoji: "✅",
@@ -173,14 +158,20 @@ export const skills = {
 export const experience = [
   {
     company: "eComia",
-    role: "Web Developer Intern",
+    role: "Project Manager & Front-End Developer",
     period: "2026 · Present",
     type: "internship",
     highlights: [
-      "Building production web features including a real-time event check-in kiosk (React + Firebase/Firestore)",
-      "Working with JetAdmin for admin panel management alongside a Flutter mobile QR scanner",
+      "Led the Event QR Admission system end-to-end — full-screen kiosk display (React + Vite) that reacts to real-time Firestore writes and celebrates guests with animated reveals when their QR is scanned at the door",
+      "Managed the full system: web display, Flutter mobile QR scanner app, and JetAdmin-powered admin panel all wired to the same Firebase/Firestore project",
+      "Wore both hats as PM and front-end developer across web and mobile — coordinating features, timelines, and shipping production code",
       "Collaborating on React/Next.js e-commerce systems in a professional team environment",
     ],
+    project: {
+      name: "Event QR Admission",
+      stack: ["React", "Vite", "Tailwind CSS", "Firebase", "Firestore", "Flutter", "JetAdmin"],
+      description: "Full-screen guest check-in kiosk. QR scanned → Firestore write → celebratory animated reveal in under 20ms.",
+    },
   },
 ];
 
