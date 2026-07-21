@@ -1,16 +1,131 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { personal } from "@/lib/data";
-import ScrollReveal from "./ScrollReveal";
+import ParticleCanvas from "./ParticleCanvas";
+import { Code2, BarChart3, Zap } from "lucide-react";
 
 const roles = [
-  "Frontend Developer",
-  "React Enthusiast",
-  "Full Stack Builder",
-  "UI Craftsman",
-  "CS Intern Candidate",
+  "Full-Stack Web Developer",
+  "Data Analyst & Python Specialist",
+  "AI & Automation Engineer (n8n)",
+  "Frontend Engineer & UI Craftsman",
+  "BS CS Student @ UP Cebu",
 ];
+
+const EASE: [number,number,number,number] = [0.22, 1, 0.36, 1];
+
+/* Magnetic button wrapper */
+function MagneticBtn({
+  children, href, primary, target, rel,
+}: {
+  children: React.ReactNode;
+  href: string;
+  primary?: boolean;
+  target?: string;
+  rel?: string;
+}) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 250, damping: 18 });
+  const sy = useSpring(y, { stiffness: 250, damping: 18 });
+
+  const onMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    x.set((e.clientX - (r.left + r.width / 2)) * 0.38);
+    y.set((e.clientY - (r.top  + r.height / 2)) * 0.38);
+  };
+  const onLeave = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      target={target}
+      rel={rel}
+      style={{
+        x: sx, y: sy,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "8px",
+        fontFamily: "var(--font-mono)",
+        fontSize: "12px",
+        letterSpacing: "0.08em",
+        padding: "14px 28px",
+        borderRadius: "999px",
+        fontWeight: 700,
+        ...(primary
+          ? { background: "var(--accent)", color: "#080c10" }
+          : { border: "1px solid var(--border)", color: "var(--text)" }),
+        transition: "box-shadow 0.25s, background 0.25s",
+      }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      whileHover={primary
+        ? { boxShadow: "0 10px 36px rgba(45,212,191,0.4)" }
+        : { borderColor: "var(--accent)", background: "rgba(45,212,191,0.06)" }}
+    >
+      {children}
+    </motion.a>
+  );
+}
+
+/* Split-char name animation with word protection */
+function SplitName({ text, color }: { text: string; color?: boolean }) {
+  const words = text.split(" ");
+  return (
+    <span style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+      {words.map((word, wordIdx) => (
+        <span
+          key={wordIdx}
+          style={{
+            display: "inline-block",
+            whiteSpace: "nowrap",
+            marginRight: wordIdx < words.length - 1 ? "0.22em" : 0,
+          }}
+        >
+          {word.split("").map((ch, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 60, rotateX: -40 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{ delay: 0.4 + (wordIdx * 5 + i) * 0.04, duration: 0.55, ease: EASE }}
+              style={{
+                display: "inline-block",
+                color: color ? "var(--accent)" : undefined,
+              }}
+            >
+              {ch}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* Counter animation */
+function Counter({ target, suffix = "" }: { target: number | string; suffix?: string }) {
+  const [val, setVal] = useState(0);
+  const isNum = typeof target === "number";
+
+  useEffect(() => {
+    if (!isNum) return;
+    let start = 0;
+    const end = target as number;
+    const step = Math.ceil(end / 40);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= end) { setVal(end); clearInterval(timer); }
+      else setVal(start);
+    }, 40);
+    return () => clearInterval(timer);
+  }, [target, isNum]);
+
+  return <>{isNum ? `${val}${suffix}` : target}</>;
+}
 
 export default function Hero() {
   const [roleIdx, setRoleIdx] = useState(0);
@@ -19,293 +134,189 @@ export default function Hero() {
   const tickRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const current = roles[roleIdx];
-    if (!deleting && displayed.length < current.length) {
-      tickRef.current = setTimeout(
-        () => setDisplayed(current.slice(0, displayed.length + 1)),
-        80
-      );
-    } else if (!deleting && displayed.length === current.length) {
-      tickRef.current = setTimeout(() => setDeleting(true), 1800);
+    const cur = roles[roleIdx];
+    if (!deleting && displayed.length < cur.length) {
+      tickRef.current = setTimeout(() => setDisplayed(cur.slice(0, displayed.length + 1)), 72);
+    } else if (!deleting && displayed.length === cur.length) {
+      tickRef.current = setTimeout(() => setDeleting(true), 2200);
     } else if (deleting && displayed.length > 0) {
-      tickRef.current = setTimeout(
-        () => setDisplayed(displayed.slice(0, -1)),
-        40
-      );
-    } else if (deleting && displayed.length === 0) {
+      tickRef.current = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 34);
+    } else {
       setDeleting(false);
       setRoleIdx((i) => (i + 1) % roles.length);
     }
-    return () => {
-      if (tickRef.current) clearTimeout(tickRef.current);
-    };
+    return () => { if (tickRef.current) clearTimeout(tickRef.current); };
   }, [displayed, deleting, roleIdx]);
 
   return (
     <section
       id="about"
-      className="grid-bg hero-pad"
+      className="hero-pad"
       style={{
         minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        position: "relative",
-        overflow: "hidden",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        position: "relative", overflow: "hidden",
+        textAlign: "center",
       }}
     >
-      {/* Glow blobs */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20%",
-          right: "10%",
-          width: "400px",
-          height: "400px",
-          background: "radial-gradient(circle, rgba(127,255,111,0.06) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "20%",
-          left: "5%",
-          width: "300px",
-          height: "300px",
-          background: "radial-gradient(circle, rgba(79,255,191,0.05) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
+      {/* Dot-grid */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "radial-gradient(circle, rgba(45,212,191,0.07) 1px, transparent 1px)",
+        backgroundSize: "36px 36px",
+        zIndex: 0,
+      }} />
 
-      <div style={{ maxWidth: "900px", animation: "slide-up 0.8s ease forwards" }}>
-        {/* Profile avatar */}
-        <div
+      {/* Particle canvas */}
+      <ParticleCanvas />
+
+      {/* Ambient glows */}
+      <div style={{
+        position:"absolute",top:"8%",right:"4%",
+        width:"640px",height:"640px",pointerEvents:"none",zIndex:0,
+        background:"radial-gradient(circle,rgba(45,212,191,0.07) 0%,transparent 65%)",
+      }}/>
+      <div style={{
+        position:"absolute",bottom:"8%",left:"-2%",
+        width:"480px",height:"480px",pointerEvents:"none",zIndex:0,
+        background:"radial-gradient(circle,rgba(167,139,250,0.06) 0%,transparent 65%)",
+      }}/>
+
+      {/* Content */}
+      <div style={{ position:"relative", zIndex:1, maxWidth:"820px", width:"100%", display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+        {/* Avatar */}
+        <motion.div
+          initial={{ opacity:0, scale:0.7 }}
+          animate={{ opacity:1, scale:1 }}
+          transition={{ delay:0.1, duration:0.6, ease:EASE }}
+          className="pulse"
           style={{
-            width: "96px",
-            height: "96px",
-            borderRadius: "50%",
-            border: "2px solid var(--accent)",
-            boxShadow: "0 0 32px rgba(127,255,111,0.12)",
-            marginBottom: "28px",
-            position: "relative",
-            overflow: "hidden",
-            flexShrink: 0,
+            width:"116px",height:"116px",borderRadius:"50%",
+            border:"2px solid var(--accent)",
+            boxShadow:"0 0 0 6px rgba(45,212,191,0.08), 0 0 48px rgba(45,212,191,0.18)",
+            marginBottom:"28px",position:"relative",overflow:"hidden",flexShrink:0,
           }}
         >
-          <Image
-            src="/photo.jpg"
-            alt="Andre Milan Arañas"
-            fill
-            sizes="96px"
-            priority
-            style={{ objectFit: "cover", objectPosition: "50% 18%" }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "6px",
-              right: "6px",
-              width: "13px",
-              height: "13px",
-              background: "var(--accent)",
-              borderRadius: "50%",
-              border: "2px solid var(--bg)",
-            }}
-          />
-        </div>
+          <img src="/photo.jpg" alt="Andre Milan Arañas" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"50% 18%"}} />
+          <div style={{position:"absolute",bottom:"7px",right:"7px",width:"14px",height:"14px",background:"#4ade80",borderRadius:"50%",border:"2.5px solid var(--bg)"}} />
+        </motion.div>
 
-        <div className="section-label" style={{ marginBottom: "32px" }}>
-          available for internship · cebu city, ph
-        </div>
-
-        <div
+        {/* Status badge */}
+        <motion.div
+          initial={{ opacity:0, y:12 }}
+          animate={{ opacity:1, y:0 }}
+          transition={{ delay:0.2, duration:0.5, ease:EASE }}
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "13px",
-            color: "var(--accent)",
-            marginBottom: "16px",
+            display:"inline-flex",alignItems:"center",gap:"8px",
+            padding:"6px 18px",
+            border:"1px solid rgba(45,212,191,0.3)",
+            borderRadius:"999px",marginBottom:"36px",
+            background:"rgba(45,212,191,0.06)",
           }}
+        >
+          <span style={{width:"7px",height:"7px",borderRadius:"50%",background:"#4ade80",display:"inline-block",boxShadow:"0 0 8px #4ade80"}} />
+          <span style={{fontFamily:"var(--font-mono)",fontSize:"11px",color:"var(--accent)",letterSpacing:"0.1em"}}>
+            Software Engineer · Data Analyst · AI Automation Specialist (n8n)
+          </span>
+        </motion.div>
+
+        {/* Greeting */}
+        <motion.div
+          initial={{opacity:0}} animate={{opacity:1}}
+          transition={{delay:0.35, duration:0.4}}
+          style={{fontFamily:"var(--font-mono)",fontSize:"13px",color:"var(--muted)",marginBottom:"10px",letterSpacing:"0.08em"}}
         >
           &gt; hello, I&apos;m
-        </div>
+        </motion.div>
 
+        {/* Name — split chars */}
         <h1
+          data-text="Andre Milan Arañas"
+          className="glitch"
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(52px, 8vw, 100px)",
-            fontWeight: 800,
-            lineHeight: 0.95,
-            letterSpacing: "-0.04em",
-            marginBottom: "24px",
+            fontFamily:"var(--font-display)",
+            fontSize:"clamp(52px,9.5vw,118px)",
+            fontWeight:900,lineHeight:0.88,
+            letterSpacing:"-0.04em",marginBottom:"28px",
+            perspective:"600px",
           }}
         >
-          Andre Milan
-          <br />
-          <span style={{ color: "var(--accent)" }}>Arañas</span>
+          <div><SplitName text="Andre Milan" /></div>
+          <div><SplitName text="Arañas" color /></div>
         </h1>
 
-        <div
+        {/* Typewriter */}
+        <motion.div
+          initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.9}}
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "clamp(15px, 2.5vw, 22px)",
-            color: "var(--muted)",
-            marginBottom: "40px",
-            height: "32px",
-            display: "flex",
-            alignItems: "center",
-            gap: "2px",
+            fontFamily:"var(--font-mono)",
+            fontSize:"clamp(13px,2vw,19px)",
+            color:"var(--muted)",marginBottom:"32px",
+            height:"28px",display:"flex",alignItems:"center",justifyContent:"center",gap:"2px",
           }}
         >
-          <span style={{ color: "var(--accent2)" }}>{displayed}</span>
-          <span
-            className="blink"
-            style={{ color: "var(--accent2)", fontWeight: 700 }}
-          >
-            _
-          </span>
-        </div>
+          <span style={{color:"var(--accent2)"}}>{displayed}</span>
+          <span className="blink" style={{color:"var(--accent2)",fontWeight:700}}>_</span>
+        </motion.div>
 
-        <p
+        {/* Bio */}
+        <motion.p
+          initial={{opacity:0,y:16}} animate={{opacity:1,y:0}}
+          transition={{delay:1.0,duration:0.5,ease:EASE}}
           style={{
-            maxWidth: "560px",
-            color: "var(--muted)",
-            fontSize: "15px",
-            lineHeight: 1.8,
-            marginBottom: "48px",
+            maxWidth:"580px",color:"var(--muted)",
+            fontSize:"15px",lineHeight:1.85,marginBottom:"36px",
+            fontFamily:"var(--font-body)",
           }}
         >
           {personal.bio}
-        </p>
+        </motion.p>
 
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          <a
-            href="#projects"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "12px",
-              letterSpacing: "0.08em",
-              padding: "14px 28px",
-              background: "var(--accent)",
-              color: "#000",
-              borderRadius: "3px",
-              fontWeight: 700,
-              transition: "opacity 0.2s, transform 0.2s",
-              display: "inline-block",
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.opacity = "0.85";
-              (e.target as HTMLElement).style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.opacity = "1";
-              (e.target as HTMLElement).style.transform = "translateY(0)";
-            }}
-          >
-            View Projects →
-          </a>
-          <a
-            href={personal.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "12px",
-              letterSpacing: "0.08em",
-              padding: "14px 28px",
-              border: "1px solid var(--border)",
-              color: "var(--text)",
-              borderRadius: "3px",
-              transition: "border-color 0.2s, transform 0.2s",
-              display: "inline-block",
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.borderColor = "var(--accent)";
-              (e.target as HTMLElement).style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.borderColor = "var(--border)";
-              (e.target as HTMLElement).style.transform = "translateY(0)";
-            }}
-          >
-            GitHub ↗
-          </a>
-        </div>
+        {/* Profession Navigation CTAs */}
+        <motion.div
+          initial={{opacity:0,y:12}} animate={{opacity:1,y:0}}
+          transition={{delay:1.1,duration:0.5,ease:EASE}}
+          style={{display:"flex",gap:"12px",flexWrap:"wrap",justifyContent:"center",marginBottom:"16px"}}
+        >
+          <MagneticBtn href="#developer" primary><Code2 style={{ width: "16px", height: "16px" }} /> Web Developer</MagneticBtn>
+          <MagneticBtn href="#data-analyst"><BarChart3 style={{ width: "16px", height: "16px" }} /> Data Analyst</MagneticBtn>
+          <MagneticBtn href="#automation"><Zap style={{ width: "16px", height: "16px" }} /> AI Automation (n8n)</MagneticBtn>
+        </motion.div>
 
-        {/* Quick stats */}
-        <div
+        {/* Stats */}
+        <motion.div
+          initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.3,duration:0.6}}
           className="hero-stats"
           style={{
-            display: "flex",
-            gap: "48px",
-            marginTop: "80px",
-            paddingTop: "40px",
-            borderTop: "1px solid var(--border)",
+            display:"flex",gap:"48px",
+            marginTop:"56px",paddingTop:"32px",
+            borderTop:"1px solid var(--border)",
+            justifyContent:"center",
+            flexWrap: "wrap",
           }}
         >
-          {[
-            { n: "6", label: "Projects Built" },
-            { n: "3rd", label: "Year CS Student" },
-            { n: "UP", label: "Cebu Campus" },
-          ].map(({ n, label }) => (
-            <div key={label}>
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "36px",
-                  fontWeight: 800,
-                  color: "var(--accent)",
-                  lineHeight: 1,
-                }}
-              >
-                {n}
+          {([
+            { val: 3, suffix: " Pillars", label: "Dev · Data · AI" },
+            { val: 12, suffix: "+", label: "Shipped Projects" },
+            { val: "4th", suffix: "", label: "Year CS · UP Cebu" },
+            { val: 4, suffix: " Certs", label: "Verified Credentials" },
+          ] as const).map(({ val, suffix, label }) => (
+            <div key={label} style={{textAlign:"center"}}>
+              <div style={{fontFamily:"var(--font-display)",fontSize:"36px",fontWeight:900,color:"var(--accent)",lineHeight:1,fontStyle:"italic"}}>
+                <Counter target={val as number} suffix={suffix} />
               </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "11px",
-                  color: "var(--muted)",
-                  marginTop: "4px",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                {label}
-              </div>
+              <div style={{fontFamily:"var(--font-mono)",fontSize:"11px",color:"var(--muted)",marginTop:"6px",letterSpacing:"0.05em"}}>{label}</div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "40px",
-          right: "clamp(20px, 5vw, 64px)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "8px",
-        }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "10px",
-            color: "var(--muted)",
-            writingMode: "vertical-rl",
-            letterSpacing: "0.15em",
-          }}
-        >
-          scroll
-        </div>
-        <div
-          style={{
-            width: "1px",
-            height: "60px",
-            background: "linear-gradient(to bottom, var(--muted), transparent)",
-          }}
-        />
+      {/* Scroll line */}
+      <div style={{position:"absolute",bottom:"36px",right:"clamp(20px,5vw,64px)",display:"flex",flexDirection:"column",alignItems:"center",gap:"8px",zIndex:1}}>
+        <div style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:"var(--muted)",writingMode:"vertical-rl",letterSpacing:"0.15em"}}>scroll</div>
+        <div style={{width:"1px",height:"60px",background:"linear-gradient(to bottom, var(--muted), transparent)"}} />
       </div>
     </section>
   );
