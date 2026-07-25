@@ -77,7 +77,7 @@ export default function BlogSection() {
                   height: "100%",
                   display: "flex",
                   flexDirection: "column",
-                  justify: "space-between",
+                  justifyContent: "space-between",
                   transition: "transform 0.2s, border-color 0.2s, box-shadow 0.2s",
                 }}
                 onMouseEnter={(e) => {

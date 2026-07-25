@@ -75,7 +75,7 @@ export default function AutomationSection() {
                   padding: "32px",
                   display: "flex",
                   flexDirection: "column",
-                  justify: "space-between",
+                  justifyContent: "space-between",
                   height: "100%",
                 }}
               >
