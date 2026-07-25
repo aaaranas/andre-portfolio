@@ -19,7 +19,7 @@ export default function Skills() {
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <div className="section-label" style={{ marginBottom: "16px" }}>
-          03 / skills
+          06 / skills
         </div>
         <h2
           style={{
