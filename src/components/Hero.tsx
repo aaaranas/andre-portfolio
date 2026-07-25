@@ -1,16 +1,16 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { personal } from "@/lib/data";
 import ParticleCanvas from "./ParticleCanvas";
-import { Code2, BarChart3, Zap } from "lucide-react";
 
 const roles = [
-  "Full-Stack Web Developer",
-  "Data Analyst & Python Specialist",
-  "AI & Automation Engineer (n8n)",
-  "Frontend Engineer & UI Craftsman",
-  "BS CS Student @ UP Cebu",
+  "Web Developer Intern",
+  "Frontend Engineer",
+  "React & Next.js Dev",
+  "Full Stack Builder",
+  "UI Craftsman",
 ];
 
 const EASE: [number,number,number,number] = [0.22, 1, 0.36, 1];
@@ -47,13 +47,11 @@ function MagneticBtn({
       rel={rel}
       style={{
         x: sx, y: sy,
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "8px",
+        display: "inline-block",
         fontFamily: "var(--font-mono)",
         fontSize: "12px",
         letterSpacing: "0.08em",
-        padding: "14px 28px",
+        padding: "14px 36px",
         borderRadius: "999px",
         fontWeight: 700,
         ...(primary
@@ -72,37 +70,25 @@ function MagneticBtn({
   );
 }
 
-/* Split-char name animation with word protection */
+/* Split-char name animation */
 function SplitName({ text, color }: { text: string; color?: boolean }) {
-  const words = text.split(" ");
   return (
-    <span style={{ display: "inline-block", whiteSpace: "nowrap" }}>
-      {words.map((word, wordIdx) => (
-        <span
-          key={wordIdx}
+    <>
+      {text.split("").map((ch, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 60, rotateX: -40 }}
+          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+          transition={{ delay: 0.4 + i * 0.04, duration: 0.55, ease: EASE }}
           style={{
             display: "inline-block",
-            whiteSpace: "nowrap",
-            marginRight: wordIdx < words.length - 1 ? "0.22em" : 0,
+            color: color ? "var(--accent)" : undefined,
           }}
         >
-          {word.split("").map((ch, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 60, rotateX: -40 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{ delay: 0.4 + (wordIdx * 5 + i) * 0.04, duration: 0.55, ease: EASE }}
-              style={{
-                display: "inline-block",
-                color: color ? "var(--accent)" : undefined,
-              }}
-            >
-              {ch}
-            </motion.span>
-          ))}
-        </span>
+          {ch === " " ? " " : ch}
+        </motion.span>
       ))}
-    </span>
+    </>
   );
 }
 
@@ -199,7 +185,7 @@ export default function Hero() {
             marginBottom:"28px",position:"relative",overflow:"hidden",flexShrink:0,
           }}
         >
-          <img src="/photo.jpg" alt="Andre Milan Arañas" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"50% 18%"}} />
+          <Image src="/photo.jpg" alt="Andre Milan Arañas" fill sizes="116px" priority style={{objectFit:"cover",objectPosition:"50% 18%"}} />
           <div style={{position:"absolute",bottom:"7px",right:"7px",width:"14px",height:"14px",background:"#4ade80",borderRadius:"50%",border:"2.5px solid var(--bg)"}} />
         </motion.div>
 
@@ -218,7 +204,7 @@ export default function Hero() {
         >
           <span style={{width:"7px",height:"7px",borderRadius:"50%",background:"#4ade80",display:"inline-block",boxShadow:"0 0 8px #4ade80"}} />
           <span style={{fontFamily:"var(--font-mono)",fontSize:"11px",color:"var(--accent)",letterSpacing:"0.1em"}}>
-            Software Engineer · Data Analyst · AI Automation Specialist (n8n)
+            Web Developer Intern · eComia · Cebu City, PH
           </span>
         </motion.div>
 
@@ -266,23 +252,22 @@ export default function Hero() {
           initial={{opacity:0,y:16}} animate={{opacity:1,y:0}}
           transition={{delay:1.0,duration:0.5,ease:EASE}}
           style={{
-            maxWidth:"580px",color:"var(--muted)",
-            fontSize:"15px",lineHeight:1.85,marginBottom:"36px",
+            maxWidth:"520px",color:"var(--muted)",
+            fontSize:"15px",lineHeight:1.85,marginBottom:"44px",
             fontFamily:"var(--font-body)",
           }}
         >
           {personal.bio}
         </motion.p>
 
-        {/* Profession Navigation CTAs */}
+        {/* Magnetic CTAs */}
         <motion.div
           initial={{opacity:0,y:12}} animate={{opacity:1,y:0}}
           transition={{delay:1.1,duration:0.5,ease:EASE}}
-          style={{display:"flex",gap:"12px",flexWrap:"wrap",justifyContent:"center",marginBottom:"16px"}}
+          style={{display:"flex",gap:"16px",flexWrap:"wrap",justifyContent:"center"}}
         >
-          <MagneticBtn href="#developer" primary><Code2 style={{ width: "16px", height: "16px" }} /> Web Developer</MagneticBtn>
-          <MagneticBtn href="#data-analyst"><BarChart3 style={{ width: "16px", height: "16px" }} /> Data Analyst</MagneticBtn>
-          <MagneticBtn href="#automation"><Zap style={{ width: "16px", height: "16px" }} /> AI Automation (n8n)</MagneticBtn>
+          <MagneticBtn href="#projects" primary>View Projects →</MagneticBtn>
+          <MagneticBtn href={personal.githubUrl} target="_blank" rel="noopener noreferrer">GitHub ↗</MagneticBtn>
         </motion.div>
 
         {/* Stats */}
@@ -290,21 +275,19 @@ export default function Hero() {
           initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.3,duration:0.6}}
           className="hero-stats"
           style={{
-            display:"flex",gap:"48px",
-            marginTop:"56px",paddingTop:"32px",
+            display:"flex",gap:"60px",
+            marginTop:"72px",paddingTop:"40px",
             borderTop:"1px solid var(--border)",
             justifyContent:"center",
-            flexWrap: "wrap",
           }}
         >
           {([
-            { val: 3, suffix: " Pillars", label: "Dev · Data · AI" },
-            { val: 12, suffix: "+", label: "Shipped Projects" },
-            { val: "4th", suffix: "", label: "Year CS · UP Cebu" },
-            { val: 4, suffix: " Certs", label: "Verified Credentials" },
+            { val: 9, suffix: "+", label: "Projects" },
+            { val: "3rd",  suffix: "",  label: "Year · UP Cebu" },
+            { val: 1,  suffix: "",  label: "Active Internship" },
           ] as const).map(({ val, suffix, label }) => (
             <div key={label} style={{textAlign:"center"}}>
-              <div style={{fontFamily:"var(--font-display)",fontSize:"36px",fontWeight:900,color:"var(--accent)",lineHeight:1,fontStyle:"italic"}}>
+              <div style={{fontFamily:"var(--font-display)",fontSize:"42px",fontWeight:900,color:"var(--accent)",lineHeight:1,fontStyle:"italic"}}>
                 <Counter target={val as number} suffix={suffix} />
               </div>
               <div style={{fontFamily:"var(--font-mono)",fontSize:"11px",color:"var(--muted)",marginTop:"6px",letterSpacing:"0.05em"}}>{label}</div>

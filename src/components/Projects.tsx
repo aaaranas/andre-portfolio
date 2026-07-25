@@ -1,52 +1,11 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import {
-  Code2,
-  Bus,
-  CheckCircle2,
-  MapPin,
-  Calculator,
-  ShoppingBag,
-  Gamepad2,
-  GraduationCap,
-  Building2,
-  Camera,
-  Globe,
-  ExternalLink,
-  Github,
-} from "lucide-react";
 
 type Project = (typeof projects)[0];
 const clientIds = new Set(["7gb-construction", "myle-photography"]);
-
-function getProjectIcon(id: string, color?: string) {
-  const iconProps = { style: { width: "22px", height: "22px", color: color || "var(--accent)" } };
-  switch (id) {
-    case "komyut-ta-bai":
-      return <Bus {...iconProps} />;
-    case "donezo":
-      return <CheckCircle2 {...iconProps} />;
-    case "sanbidet":
-      return <MapPin {...iconProps} />;
-    case "scheduling":
-      return <Calculator {...iconProps} />;
-    case "heartbeat":
-      return <ShoppingBag {...iconProps} />;
-    case "tacfinity":
-      return <Gamepad2 {...iconProps} />;
-    case "irregskolar":
-      return <GraduationCap {...iconProps} />;
-    case "7gb-construction":
-      return <Building2 {...iconProps} />;
-    case "myle-photography":
-      return <Camera {...iconProps} />;
-    default:
-      return <Code2 {...iconProps} />;
-  }
-}
 
 type Filter = "all" | "deployed" | "client";
 const filters: { key: Filter; label: string }[] = [
@@ -86,9 +45,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
           {url.replace("https://", "")}
         </div>
         <a href={url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
-          style={{ fontSize: "10px", color, opacity: 0.8, flexShrink: 0 }} aria-label="Open preview">
-          <ExternalLink style={{ width: "12px", height: "12px" }} />
-        </a>
+          style={{ fontSize: "10px", color, opacity: 0.8, flexShrink: 0 }}>↗</a>
       </div>
 
       {/* Screenshot — 1440×900 = 8:5 */}
@@ -111,7 +68,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
               width: "100%", height: "100%", display: "flex", flexDirection: "column",
               alignItems: "center", justifyContent: "center", gap: "8px", color: "var(--muted)",
             }}>
-              <Globe style={{ width: "24px", height: "24px", color: "var(--muted)" }} />
+              <span style={{ fontSize: "28px" }}>🌐</span>
               <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px" }}>Preview unavailable</span>
             </div>
         }
@@ -157,10 +114,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       if (e.key !== "Tab") return;
       const modal = modalRef.current;
       if (!modal) return;
-      const els = Array.from(modal.querySelectorAll(focusable)) as HTMLElement[];
-      const filteredEls = els.filter(el => !el.hasAttribute("disabled"));
-      if (!filteredEls.length) return;
-      const first = filteredEls[0], last = filteredEls[filteredEls.length - 1];
+      const els = Array.from(modal.querySelectorAll<HTMLElement>(focusable)).filter(el => !el.hasAttribute("disabled"));
+      if (!els.length) return;
+      const first = els[0], last = els[els.length - 1];
       if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
       else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
     };
@@ -213,9 +169,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           )}
 
           <div style={{ display: "flex", alignItems: "flex-start", gap: "16px", marginBottom: "16px", flexWrap: "wrap" }}>
-            <div style={{ background: `${project.color}18`, padding: "12px", borderRadius: "14px", display: "inline-flex" }}>
-              {getProjectIcon(project.id, project.color)}
-            </div>
+            <span style={{ fontSize: "36px" }}>{project.emoji}</span>
             <div style={{ flex: 1 }}>
               <h2 style={{ fontFamily: "var(--font-display)", fontSize: "30px", fontWeight: 800, marginBottom: "4px" }}>{project.name}</h2>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
@@ -273,17 +227,14 @@ export default function Projects() {
 
   return (
     <>
-      <section id="developer" className="s-pad" style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <div id="projects" />
+      <section id="projects" className="s-pad" style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <ScrollReveal>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--accent)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>
-            <Code2 style={{ width: "16px", height: "16px" }} /> Full-Stack & Web Engineering
-          </div>
+          <div className="section-label" style={{ marginBottom: "16px" }}>02 / projects</div>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, marginBottom: "8px" }}>
-            Developer Portfolio
+            Things I&apos;ve Built
           </h2>
           <p style={{ color: "var(--muted)", fontSize: "14px", marginBottom: "48px", fontFamily: "var(--font-mono)" }}>
-            Live web applications, real-time WebSocket systems, and civic tech tools. Click any card for full details.
+            Click any card to open full details.
           </p>
         </ScrollReveal>
 
@@ -335,9 +286,7 @@ export default function Projects() {
 
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <div style={{ background: `${proj.color}15`, padding: "6px", borderRadius: "8px", display: "inline-flex" }}>
-                            {getProjectIcon(proj.id, proj.color)}
-                          </div>
+                          <span style={{ fontSize: "20px" }}>{proj.emoji}</span>
                           <div>
                             <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 700, marginBottom: "1px" }}>{proj.name}</h3>
                             <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: proj.color, letterSpacing: "0.06em" }}>{proj.role}</span>

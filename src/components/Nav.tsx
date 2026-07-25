@@ -2,18 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { personal } from "@/lib/data";
 
-const links = ["about", "developer", "data-analyst", "automation", "experience", "education", "certifications", "contact"];
-
-const linkLabels: Record<string, string> = {
-  about: "About",
-  developer: "Dev",
-  "data-analyst": "Data",
-  automation: "AI Automation",
-  experience: "Experience",
-  education: "Education",
-  certifications: "Certs",
-  contact: "Contact",
-};
+const links = ["about", "projects", "skills", "education", "contact"];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -131,7 +120,7 @@ export default function Nav() {
                 paddingBottom: "3px",
               }}
             >
-              {linkLabels[link] || link}
+              {link}
               {active === link && (
                 <span
                   style={{
@@ -245,7 +234,7 @@ export default function Nav() {
               setMenuOpen(false);
             }}
           >
-            {linkLabels[link] || link}
+            {link}
           </a>
         ))}
         <button

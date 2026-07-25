@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface Props {
   children: React.ReactNode;
   delay?: number;
-  key?: React.Key;
 }
 
 export default function ScrollReveal({ children, delay = 0 }: Props) {

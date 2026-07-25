@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { personal } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 

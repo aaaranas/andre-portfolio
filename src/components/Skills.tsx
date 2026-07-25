@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { skills } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
@@ -68,7 +68,7 @@ const proficiencyBars = [
   { name: "Flutter", pct: 55, color: "var(--accent3)" },
 ];
 
-function Bar({ name, pct, color, i }: { name: string; pct: number; color: string; i: number; key?: React.Key }) {
+function Bar({ name, pct, color, i }: { name: string; pct: number; color: string; i: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
@@ -195,7 +195,7 @@ export default function Skills() {
                     }}
                   >
                     {Icon
-                      ? <span style={{ flexShrink: 0, display: "inline-flex" }}><Icon size={15} /></span>
+                      ? <Icon size={15} style={{ flexShrink: 0 }} />
                       : <span style={{ fontSize: "13px", lineHeight: 1 }}>{glyph ?? "◇"}</span>
                     }
                     {skill}
