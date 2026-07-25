@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { personal } from "@/lib/data";
 
-const links = ["about", "projects", "skills", "education", "contact"];
+const links = ["about", "projects", "experience", "education", "skills", "contact"];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
