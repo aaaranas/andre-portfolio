@@ -159,7 +159,7 @@ export default function BlogSection() {
               </div>
               <button
                 onClick={() => setSelectedPost(null)}
-                style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyCenter: "center", fontSize: "18px" }}
+                style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}
               >
                 ✕
               </button>
