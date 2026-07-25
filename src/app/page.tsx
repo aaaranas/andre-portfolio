@@ -1,8 +1,16 @@
+"use client";
+
 import Hero from "@/components/Hero";
 import Nav from "@/components/Nav";
+import PortfolioTracks from "@/components/PortfolioTracks";
 import Projects from "@/components/Projects";
+import DataAnalystSection from "@/components/DataAnalystSection";
+import AutomationSection from "@/components/AutomationSection";
+import ExperienceSection from "@/components/ExperienceSection";
 import Skills from "@/components/Skills";
 import Education from "@/components/Education";
+import BlogSection from "@/components/BlogSection";
+import CertificationsSection from "@/components/CertificationsSection";
 import Contact from "@/components/Contact";
 import Cursor from "@/components/Cursor";
 
@@ -13,9 +21,15 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <PortfolioTracks />
         <Projects />
-        <Skills />
+        <DataAnalystSection />
+        <AutomationSection />
+        <ExperienceSection />
         <Education />
+        <BlogSection />
+        <CertificationsSection />
+        <Skills />
         <Contact />
       </main>
     </>

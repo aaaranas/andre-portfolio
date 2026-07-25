@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Resume Update Guide — Andre Milan Arañas</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', serif;
+    font-size: 11pt;
+    color: #1a1a2e;
+    background: #fff;
+    padding: 48px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  h1 { font-size: 22pt; margin-bottom: 4px; color: #0d6b5e; }
+  .sub { font-size: 10pt; color: #555; margin-bottom: 32px; font-family: monospace; }
+  h2 { font-size: 13pt; text-transform: uppercase; letter-spacing: 0.08em;
+       border-bottom: 2px solid #0d6b5e; padding-bottom: 4px; margin: 28px 0 14px; color: #0d6b5e; }
+  h3 { font-size: 11pt; font-weight: bold; margin: 16px 0 4px; }
+  p, li { margin-bottom: 6px; }
+  ul { padding-left: 20px; }
+  .badge { display: inline-block; background: #0d6b5e; color: #fff;
+           font-family: monospace; font-size: 8pt; padding: 2px 8px;
+           border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+  .old { background: #fee2e2; padding: 8px 12px; border-left: 3px solid #ef4444;
+         border-radius: 2px; margin: 6px 0; font-family: monospace; font-size: 9pt; }
+  .new { background: #dcfce7; padding: 8px 12px; border-left: 3px solid #22c55e;
+         border-radius: 2px; margin: 6px 0; font-family: monospace; font-size: 9pt; }
+  .tip { background: #fef3c7; padding: 10px 14px; border-left: 3px solid #f59e0b;
+         border-radius: 2px; margin: 10px 0; font-size: 10pt; }
+  .action { font-family: monospace; font-size: 9.5pt; color: #0d6b5e; font-weight: bold; }
+  .priority { font-family: monospace; font-size: 8pt; }
+  .p-critical { color: #ef4444; }
+  .p-high { color: #f97316; }
+  .p-medium { color: #eab308; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 10pt; }
+  td, th { padding: 7px 10px; border: 1px solid #e5e7eb; text-align: left; }
+  th { background: #f3f4f6; font-weight: bold; }
+  @media print {
+    body { padding: 24px 32px; }
+    h2 { page-break-before: auto; }
+    .old, .new { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Resume Update Guide</h1>
+<div class="sub">Andre Milan A. Arañas · Generated from portfolio audit · 2026</div>
+
+<p>This guide gives you exact changes to make to your resume document so that it matches your portfolio improvements and accurately reflects your current skills and experience. Work through each section in priority order.</p>
+
+<h2>1. Header / Contact Section</h2>
+
+<h3>Job Title / Tagline</h3>
+<div class="old">❌ "BS Computer Science Student" or "Web Developer"</div>
+<div class="new">✅ "Web Developer Intern · eComia | React · Next.js · TypeScript | UP Cebu, 3rd Year CS"</div>
+<p>Put a one-liner under your name. Recruiters spend 6 seconds on first scan — this line needs to tell them everything: current role, company, stack, and institution.</p>
+
+<h3>Links to Add</h3>
+<ul>
+  <li><span class="action">Portfolio:</span> https://andre-milan-aranas.vercel.app</li>
+  <li><span class="action">GitHub:</span> github.com/aaaranas</li>
+  <li><span class="action">Email:</span> aaaranas@up.edu.ph</li>
+</ul>
+<div class="tip">💡 Keep phone optional. Most international or remote companies prefer email.</div>
+
+<h2>2. Experience Section</h2>
+
+<h3>eComia — Web Developer Intern</h3>
+<p><strong>Job Title on Resume:</strong> Web Developer Intern</p>
+<p><strong>Role on Projects:</strong> Clarify in bullets that you acted as PM + frontend dev.</p>
+
+<div class="old">❌ Current (vague):
+"Developing web applications using React and Next.js"</div>
+
+<div class="new">✅ Rewrite each bullet with: Action verb · What you did · Tech used · Impact/scale
+
+• Led end-to-end development of Event QR Admission — a real-time guest check-in kiosk (React + Vite + Firebase/Firestore) used at live company events; system reacted to QR scans in under 20ms
+• Acted as Project Manager and Frontend Developer across multi-platform systems: web kiosk, Flutter mobile QR scanner, and JetAdmin admin panel — all sharing one Firebase project
+• Shipping features on React/Next.js e-commerce systems in a professional team environment
+• Coordinated timelines and technical decisions across platforms as the sole junior developer on the project</div>
+
+<div class="tip">💡 "Led", "Shipped", "Coordinated", "Built" — start every bullet with a strong action verb. Avoid "Responsible for" or "Helped with".</div>
+
+<h2>3. Projects Section</h2>
+<p>These are the updated descriptions to use. Keep resume bullets to 1-2 lines; the full version is on your portfolio.</p>
+
+<table>
+  <tr>
+    <th>Project</th>
+    <th>Resume Bullet (1-2 lines max)</th>
+  </tr>
+  <tr>
+    <td><strong>Komyut ta Bai</strong></td>
+    <td>Province-wide multimodal transit planner for Cebu — buses, v-hires, jeepneys, ferries. Offline-capable PWA with Dijkstra routing. Fills the gap Google Maps leaves for Cebu commuters. (Next.js, MapLibre GL, Serwist)</td>
+  </tr>
+  <tr>
+    <td><strong>IrregSkolar</strong></td>
+    <td>Schedule planner for irregular UP students — conflict detection, unit load computation, visual grid. Built for myself; adopted by classmates during enlistment season. (Next.js, TypeScript)</td>
+  </tr>
+  <tr>
+    <td><strong>Tacfinity</strong></td>
+    <td>Online multiplayer Tic Tac Toe with private rooms, live WebSocket sync, offline AI opponent, and ELO ranking system. (React, Vite, Socket.io, PostgreSQL, Prisma)</td>
+  </tr>
+  <tr>
+    <td><strong>Donezo</strong></td>
+    <td>Offline-first Kanban with cross-device real-time sync via WebSockets and last-write-wins conflict resolution. JWT auth, drag-and-drop, cron-based cleanup. (Node.js, PostgreSQL)</td>
+  </tr>
+  <tr>
+    <td><strong>Sorting Algorithm Calculator</strong></td>
+    <td>Interactive OS scheduling visualizer (FCFS, SJF, Priority, Round Robin). Built as a study tool; shared publicly and used by classmates for exam review. (HTML, JS, CSS)</td>
+  </tr>
+</table>
+
+<div class="tip">💡 Put Komyut ta Bai and IrregSkolar first — they show civic/community impact, which stands out vs. standard CRUD apps.</div>
+
+<h2>4. Skills Section</h2>
+
+<h3>Suggested Format (categories matter to ATS scanners)</h3>
+<table>
+  <tr><th>Category</th><th>Skills to List</th></tr>
+  <tr>
+    <td>Frontend</td>
+    <td>React, Next.js, TypeScript, JavaScript, Tailwind CSS, HTML, CSS, Flutter, Responsive Design, Socket.io</td>
+  </tr>
+  <tr>
+    <td>Backend & APIs</td>
+    <td>Node.js, Express.js, PostgreSQL, Firebase, Firestore, Supabase, Prisma ORM, tRPC, Socket.io</td>
+  </tr>
+  <tr>
+    <td>Tools & Platforms</td>
+    <td>Git, GitHub, GitLab, Vercel, Docker, Postman, JetAdmin</td>
+  </tr>
+</table>
+
+<p><span class="badge">REMOVE</span> bcrypt (implementation detail, not a skill), VS Code (too junior to list as a skill)</p>
+<p><span class="badge">ADD</span> MapLibre GL, PWA/Service Workers (from Komyut ta Bai)</p>
+
+<h2>5. Summary / Objective (Add This)</h2>
+<p>If your resume has a summary section at the top, replace it with:</p>
+
+<div class="new">✅ Frontend-leaning full-stack developer with real production experience. Currently shipping at eComia as a Web Developer Intern — building a real-time event kiosk (Firebase/React), a Cebu province transit planner (Next.js/MapLibre), and contributing to e-commerce systems. Third-year CS at UP Cebu. I write clean, fast, accessible code and ship things people actually use.</div>
+
+<h2>6. Things to Cut or Shrink</h2>
+<ul>
+  <li><strong>7GB Construction / Myle Photography</strong> — client projects are fine on portfolio but take up valuable resume space. Cut or combine into one line: "Built and deployed 2 production websites for local clients (Next.js, Vercel)"</li>
+  <li><strong>San Bidet Cebu</strong> — funny concept but might raise eyebrows. Only include if you have space; if you include it, lead with the technical challenges not the concept.</li>
+  <li><strong>PSHS-CVC</strong> — "With High Honors" is notable but secondary. Keep it short: one line.</li>
+</ul>
+
+<h2>7. Format Reminders</h2>
+<ul>
+  <li>Keep to <strong>1 page</strong> until you have 2+ years of full-time experience</li>
+  <li>Use <strong>consistent date format</strong>: "Jan 2026 – Present" or "2026 – Present"</li>
+  <li>Export as <strong>PDF</strong> — not .docx — and name it <code>Andre_Milan_Aranas_Resume.pdf</code></li>
+  <li>Upload this PDF to <code>/public/resume.pdf</code> in your portfolio repo so the "résumé ↗" link in the nav works</li>
+  <li>Test your PDF in <a href="https://www.jobscan.co">Jobscan.co</a> against a job description — ATS scanners strip formatting</li>
+</ul>
+
+<h2>8. Portfolio → Resume Checklist</h2>
+<table>
+  <tr><th>Item</th><th>Portfolio</th><th>Resume</th><th>Done?</th></tr>
+  <tr><td>Job title at eComia</td><td>Web Developer Intern ✅</td><td>Update ☐</td><td>☐</td></tr>
+  <tr><td>Role during projects</td><td>PM + Frontend Dev ✅</td><td>Add to bullets ☐</td><td>☐</td></tr>
+  <tr><td>Komyut ta Bai</td><td>Added ✅</td><td>Add with impact ☐</td><td>☐</td></tr>
+  <tr><td>Impact-focused descriptions</td><td>Updated ✅</td><td>Shorten for resume ☐</td><td>☐</td></tr>
+  <tr><td>Skills list accurate</td><td>Cleaned ✅</td><td>Mirror categories ☐</td><td>☐</td></tr>
+  <tr><td>Resume PDF in /public</td><td>Link added ✅</td><td>Upload PDF ☐</td><td>☐</td></tr>
+  <tr><td>Contact form works</td><td>Resend API ✅*</td><td>N/A</td><td>*needs API key</td></tr>
+</table>
+
+<h2>9. One Thing to Do Right Now</h2>
+<div class="new" style="font-size:11pt; padding: 14px 18px;">
+  <strong>Upload your resume PDF.</strong><br/>
+  Save your updated resume as a PDF → put it in <code>andre-portfolio/public/resume.pdf</code> → commit and push. The nav "résumé ↗" link is already wired up and waiting.
+</div>
+
+<br/>
+<p style="font-size:9pt; color:#999; border-top:1px solid #e5e7eb; padding-top:12px; margin-top:24px;">
+  Generated from portfolio audit · andre-milan-aranas.vercel.app · 2026
+</p>
+
+</body>
+</html>

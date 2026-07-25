@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Andre Milan Arañas | CS Intern",
+  title: "Andre Milan Aranas | Full-Stack, Data & AI Engineer",
   description:
-    "Third-year BS Computer Science student at UP Cebu. Frontend-leaning full stack developer seeking internship.",
+    "Portfolio of Andre Milan Aranas: full-stack development, data analytics, and AI automation.",
   openGraph: {
-    title: "Andre Milan Arañas | Portfolio",
-    description: "CS Intern Candidate · React · Next.js · TypeScript",
+    title: "Andre Milan Aranas | Portfolio",
+    description: "Full-Stack Development, Data Analytics, and AI Automation",
     type: "website",
   },
 };

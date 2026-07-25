@@ -1,72 +1,118 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { personal } from "@/lib/data";
 
-const links = ["about", "projects", "skills", "education", "contact"];
+const links = ["about", "developer", "data-analyst", "automation", "experience", "education", "certifications", "contact"];
+
+const linkLabels: Record<string, string> = {
+  about: "About",
+  developer: "Dev",
+  "data-analyst": "Data",
+  automation: "AI Automation",
+  experience: "Experience",
+  education: "Education",
+  certifications: "Certs",
+  contact: "Contact",
+};
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("about");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [showTop, setShowTop] = useState(false);
 
+  // Scroll progress + back-to-top visibility
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => {
+      const scrolled = window.scrollY;
+      const total = document.body.scrollHeight - window.innerHeight;
+      setProgress(total > 0 ? (scrolled / total) * 100 : 0);
+      setScrolled(scrolled > 40);
+      setShowTop(scrolled > 400);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Active section via IntersectionObserver
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    links.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActive(id); },
+        { rootMargin: "-40% 0px -55% 0px" }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  // Persist theme
   useEffect(() => {
     const saved = localStorage.getItem("theme");
-    if (saved === "light") setTheme("light");
+    if (saved === "light") {
+      setTheme("light");
+      document.documentElement.setAttribute("data-theme", "light");
+    }
   }, []);
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
-    if (next === "light") {
-      document.documentElement.setAttribute("data-theme", "light");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-    }
+    if (next === "light") document.documentElement.setAttribute("data-theme", "light");
+    else document.documentElement.removeAttribute("data-theme");
     localStorage.setItem("theme", next);
   };
 
   const navBg = scrolled
     ? theme === "dark"
-      ? "rgba(12,12,15,0.88)"
-      : "rgba(248,248,245,0.92)"
+      ? "rgba(13,17,23,0.92)"
+      : "rgba(255,255,255,0.92)"
     : "transparent";
 
   return (
     <>
+      {/* Scroll progress bar */}
+      <div
+        className="scroll-progress"
+        style={{ width: `${progress}%` }}
+      />
+
       <nav
         style={{
           position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
+          top: 0, left: 0, right: 0,
           zIndex: 100,
           padding: "16px 32px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           background: navBg,
-          backdropFilter: scrolled ? "blur(16px)" : "none",
+          backdropFilter: scrolled ? "blur(20px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
           borderBottom: scrolled ? "1px solid var(--border)" : "none",
           transition: "all 0.3s ease",
         }}
       >
-        <span
+        <a
+          href="#about"
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "18px",
-            fontWeight: 800,
+            fontSize: "20px",
+            fontWeight: 900,
+            fontStyle: "italic",
             color: "var(--accent)",
             letterSpacing: "-0.03em",
+            textDecoration: "none",
           }}
         >
-          AMA<span style={{ color: "var(--text)" }}>.</span>
-        </span>
+          AMA<span style={{ color: "var(--text)", fontStyle: "normal" }}>.</span>
+        </a>
 
         {/* Desktop links */}
         <div className="nav-desktop-links">
@@ -74,7 +120,6 @@ export default function Nav() {
             <a
               key={link}
               href={`#${link}`}
-              onClick={() => setActive(link)}
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "11px",
@@ -82,27 +127,60 @@ export default function Nav() {
                 textTransform: "uppercase",
                 color: active === link ? "var(--accent)" : "var(--muted)",
                 transition: "color 0.2s",
+                position: "relative",
+                paddingBottom: "3px",
               }}
             >
-              {link}
+              {linkLabels[link] || link}
+              {active === link && (
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 0, left: 0, right: 0,
+                    height: "1px",
+                    background: "var(--accent)",
+                    borderRadius: "1px",
+                  }}
+                />
+              )}
             </a>
           ))}
 
-          {/* Dark / light toggle */}
+          {/* Resume */}
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-mono)", fontSize: "11px",
+              letterSpacing: "0.1em", textTransform: "uppercase",
+              color: "var(--muted)", transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
+          >
+            résumé ↗
+          </a>
+
+          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             style={{
               background: "none",
               border: "1px solid var(--border)",
-              borderRadius: "4px",
+              borderRadius: "999px",
               color: "var(--muted)",
               cursor: "pointer",
-              padding: "6px 10px",
+              padding: "6px 12px",
               fontFamily: "var(--font-mono)",
-              fontSize: "14px",
+              fontSize: "12px",
               lineHeight: 1,
-              transition: "border-color 0.2s, color 0.2s",
+              transition: "all 0.2s",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
@@ -113,28 +191,30 @@ export default function Nav() {
               (e.currentTarget as HTMLElement).style.color = "var(--muted)";
             }}
           >
-            {theme === "dark" ? "☀" : "●"}
+            {theme === "dark" ? "☀" : "◑"}
           </button>
 
           <a
-            href="mailto:aaaranas@up.edu.ph"
+            href={`mailto:${personal.email}`}
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "11px",
               letterSpacing: "0.1em",
-              padding: "8px 16px",
-              border: "1px solid var(--accent)",
-              color: "var(--accent)",
-              borderRadius: "3px",
-              transition: "background 0.2s, color 0.2s",
+              padding: "8px 18px",
+              background: "var(--accent)",
+              color: "#1e1b12",
+              borderRadius: "999px",
+              fontWeight: 700,
+              transition: "opacity 0.2s, transform 0.2s",
+              display: "inline-block",
             }}
             onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.background = "var(--accent)";
-              (e.target as HTMLElement).style.color = "#000";
+              (e.currentTarget as HTMLElement).style.opacity = "0.85";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
             }}
             onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.background = "transparent";
-              (e.target as HTMLElement).style.color = "var(--accent)";
+              (e.currentTarget as HTMLElement).style.opacity = "1";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
             }}
           >
             Hire Me
@@ -143,9 +223,9 @@ export default function Nav() {
 
         {/* Mobile hamburger */}
         <button
-          className="nav-hamburger"
-          onClick={() => setMenuOpen(true)}
-          aria-label="Open menu"
+          className={`nav-hamburger${menuOpen ? " open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           <span />
           <span />
@@ -155,24 +235,6 @@ export default function Nav() {
 
       {/* Mobile full-screen menu */}
       <div className={`nav-mobile-menu${menuOpen ? " open" : ""}`}>
-        <button
-          onClick={() => setMenuOpen(false)}
-          aria-label="Close menu"
-          style={{
-            position: "absolute",
-            top: "20px",
-            right: "24px",
-            background: "none",
-            border: "none",
-            color: "var(--muted)",
-            fontSize: "28px",
-            cursor: "pointer",
-            lineHeight: 1,
-          }}
-        >
-          ×
-        </button>
-
         {links.map((link) => (
           <a
             key={link}
@@ -183,26 +245,35 @@ export default function Nav() {
               setMenuOpen(false);
             }}
           >
-            {link}
+            {linkLabels[link] || link}
           </a>
         ))}
-
         <button
-          onClick={toggleTheme}
+          onClick={() => { toggleTheme(); setMenuOpen(false); }}
           style={{
             background: "none",
             border: "1px solid var(--border)",
-            borderRadius: "4px",
+            borderRadius: "999px",
             color: "var(--muted)",
             cursor: "pointer",
-            padding: "10px 20px",
+            padding: "12px 24px",
             fontFamily: "var(--font-mono)",
             fontSize: "13px",
           }}
         >
-          {theme === "dark" ? "☀ Light Mode" : "● Dark Mode"}
+          {theme === "dark" ? "☀ Light Mode" : "◑ Dark Mode"}
         </button>
       </div>
+
+      {/* Back to top */}
+      <button
+        className={`back-to-top${showTop ? "" : " hidden"}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Back to top"
+        title="Back to top"
+      >
+        ↑
+      </button>
     </>
   );
 }

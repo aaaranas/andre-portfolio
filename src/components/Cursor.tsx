@@ -2,58 +2,76 @@
 import { useEffect, useRef } from "react";
 
 export default function Cursor() {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const dotRef  = useRef<HTMLDivElement>(null);
+  const blobRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const cursor = cursorRef.current;
-    const ring = ringRef.current;
-    if (!cursor || !ring) return;
+    const dot  = dotRef.current;
+    const blob = blobRef.current;
+    const label = labelRef.current;
+    if (!dot || !blob || !label) return;
 
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
+    let mx = 0, my = 0, bx = 0, by = 0, raf: number;
 
     const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
     };
 
     const animate = () => {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
-      requestAnimationFrame(animate);
+      bx += (mx - bx) * 0.1;
+      by += (my - by) * 0.1;
+      blob.style.transform = `translate(${bx}px,${by}px) translate(-50%,-50%)`;
+      raf = requestAnimationFrame(animate);
     };
 
-    const onEnter = () => {
-      cursor.style.width = "40px";
-      cursor.style.height = "40px";
-      cursor.style.borderRadius = "4px";
+    const setProject = () => {
+      document.body.classList.add("cursor-on-project");
+      document.body.classList.remove("cursor-on-link");
+      label.textContent = "VIEW";
     };
-    const onLeave = () => {
-      cursor.style.width = "12px";
-      cursor.style.height = "12px";
-      cursor.style.borderRadius = "50%";
+    const setLink = () => {
+      document.body.classList.add("cursor-on-link");
+      document.body.classList.remove("cursor-on-project");
+      label.textContent = "";
+    };
+    const clearState = () => {
+      document.body.classList.remove("cursor-on-project","cursor-on-link");
+      label.textContent = "";
     };
 
+    const bindAll = () => {
+      document.querySelectorAll("[data-cursor='project']").forEach((el) => {
+        (el as HTMLElement).addEventListener("mouseenter", setProject);
+        (el as HTMLElement).addEventListener("mouseleave", clearState);
+      });
+      document.querySelectorAll("a,button").forEach((el) => {
+        (el as HTMLElement).addEventListener("mouseenter", setLink);
+        (el as HTMLElement).addEventListener("mouseleave", clearState);
+      });
+    };
+
+    const obs = new MutationObserver(bindAll);
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    bindAll();
     window.addEventListener("mousemove", onMove);
-    document.querySelectorAll("a, button, [data-hover]").forEach((el) => {
-      el.addEventListener("mouseenter", onEnter);
-      el.addEventListener("mouseleave", onLeave);
-    });
+    raf = requestAnimationFrame(animate);
 
-    const raf = requestAnimationFrame(animate);
     return () => {
       window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(raf);
+      obs.disconnect();
     };
   }, []);
 
   return (
     <>
-      <div ref={cursorRef} className="cursor" />
-      <div ref={ringRef} className="cursor-ring" />
+      <div ref={dotRef} className="cursor-dot" />
+      <div ref={blobRef} className="cursor-blob">
+        <span ref={labelRef} className="cursor-label" />
+      </div>
     </>
   );
 }
