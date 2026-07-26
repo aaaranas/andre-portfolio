@@ -60,8 +60,8 @@ export default function Nav() {
 
   const navBg = scrolled
     ? theme === "dark"
-      ? "rgba(13,17,23,0.92)"
-      : "rgba(255,255,255,0.92)"
+      ? "color-mix(in srgb, var(--bg) 88%, transparent)"
+      : "color-mix(in srgb, var(--bg) 88%, transparent)"
     : "transparent";
 
   return (
@@ -91,16 +91,15 @@ export default function Nav() {
         <a
           href="#about"
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "20px",
-            fontWeight: 900,
-            fontStyle: "italic",
-            color: "var(--accent)",
-            letterSpacing: "-0.03em",
+            fontFamily: "var(--font-mono)",
+            fontSize: "13px",
+            fontWeight: 700,
+            color: "var(--text)",
+            letterSpacing: "0.04em",
             textDecoration: "none",
           }}
         >
-          AMA<span style={{ color: "var(--text)", fontStyle: "normal" }}>.</span>
+          <span style={{ color: "var(--accent)" }}>~/</span>ama
         </a>
 
         {/* Desktop links */}
@@ -159,7 +158,7 @@ export default function Nav() {
             style={{
               background: "none",
               border: "1px solid var(--border)",
-              borderRadius: "999px",
+              borderRadius: "var(--r)",
               color: "var(--muted)",
               cursor: "pointer",
               padding: "6px 12px",
@@ -191,8 +190,8 @@ export default function Nav() {
               letterSpacing: "0.1em",
               padding: "8px 18px",
               background: "var(--accent)",
-              color: "#1e1b12",
-              borderRadius: "999px",
+              color: "var(--bg)",
+              borderRadius: "var(--r)",
               fontWeight: 700,
               transition: "opacity 0.2s, transform 0.2s",
               display: "inline-block",
@@ -242,7 +241,7 @@ export default function Nav() {
           style={{
             background: "none",
             border: "1px solid var(--border)",
-            borderRadius: "999px",
+            borderRadius: "var(--r)",
             color: "var(--muted)",
             cursor: "pointer",
             padding: "12px 24px",

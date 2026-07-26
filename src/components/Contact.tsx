@@ -120,7 +120,7 @@ export default function Contact() {
           </div>
           <h2 style={{
             fontFamily: "var(--font-display)", fontSize: "clamp(40px, 6vw, 72px)",
-            fontWeight: 800, marginBottom: "24px", lineHeight: 1, textAlign: "center",
+            fontWeight: 600, marginBottom: "24px", lineHeight: 1, textAlign: "center",
           }}>
             Let&apos;s Work<br />
             <span style={{ color: "var(--accent)" }}>Together.</span>
@@ -137,8 +137,8 @@ export default function Contact() {
         <ScrollReveal delay={100}>
           {submitted ? (
             <div style={{
-              background: "rgba(45,212,191,0.07)", border: "1px solid var(--accent)",
-              borderRadius: "12px", padding: "48px 40px", textAlign: "center", marginBottom: "48px",
+              background: "var(--accent-soft)", border: "1px solid var(--accent)",
+              borderRadius: "var(--r)", padding: "48px 40px", textAlign: "center", marginBottom: "48px",
             }}>
               <div style={{ fontSize: "48px", marginBottom: "16px" }}>✓</div>
               <h3 style={{

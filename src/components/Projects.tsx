@@ -20,7 +20,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
       {/* Browser chrome */}
       <div
         style={{
-          borderRadius: "8px 8px 0 0",
+          borderRadius: "var(--r) var(--r) 0 0",
           background: "var(--bg3)",
           border: `1px solid ${color}33`,
           borderBottom: "none",
@@ -171,7 +171,7 @@ export default function Projects() {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(36px, 5vw, 60px)",
-            fontWeight: 800,
+            fontWeight: 600,
             marginBottom: "8px",
           }}
         >
@@ -210,7 +210,7 @@ export default function Projects() {
                 style={{
                   background: isHovered || isExpanded ? "var(--bg3)" : "var(--card)",
                   border: `1px solid ${isHovered || isExpanded ? proj.color : "var(--border)"}`,
-                  borderRadius: "10px",
+                  borderRadius: "var(--r)",
                   padding: "24px",
                   cursor: "pointer",
                   transition: "all 0.25s ease",
@@ -279,7 +279,7 @@ export default function Projects() {
                       fontSize: "10px",
                       padding: "4px 10px",
                       border: `1px solid ${proj.color}33`,
-                      borderRadius: "20px",
+                      borderRadius: "var(--r)",
                       color: proj.color,
                       background: `${proj.color}11`,
                       whiteSpace: "nowrap",

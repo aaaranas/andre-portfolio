@@ -14,8 +14,16 @@ export default function Cursor() {
 
     let mx = 0, my = 0, bx = 0, by = 0, raf: number;
 
+    let woken = false;
     const onMove = (e: MouseEvent) => {
       mx = e.clientX; my = e.clientY;
+      if (!woken) {
+        // avoid the flash at (0,0) before the pointer is ever seen
+        woken = true;
+        bx = mx; by = my;
+        dot.style.opacity = "1";
+        blob.style.opacity = "1";
+      }
       dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
     };
 
@@ -68,8 +76,8 @@ export default function Cursor() {
 
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" />
-      <div ref={blobRef} className="cursor-blob">
+      <div ref={dotRef} className="cursor-dot" style={{ opacity: 0 }} />
+      <div ref={blobRef} className="cursor-blob" style={{ opacity: 0 }}>
         <span ref={labelRef} className="cursor-label" />
       </div>
     </>

@@ -25,7 +25,7 @@ export default function Skills() {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(36px, 5vw, 60px)",
-            fontWeight: 800,
+            fontWeight: 600,
             marginBottom: "48px",
           }}
         >
@@ -93,7 +93,7 @@ export default function Skills() {
                 const el = e.currentTarget as HTMLElement;
                 el.style.borderColor = "var(--accent)";
                 el.style.color = "var(--accent)";
-                el.style.background = "rgba(127,255,111,0.05)";
+                el.style.background = "var(--accent-soft)";
                 el.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {

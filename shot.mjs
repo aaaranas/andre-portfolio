@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:3000', { waitUntil: 'networkidle' });
+await p.waitForTimeout(2500);
+await p.screenshot({ path: '/tmp/claude-0/-home-user-andre-portfolio/9b3ee147-06a7-5220-9ee0-bc325b67153c/scratchpad/hero.png' });
+await p.evaluate(() => document.querySelector('#experience')?.scrollIntoView());
+await p.waitForTimeout(1200);
+await p.screenshot({ path: '/tmp/claude-0/-home-user-andre-portfolio/9b3ee147-06a7-5220-9ee0-bc325b67153c/scratchpad/exp.png' });
+await b.close();

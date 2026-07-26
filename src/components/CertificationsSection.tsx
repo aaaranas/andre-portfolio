@@ -24,7 +24,7 @@ export default function CertificationsSection() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <ScrollReveal>
           <div style={{ marginBottom: "40px" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#4ade80", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--ok)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>
               <Award style={{ width: "16px", height: "16px" }} /> Certifications & Accreditation
             </div>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 700, color: "var(--text)", marginBottom: "12px" }}>
@@ -43,7 +43,7 @@ export default function CertificationsSection() {
                 style={{
                   background: "var(--card)",
                   border: "1px solid var(--border)",
-                  borderRadius: "16px",
+                  borderRadius: "var(--r)",
                   padding: "28px",
                   display: "flex",
                   flexDirection: "column",
@@ -64,7 +64,7 @@ export default function CertificationsSection() {
               >
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-                    <div style={{ background: `${cert.badgeColor}18`, padding: "10px", borderRadius: "12px", display: "inline-flex" }}>
+                    <div style={{ background: `${cert.badgeColor}18`, padding: "10px", borderRadius: "var(--r)", display: "inline-flex" }}>
                       {getCertIcon(cert.iconType, cert.badgeColor)}
                     </div>
                     <Badge variant="outline" style={{ color: cert.badgeColor, borderColor: `${cert.badgeColor}40` }}>
@@ -99,7 +99,7 @@ export default function CertificationsSection() {
                     border: `1px solid ${cert.badgeColor}50`,
                     color: cert.badgeColor,
                     padding: "10px 14px",
-                    borderRadius: "10px",
+                    borderRadius: "var(--r)",
                     fontSize: "12px",
                     fontFamily: "var(--font-mono)",
                     fontWeight: 600,
@@ -127,7 +127,7 @@ export default function CertificationsSection() {
           <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "560px", padding: "32px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{ background: `${activeCert.badgeColor}20`, padding: "12px", borderRadius: "14px", display: "inline-flex" }}>
+                <div style={{ background: `${activeCert.badgeColor}20`, padding: "12px", borderRadius: "var(--r)", display: "inline-flex" }}>
                   {getCertIcon(activeCert.iconType, activeCert.badgeColor)}
                 </div>
                 <div>
@@ -143,7 +143,7 @@ export default function CertificationsSection() {
               {activeCert.title}
             </h2>
             <p style={{ fontSize: "13px", color: "var(--muted)", lineHeight: 1.6, marginBottom: "20px" }}>{activeCert.description}</p>
-            <div style={{ background: "var(--bg3)", padding: "18px", borderRadius: "12px", border: "1px solid var(--border)", marginBottom: "24px" }}>
+            <div style={{ background: "var(--bg3)", padding: "18px", borderRadius: "var(--r)", border: "1px solid var(--border)", marginBottom: "24px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
                 <div>
                   <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--muted)" }}>CREDENTIAL ID</div>
@@ -162,14 +162,14 @@ export default function CertificationsSection() {
               </div>
             </div>
             <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end", flexWrap: "wrap" }}>
-              <button onClick={() => setActiveCert(null)} style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", padding: "10px 18px", borderRadius: "8px", fontFamily: "var(--font-mono)", fontSize: "12px", cursor: "pointer" }}>
+              <button onClick={() => setActiveCert(null)} style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", padding: "10px 18px", borderRadius: "var(--r)", fontFamily: "var(--font-mono)", fontSize: "12px", cursor: "pointer" }}>
                 Close
               </button>
               <a
                 href={activeCert.verificationUrl}
                 target="_blank"
                 rel="noreferrer"
-                style={{ background: activeCert.badgeColor, color: "#080c10", padding: "10px 20px", borderRadius: "8px", fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: "12px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                style={{ background: activeCert.badgeColor, color: "var(--bg)", padding: "10px 20px", borderRadius: "var(--r)", fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: "12px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
               >
                 <CheckCircle2 style={{ width: "14px", height: "14px" }} />
                 Verify Credential

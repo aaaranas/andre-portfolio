@@ -19,7 +19,7 @@ export default function ExperienceSection() {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(36px, 5vw, 60px)",
-            fontWeight: 800,
+            fontWeight: 600,
             marginBottom: "64px",
           }}
         >
@@ -62,7 +62,7 @@ export default function ExperienceSection() {
                   style={{
                     background: "var(--card)",
                     border: `1px solid ${i === 0 ? "var(--accent)" : "var(--border)"}`,
-                    borderRadius: "14px",
+                    borderRadius: "var(--r)",
                     padding: "24px 28px",
                     transition: "border-color 0.2s",
                   }}
@@ -82,7 +82,7 @@ export default function ExperienceSection() {
                           gap: "6px",
                           fontFamily: "var(--font-mono)",
                           fontSize: "11px",
-                          color: i === 0 ? "#4ade80" : "var(--muted)",
+                          color: i === 0 ? "var(--ok)" : "var(--muted)",
                           letterSpacing: "0.08em",
                           marginBottom: "4px",
                         }}
@@ -92,9 +92,9 @@ export default function ExperienceSection() {
                             style={{
                               width: "6px", height: "6px",
                               borderRadius: "50%",
-                              background: "#4ade80",
+                              background: "var(--ok)",
                               display: "inline-block",
-                              boxShadow: "0 0 6px #4ade80",
+                              boxShadow: "0 0 6px var(--ok)",
                             }}
                           />
                         )}
@@ -121,7 +121,7 @@ export default function ExperienceSection() {
                         fontSize: "10px",
                         padding: "3px 10px",
                         border: "1px solid var(--border)",
-                        borderRadius: "999px",
+                        borderRadius: "var(--r)",
                         color: "var(--muted)",
                         background: "var(--bg3)",
                         letterSpacing: "0.08em",
@@ -132,7 +132,7 @@ export default function ExperienceSection() {
                     </span>
                   </div>
 
-                  <ul style={{ paddingLeft: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", marginBottom: "project" in exp && exp.project ? "20px" : "0" }}>
+                  <ul style={{ paddingLeft: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", marginBottom: "0" }}>
                     {exp.highlights.map((h, j) => (
                       <li
                         key={j}
@@ -151,33 +151,6 @@ export default function ExperienceSection() {
                     ))}
                   </ul>
 
-                  {"project" in exp && exp.project && (
-                    <div style={{
-                      marginTop: "8px",
-                      padding: "18px 20px",
-                      background: "rgba(251,191,36,0.05)",
-                      border: "1px solid rgba(251,191,36,0.25)",
-                      borderRadius: "8px",
-                    }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
-                        <span style={{ fontSize: "16px" }}>🎟️</span>
-                        <span style={{ fontFamily: "var(--font-display)", fontSize: "15px", fontWeight: 700, color: "#fbbf24" }}>
-                          {exp.project.name}
-                        </span>
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", padding: "2px 8px", border: "1px solid rgba(251,191,36,0.3)", borderRadius: "999px", color: "#fbbf24" }}>
-                          Flagship Project
-                        </span>
-                      </div>
-                      <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)", lineHeight: 1.6, marginBottom: "12px" }}>
-                        {exp.project.description}
-                      </p>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                        {exp.project.stack.map((t) => (
-                          <span key={t} className="tag" style={{ borderColor: "rgba(251,191,36,0.25)", color: "#fbbf24" }}>{t}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
             </ScrollReveal>

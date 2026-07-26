@@ -17,7 +17,7 @@ export default function Education() {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(36px, 5vw, 60px)",
-            fontWeight: 800,
+            fontWeight: 600,
             marginBottom: "64px",
           }}
         >
@@ -58,7 +58,7 @@ export default function Education() {
                   style={{
                     background: "var(--card)",
                     border: "1px solid var(--border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--r)",
                     padding: "28px 32px",
                     transition: "border-color 0.2s",
                   }}

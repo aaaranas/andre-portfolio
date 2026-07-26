@@ -43,11 +43,11 @@ export default function BlogSection() {
                   onClick={() => setSelectedCategory(cat)}
                   style={{
                     padding: "6px 14px",
-                    borderRadius: "20px",
+                    borderRadius: "var(--r)",
                     fontSize: "12px",
                     fontFamily: "var(--font-mono)",
                     border: "1px solid " + (selectedCategory === cat ? "var(--accent2)" : "var(--border)"),
-                    background: selectedCategory === cat ? "rgba(167, 139, 250, 0.12)" : "var(--card)",
+                    background: selectedCategory === cat ? "var(--accent2-soft)" : "var(--card)",
                     color: selectedCategory === cat ? "var(--accent2)" : "var(--muted)",
                     cursor: "pointer",
                     transition: "all 0.2s",
@@ -68,7 +68,7 @@ export default function BlogSection() {
                 style={{
                   background: "var(--card)",
                   border: "1px solid var(--border)",
-                  borderRadius: "16px",
+                  borderRadius: "var(--r)",
                   padding: "28px",
                   cursor: "pointer",
                   height: "100%",
@@ -80,7 +80,7 @@ export default function BlogSection() {
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-4px)";
                   e.currentTarget.style.borderColor = "var(--accent2)";
-                  e.currentTarget.style.boxShadow = "0 12px 30px rgba(167, 139, 250, 0.1)";
+                  e.currentTarget.style.boxShadow = "0 12px 30px var(--accent2-soft)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
@@ -90,7 +90,7 @@ export default function BlogSection() {
               >
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                    <span style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--accent2)", background: "rgba(167, 139, 250, 0.1)", padding: "4px 10px", borderRadius: "12px", border: "1px solid rgba(167, 139, 250, 0.2)" }}>
+                    <span style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--accent2)", background: "var(--accent2-soft)", padding: "4px 10px", borderRadius: "var(--r)", border: "1px solid var(--accent2)" }}>
                       {post.category}
                     </span>
                     <span style={{ fontSize: "12px", fontFamily: "var(--font-mono)", color: "var(--muted)" }}>
@@ -136,7 +136,7 @@ export default function BlogSection() {
           <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "780px", padding: "36px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "24px" }}>
               <div>
-                <span style={{ fontSize: "12px", fontFamily: "var(--font-mono)", color: "var(--accent2)", background: "rgba(167, 139, 250, 0.12)", padding: "4px 12px", borderRadius: "14px", border: "1px solid rgba(167, 139, 250, 0.3)", display: "inline-block", marginBottom: "12px" }}>
+                <span style={{ fontSize: "12px", fontFamily: "var(--font-mono)", color: "var(--accent2)", background: "var(--accent2-soft)", padding: "4px 12px", borderRadius: "var(--r)", border: "1px solid var(--accent2)", display: "inline-block", marginBottom: "12px" }}>
                   {selectedPost.category}
                 </span>
                 <h2 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3 }}>
@@ -161,13 +161,13 @@ export default function BlogSection() {
             <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "flex-end", gap: "12px" }}>
               <button
                 onClick={(e) => handleLike(selectedPost.id, e)}
-                style={{ background: "rgba(167, 139, 250, 0.15)", border: "1px solid var(--accent2)", color: "var(--accent2)", padding: "8px 18px", borderRadius: "8px", fontSize: "13px", fontFamily: "var(--font-mono)", cursor: "pointer", fontWeight: 600 }}
+                style={{ background: "var(--accent2-soft)", border: "1px solid var(--accent2)", color: "var(--accent2)", padding: "8px 18px", borderRadius: "var(--r)", fontSize: "13px", fontFamily: "var(--font-mono)", cursor: "pointer", fontWeight: 600 }}
               >
                 ❤️ Like ({likes[selectedPost.id] || 0})
               </button>
               <button
                 onClick={() => setSelectedPost(null)}
-                style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", padding: "8px 18px", borderRadius: "8px", fontSize: "13px", fontFamily: "var(--font-mono)", cursor: "pointer" }}
+                style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", padding: "8px 18px", borderRadius: "var(--r)", fontSize: "13px", fontFamily: "var(--font-mono)", cursor: "pointer" }}
               >
                 Close
               </button>

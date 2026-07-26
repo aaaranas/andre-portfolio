@@ -36,17 +36,17 @@ function NotebookViewer({ project, onClose }: { project: Project; onClose: () =>
           {project.notebook.cells.map((cell: Cell, i: number) => (
             <div key={i} style={{ marginBottom: "16px" }}>
               {cell.type === "markdown" ? (
-                <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "8px", padding: "16px 20px", fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--text)", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
+                <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "var(--r)", padding: "16px 20px", fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--text)", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
                   {cell.content}
                 </div>
               ) : (
                 <div>
-                  <div style={{ background: "#0d1117", border: "1px solid var(--border)", borderRadius: "8px 8px 0 0", padding: "14px 18px" }}>
+                  <div style={{ background: "#0d1117", border: "1px solid var(--border)", borderRadius: "var(--r) var(--r) 0 0", padding: "14px 18px" }}>
                     <div style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#79c0ff", whiteSpace: "pre", overflowX: "auto" }}>{cell.code}</div>
                   </div>
                   {cell.output && (
-                    <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderTop: "none", borderRadius: "0 0 8px 8px", padding: "10px 18px" }}>
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#4ade80", whiteSpace: "pre" }}>{cell.output}</div>
+                    <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderTop: "none", borderRadius: "0 0 var(--r) var(--r)", padding: "10px 18px" }}>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--ok)", whiteSpace: "pre" }}>{cell.output}</div>
                     </div>
                   )}
                 </div>
@@ -67,10 +67,10 @@ export default function DataAnalystSection() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <ScrollReveal>
           <div style={{ marginBottom: "48px" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#38bdf8", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--accent2)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
               <BarChart3 style={{ width: "16px", height: "16px" }} /> Data Analyst Track
             </div>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 800, color: "var(--text)", marginBottom: "12px" }}>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 600, color: "var(--text)", marginBottom: "12px" }}>
               Data Projects & Analysis
             </h2>
             <p style={{ color: "var(--muted)", maxWidth: "600px", fontSize: "14px", lineHeight: 1.7, fontFamily: "var(--font-mono)" }}>
@@ -86,7 +86,7 @@ export default function DataAnalystSection() {
                 style={{
                   background: "var(--card)",
                   border: "1px solid var(--border)",
-                  borderRadius: "16px",
+                  borderRadius: "var(--r)",
                   padding: "28px",
                   height: "100%",
                   display: "flex",
@@ -96,7 +96,7 @@ export default function DataAnalystSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.borderColor = "#38bdf8";
+                  e.currentTarget.style.borderColor = "var(--accent2)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
@@ -108,7 +108,7 @@ export default function DataAnalystSection() {
                   <h3 style={{ fontFamily: "var(--font-display)", fontSize: "19px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
                     {proj.name}
                   </h3>
-                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#38bdf8", marginBottom: "12px" }}>
+                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--accent2)", marginBottom: "12px" }}>
                     {proj.tagline}
                   </p>
                   <p style={{ color: "var(--muted)", fontSize: "13px", lineHeight: 1.6, marginBottom: "16px" }}>
@@ -117,8 +117,8 @@ export default function DataAnalystSection() {
 
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "16px" }}>
                     {proj.keyMetrics.map((m) => (
-                      <div key={m.label} style={{ background: "var(--bg3)", borderRadius: "8px", padding: "10px 12px" }}>
-                        <div style={{ fontFamily: "var(--font-mono)", fontSize: "16px", fontWeight: 700, color: "#38bdf8" }}>{m.value}</div>
+                      <div key={m.label} style={{ background: "var(--bg3)", borderRadius: "var(--r)", padding: "10px 12px" }}>
+                        <div style={{ fontFamily: "var(--font-mono)", fontSize: "16px", fontWeight: 700, color: "var(--accent2)" }}>{m.value}</div>
                         <div style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--muted)", marginTop: "2px" }}>{m.label}</div>
                       </div>
                     ))}
@@ -126,7 +126,7 @@ export default function DataAnalystSection() {
 
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
                     {proj.tools.map((t) => (
-                      <span key={t} className="tag" style={{ borderColor: "rgba(56,189,248,0.25)", color: "#38bdf8" }}>{t}</span>
+                      <span key={t} className="tag" style={{ borderColor: "var(--border)", color: "var(--accent2)" }}>{t}</span>
                     ))}
                   </div>
                 </div>
@@ -135,11 +135,11 @@ export default function DataAnalystSection() {
                   onClick={() => setActiveNotebook(proj)}
                   style={{
                     width: "100%",
-                    background: "rgba(56,189,248,0.1)",
-                    border: "1px solid rgba(56,189,248,0.4)",
-                    color: "#38bdf8",
+                    background: "var(--accent2-soft)",
+                    border: "1px solid var(--accent2)",
+                    color: "var(--accent2)",
                     padding: "10px 14px",
-                    borderRadius: "10px",
+                    borderRadius: "var(--r)",
                     fontSize: "12px",
                     fontFamily: "var(--font-mono)",
                     fontWeight: 600,
@@ -150,8 +150,8 @@ export default function DataAnalystSection() {
                     gap: "8px",
                     transition: "background 0.2s",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.2)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.1)"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent2-soft)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent2-soft)"; }}
                 >
                   <FileText style={{ width: "15px", height: "15px" }} />
                   View Jupyter Notebook

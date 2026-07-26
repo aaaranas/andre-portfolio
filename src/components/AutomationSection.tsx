@@ -41,7 +41,7 @@ export default function AutomationSection() {
             <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--accent3)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
               <Zap style={{ width: "16px", height: "16px" }} /> AI & Automation Track
             </div>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 800, color: "var(--text)", marginBottom: "12px" }}>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 600, color: "var(--text)", marginBottom: "12px" }}>
               n8n AI Automation Projects
             </h2>
             <p style={{ color: "var(--muted)", maxWidth: "600px", fontSize: "14px", lineHeight: 1.7, fontFamily: "var(--font-mono)" }}>
@@ -57,7 +57,7 @@ export default function AutomationSection() {
                 style={{
                   background: "var(--card)",
                   border: "1px solid var(--border)",
-                  borderRadius: "16px",
+                  borderRadius: "var(--r)",
                   padding: "28px",
                   height: "100%",
                   display: "flex",
@@ -77,7 +77,7 @@ export default function AutomationSection() {
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
                     <span style={{ fontSize: "28px" }}>{proj.emoji}</span>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", padding: "3px 10px", border: "1px solid rgba(251,146,60,0.3)", borderRadius: "999px", color: "var(--accent3)", background: "rgba(251,146,60,0.08)" }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", padding: "3px 10px", border: "1px solid var(--accent3)", borderRadius: "var(--r)", color: "var(--accent3)", background: "transparent" }}>
                       {proj.courseNote}
                     </span>
                   </div>
@@ -93,7 +93,7 @@ export default function AutomationSection() {
 
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
                     {proj.n8nNodes.map((node) => (
-                      <span key={node.name} style={{ fontFamily: "var(--font-mono)", fontSize: "11px", padding: "3px 10px", border: "1px solid rgba(251,146,60,0.2)", borderRadius: "6px", color: "var(--accent3)", background: "rgba(251,146,60,0.06)", display: "flex", alignItems: "center", gap: "4px" }}>
+                      <span key={node.name} style={{ fontFamily: "var(--font-mono)", fontSize: "11px", padding: "3px 10px", border: "1px solid var(--accent3)", borderRadius: "6px", color: "var(--accent3)", background: "transparent", display: "flex", alignItems: "center", gap: "4px" }}>
                         {node.icon} {node.name}
                       </span>
                     ))}
@@ -104,11 +104,11 @@ export default function AutomationSection() {
                   onClick={() => { setActiveProject(proj); setActiveTab("overview"); setSimLogs([]); }}
                   style={{
                     width: "100%",
-                    background: "rgba(251,146,60,0.1)",
-                    border: "1px solid rgba(251,146,60,0.4)",
+                    background: "transparent",
+                    border: "1px solid var(--accent3)",
                     color: "var(--accent3)",
                     padding: "10px 14px",
-                    borderRadius: "10px",
+                    borderRadius: "var(--r)",
                     fontSize: "12px",
                     fontFamily: "var(--font-mono)",
                     fontWeight: 600,
@@ -119,8 +119,8 @@ export default function AutomationSection() {
                     gap: "8px",
                     transition: "background 0.2s",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(251,146,60,0.2)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(251,146,60,0.1)"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent3)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                 >
                   <Bot style={{ width: "15px", height: "15px" }} />
                   View Workflow & Run Simulator
@@ -182,12 +182,12 @@ export default function AutomationSection() {
 
               {activeTab === "simulator" && (
                 <div>
-                  <div style={{ background: "#0d1117", borderRadius: "10px", border: "1px solid var(--border)", padding: "18px", marginBottom: "16px", minHeight: "200px" }}>
+                  <div style={{ background: "#0d1117", borderRadius: "var(--r)", border: "1px solid var(--border)", padding: "18px", marginBottom: "16px", minHeight: "200px" }}>
                     {simLogs.length === 0 && !simRunning && (
                       <p style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--muted)" }}>Click "Run Simulation" to see the workflow execute live.</p>
                     )}
                     {simLogs.map((log, i) => (
-                      <div key={i} style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "#4ade80", lineHeight: 1.8 }}>{log}</div>
+                      <div key={i} style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--ok)", lineHeight: 1.8 }}>{log}</div>
                     ))}
                     {simRunning && <div style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--accent3)" }}>▋</div>}
                   </div>
@@ -197,8 +197,8 @@ export default function AutomationSection() {
                     style={{
                       display: "flex", alignItems: "center", gap: "8px",
                       background: simRunning ? "var(--bg3)" : "var(--accent3)",
-                      color: simRunning ? "var(--muted)" : "#080c10",
-                      border: "none", padding: "10px 20px", borderRadius: "8px",
+                      color: simRunning ? "var(--muted)" : "var(--bg)",
+                      border: "none", padding: "10px 20px", borderRadius: "var(--r)",
                       fontFamily: "var(--font-mono)", fontSize: "12px", fontWeight: 700,
                       cursor: simRunning ? "not-allowed" : "pointer",
                     }}
@@ -212,7 +212,7 @@ export default function AutomationSection() {
               {activeTab === "nodes" && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
                   {activeProject.n8nNodes.map((node) => (
-                    <div key={node.name} style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: "10px", padding: "14px 16px" }}>
+                    <div key={node.name} style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: "var(--r)", padding: "14px 16px" }}>
                       <div style={{ fontSize: "22px", marginBottom: "6px" }}>{node.icon}</div>
                       <div style={{ fontFamily: "var(--font-display)", fontSize: "14px", fontWeight: 700, color: "var(--text)", marginBottom: "4px" }}>{node.name}</div>
                       <div style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--accent3)", textTransform: "uppercase", letterSpacing: "0.08em" }}>{node.type}</div>

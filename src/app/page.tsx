@@ -1,6 +1,5 @@
 import Hero from "@/components/Hero";
 import Nav from "@/components/Nav";
-import PortfolioTracks from "@/components/PortfolioTracks";
 import Projects from "@/components/Projects";
 import DataAnalystSection from "@/components/DataAnalystSection";
 import AutomationSection from "@/components/AutomationSection";
@@ -19,7 +18,6 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <PortfolioTracks />
         <Projects />
         <DataAnalystSection />
         <AutomationSection />
