@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { certifications } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { Award, BarChart3, Zap, ExternalLink, CheckCircle2, ShieldCheck, X } from "lucide-react";
+import { Award, BarChart3, Zap, Sparkles, ExternalLink, CheckCircle2, ShieldCheck, X } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { Badge } from "@/components/ui/badge";
 
@@ -11,6 +11,7 @@ function getCertIcon(iconType: string, color: string) {
   switch (iconType) {
     case "bar-chart": return <BarChart3 style={style} />;
     case "zap": return <Zap style={style} />;
+    case "ai": return <Sparkles style={style} />;
     case "github": return <SiGithub style={{ width: "22px", height: "22px", color }} />;
     default: return <Award style={style} />;
   }

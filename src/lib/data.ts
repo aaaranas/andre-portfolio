@@ -527,6 +527,26 @@ export const automationProjects = [
 
 export const certifications = [
   {
+    id: "google-ai-professional",
+    title: "Google AI Professional Certificate",
+    issuer: "Google",
+    date: "Jul 2026",
+    credentialId: "NHZNG6TPG57Z",
+    category: "AI & Automation",
+    badgeColor: "#a8cf8e",
+    iconType: "ai",
+    skills: [
+      "AI Fundamentals",
+      "Prompt Engineering",
+      "AI for Data Analysis",
+      "AI for App Building",
+      "AI for Research & Insights",
+      "Responsible AI",
+    ],
+    verificationUrl: "https://coursera.org/verify/professional-cert/NHZNG6TPG57Z",
+    description: "Seven-course Google program on applying AI across real workplace tasks — brainstorming, research, communication, content creation, data analysis, and coding. Completed with a portfolio of 20+ AI-built artifacts and a custom AI solution.",
+  },
+  {
     id: "ibm-data-analyst",
     title: "Data Analyst Career Guide and Interview Preparation",
     issuer: "IBM",
@@ -559,7 +579,7 @@ export const certifications = [
     date: "Jun 2026",
     credentialId: "13fbf0d0fa7006496d710e4357b34945bf4ea87f",
     category: "Software Engineering",
-    badgeColor: "#a8cf8e",
+    badgeColor: "#8fc9a8",
     iconType: "github",
     skills: ["GitHub", "Git", "Version Control", "Pull Requests", "Code Review"],
     verificationUrl: "https://github.com/aaaranas",
