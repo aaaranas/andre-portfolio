@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { personal, projects, experience } from "@/lib/data";
+import { ASCII_PORTRAIT } from "@/lib/ascii";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -74,6 +75,7 @@ function Reveal({ text, delay = 0 }: { text: string; delay?: number }) {
 }
 
 export default function Hero() {
+  const [ascii, setAscii] = useState(false);
   const [active, setActive] = useState(0);
   const [locked, setLocked] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -138,9 +140,51 @@ export default function Hero() {
             transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
             style={{ position: "relative", flexShrink: 0 }}
           >
-            <div style={{ width: "132px", height: "132px", borderRadius: "var(--r)", overflow: "hidden", border: "1px solid var(--border)", position: "relative", filter: "grayscale(0.35) contrast(1.05)" }}>
-              <Image src="/photo.jpg" alt="Andre Milan Arañas" fill sizes="132px" priority style={{ objectFit: "cover", objectPosition: "50% 18%" }} />
-            </div>
+            <button
+              onClick={() => setAscii((v) => !v)}
+              onMouseEnter={() => setAscii(true)}
+              onMouseLeave={() => setAscii(false)}
+              aria-pressed={ascii}
+              aria-label={ascii ? "Show the photo" : "Show the ASCII portrait"}
+              title={ascii ? "photo" : "render as ASCII"}
+              style={{
+                width: "132px", height: "132px", padding: 0,
+                borderRadius: "var(--r)", overflow: "hidden",
+                border: `1px solid ${ascii ? "var(--accent)" : "var(--border)"}`,
+                position: "relative", cursor: "pointer", display: "block",
+                background: "var(--bg2)",
+                filter: ascii ? "none" : "grayscale(0.35) contrast(1.05)",
+                transition: "border-color 0.25s",
+              }}
+            >
+              <Image
+                src="/photo.jpg"
+                alt="Andre Milan Arañas"
+                fill
+                sizes="132px"
+                priority
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "50% 18%",
+                  opacity: ascii ? 0 : 1,
+                  transition: "opacity 0.28s ease",
+                }}
+              />
+              <pre
+                aria-hidden="true"
+                style={{
+                  position: "absolute", inset: 0, margin: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontFamily: "var(--font-mono)", fontSize: "5.2px", lineHeight: "5.5px",
+                  letterSpacing: 0, color: "var(--accent)",
+                  opacity: ascii ? 1 : 0,
+                  transition: "opacity 0.28s ease",
+                  pointerEvents: "none", userSelect: "none",
+                }}
+              >
+                {ASCII_PORTRAIT.join("\n")}
+              </pre>
+            </button>
             {/* corner ticks */}
             {[["-5px","-5px","top left"],["-5px","-5px","top right"],["-5px","-5px","bottom left"],["-5px","-5px","bottom right"]].map((_, i) => (
               <span key={i} style={{
@@ -283,7 +327,7 @@ export default function Hero() {
 
           <div className="hero-stats" style={{ display: "flex", gap: "38px" }}>
             {([
-              [`${projects.length}`, "public repos"],
+              [`${projects.length}`, "featured builds"],
               [`${projects.filter((p) => p.live).length}`, "deployed live"],
               [`${experience.filter((e) => e.current).length}`, "active roles"],
               ["2027", "expected grad"],

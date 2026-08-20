@@ -20,13 +20,6 @@ export const personal = {
 
 export type ProjectCategory = "Product" | "Civic Tech" | "Client" | "Systems";
 
-export const projectCategories: ProjectCategory[] = [
-  "Product",
-  "Civic Tech",
-  "Client",
-  "Systems",
-];
-
 export type Project = {
   id: string;
   name: string;
@@ -200,65 +193,6 @@ export const projects: Project[] = [
     live: "https://san-bidet-cebu-admin.vercel.app",
   },
   {
-    id: "dadir-expense-tracker",
-    name: "Dadir",
-    repo: "aaaranas/dadir-expense-tracker",
-    emoji: "💗",
-    category: "Product",
-    tagline: "Offline-first expense and debt tracker for two phones, one dataset",
-    description:
-      "An installable expense and debt tracker in Philippine pesos, built for two specific people. Every change writes to the device instantly, then syncs to a private Neon Postgres database through a tiny serverless API behind a shared passcode, so both phones converge on the same records. Tracks income and expenses per person, payment method down to the specific e-wallet or bank, monthly per-category budgets, recurring records that auto-post without double-posting across synced devices, and two-way debts with partial payments and due-date flags. Plain HTML, CSS and JavaScript — no framework and no build step, because the app did not need one.",
-    metrics: [
-      "Zero build step — plain HTML/CSS/JS + a service worker",
-      "Offline-first writes with cross-device Neon sync",
-      "Recurring records that never double-post",
-    ],
-    stack: [
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Service Workers",
-      "Neon Postgres",
-      "Serverless Functions",
-      "PWA",
-    ],
-    role: "Solo Dev",
-    highlight: "No framework",
-    color: "#f0a8c0",
-    github: "https://github.com/aaaranas/dadir-expense-tracker",
-    live: "https://dadir-expense-tracker.vercel.app",
-  },
-  {
-    id: "myle-photography",
-    name: "Myle Photography",
-    repo: "aaaranas/myle-photography",
-    emoji: "📷",
-    category: "Client",
-    tagline: "Portfolio, booking funnel and photo CMS for a Cebu event photographer",
-    description:
-      "A single-page Next.js site aimed at the photographer's actual clients — couples, families and event organisers — with a filterable gallery of real work, hourly rates to compare, and a booking enquiry that lands in their inbox through Resend. Behind it sits a private /admin CMS where the photographer uploads, tags and deletes portfolio photos, backed by Supabase Postgres and a Storage bucket. Every external service is optional by design: with no environment variables at all, the gallery falls back to a built-in demo set and enquiries log to the server, so a missing key degrades the site instead of breaking it.",
-    metrics: [
-      "Server Actions-backed photo CMS on Supabase Storage",
-      "Runs with zero env vars — graceful demo fallback",
-      "Booking enquiries delivered via Resend",
-    ],
-    stack: [
-      "Next.js 16",
-      "React 19",
-      "TypeScript",
-      "Tailwind CSS 4",
-      "Supabase",
-      "Resend",
-      "react-hook-form",
-      "Zod",
-    ],
-    role: "Sole Developer",
-    highlight: "Client project",
-    color: "#c4b49a",
-    github: "https://github.com/aaaranas/myle-photography",
-    live: "https://myle-photography.vercel.app",
-  },
-  {
     id: "dugos",
     name: "DugOS",
     repo: "aaaranas/DugOS",
@@ -286,37 +220,12 @@ export const projects: Project[] = [
     github: "https://github.com/aaaranas/DugOS",
     live: "",
   },
-  {
-    id: "andre-portfolio",
-    name: "This Portfolio",
-    repo: "aaaranas/andre-portfolio",
-    emoji: "🌱",
-    category: "Product",
-    tagline: "The site you are reading right now — source is public",
-    description:
-      "Built on the Next.js 16 App Router with React 19 and Tailwind CSS v4, on a hand-rolled matcha design system driven entirely by CSS custom properties, so light and dark are the same components with different tokens. Section reveals run on IntersectionObserver rather than a scroll library, the hero track switcher uses Framer Motion, the contact form posts to a Route Handler that sends through Resend, and an AI assistant route streams answers about my work through the Gemini API. Deployed on Vercel.",
-    metrics: [
-      "Next.js 16 App Router + React 19",
-      "Resend contact handler + Gemini assistant route",
-      "Token-driven light/dark design system",
-    ],
-    stack: [
-      "Next.js 16",
-      "React 19",
-      "TypeScript",
-      "Tailwind CSS 4",
-      "Framer Motion",
-      "Gemini API",
-      "Resend",
-      "Vercel",
-    ],
-    role: "Solo Dev",
-    highlight: "You are on it",
-    color: "#dcc08a",
-    github: "https://github.com/aaaranas/andre-portfolio",
-    live: "https://andre-milan-aranas.vercel.app/",
-  },
 ];
+
+/** Categories that actually have projects — drives the filter row. */
+export const projectCategories: ProjectCategory[] = Array.from(
+  new Set(projects.map((p) => p.category)),
+);
 
 export const skills = {
   Frontend: [
@@ -477,6 +386,12 @@ export const education = [
       "Software Engineering",
       "Computer Networks",
     ],
+  },
+  {
+    school: "University of the Philippines Cebu",
+    degree: "Bachelor of Science in Statistics (Undergraduate)",
+    period: "Aug 2021 · Jun 2023",
+    courses: [],
   },
   {
     school: "Philippine Science High School — Central Visayas Campus",

@@ -75,14 +75,16 @@ export default function Education() {
                   <h3 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 700, marginBottom: "6px" }}>
                     {edu.school}
                   </h3>
-                  <p style={{ color: "var(--muted)", fontFamily: "var(--font-mono)", fontSize: "13px", marginBottom: "20px" }}>
+                  <p style={{ color: "var(--muted)", fontFamily: "var(--font-mono)", fontSize: "13px", marginBottom: edu.courses.length > 0 ? "20px" : "0" }}>
                     {edu.degree}
                   </p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                    {edu.courses.map((c) => (
-                      <span key={c} className="tag">{c}</span>
-                    ))}
-                  </div>
+                  {edu.courses.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                      {edu.courses.map((c) => (
+                        <span key={c} className="tag">{c}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </ScrollReveal>

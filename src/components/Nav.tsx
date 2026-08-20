@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { personal } from "@/lib/data";
+import Terminal from "./Terminal";
 
 const links = ["about", "projects", "experience", "education", "skills", "contact"];
 
@@ -11,6 +12,7 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);
+  const [termOpen, setTermOpen] = useState(false);
 
   // Scroll progress + back-to-top visibility
   useEffect(() => {
@@ -50,13 +52,36 @@ export default function Nav() {
     }
   }, []);
 
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
+  const applyTheme = (next: "dark" | "light") => {
     setTheme(next);
     if (next === "light") document.documentElement.setAttribute("data-theme", "light");
     else document.documentElement.removeAttribute("data-theme");
     localStorage.setItem("theme", next);
   };
+
+  const toggleTheme = () => applyTheme(theme === "dark" ? "light" : "dark");
+
+  // Global shortcuts: "/" or ⌘K / Ctrl-K open the shell, from anywhere on the page.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = document.activeElement;
+      const typing =
+        el instanceof HTMLInputElement ||
+        el instanceof HTMLTextAreaElement ||
+        (el instanceof HTMLElement && el.isContentEditable);
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setTermOpen((v) => !v);
+        return;
+      }
+      if (e.key === "/" && !typing) {
+        e.preventDefault();
+        setTermOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const navBg = scrolled
     ? theme === "dark"
@@ -88,19 +113,52 @@ export default function Nav() {
           transition: "all 0.3s ease",
         }}
       >
-        <a
-          href="#about"
+        <button
+          onClick={() => setTermOpen(true)}
+          aria-label="Open the portfolio terminal"
+          title="Run commands against this portfolio  ( / )"
+          className="nav-shell-trigger"
           style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "var(--card)",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--r)",
+            padding: "7px 12px",
+            cursor: "pointer",
             fontFamily: "var(--font-mono)",
-            fontSize: "13px",
-            fontWeight: 700,
+            fontSize: "12.5px",
             color: "var(--text)",
             letterSpacing: "0.04em",
-            textDecoration: "none",
+            transition: "border-color 0.2s, background 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+            (e.currentTarget as HTMLElement).style.background = "var(--bg3)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+            (e.currentTarget as HTMLElement).style.background = "var(--card)";
           }}
         >
-          <span style={{ color: "var(--accent)" }}>~/</span>ama
-        </a>
+          <span style={{ color: "var(--accent)", fontWeight: 700 }}>~/</span>
+          <span style={{ fontWeight: 700 }}>ama</span>
+          <span style={{ color: "var(--accent)" }}>$</span>
+          <span className="nav-shell-hint" style={{ color: "var(--dim)" }}>
+            run a command
+          </span>
+          <span className="nav-shell-key" style={{
+            border: "1px solid var(--border)",
+            borderRadius: "2px",
+            padding: "1px 5px",
+            fontSize: "10px",
+            color: "var(--dim)",
+          }}>
+            /
+          </span>
+          <span className="term-caret" style={{ color: "var(--accent)" }}>▍</span>
+        </button>
 
         {/* Desktop links */}
         <div className="nav-desktop-links">
@@ -237,6 +295,18 @@ export default function Nav() {
           </a>
         ))}
         <button
+          onClick={() => { setMenuOpen(false); setTermOpen(true); }}
+          className="nav-mobile-link"
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontFamily: "var(--font-mono)",
+          }}
+        >
+          <span style={{ color: "var(--accent)" }}>~/</span>terminal
+        </button>
+        <button
           onClick={() => { toggleTheme(); setMenuOpen(false); }}
           style={{
             background: "none",
@@ -252,6 +322,13 @@ export default function Nav() {
           {theme === "dark" ? "☀ Light Mode" : "◑ Dark Mode"}
         </button>
       </div>
+
+      <Terminal
+        open={termOpen}
+        onClose={() => setTermOpen(false)}
+        theme={theme}
+        onTheme={applyTheme}
+      />
 
       {/* Back to top */}
       <button
