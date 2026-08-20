@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
-import { projects } from "@/lib/data";
+import { useMemo, useState } from "react";
+import { projects, projectCategories, type Project } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 
-const vercelProjects = projects.filter((p) => p.live !== "");
+const FILTERS = ["All", ...projectCategories] as const;
+type Filter = (typeof FILTERS)[number];
 
+/* ── live site preview in a fake browser chrome ── */
 function BrowserPreview({ url, color, name }: { url: string; color: string; name: string }) {
   const screenshotUrl = `https://image.thum.io/get/width/800/crop/450/noanimate/allowJPG/${url}`;
   const [imgError, setImgError] = useState(false);
@@ -17,7 +19,6 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
       onClick={(e) => e.stopPropagation()}
       style={{ display: "block", textDecoration: "none", marginBottom: "20px" }}
     >
-      {/* Browser chrome */}
       <div
         style={{
           borderRadius: "var(--r) var(--r) 0 0",
@@ -30,7 +31,6 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
           gap: "8px",
         }}
       >
-        {/* Traffic lights */}
         <div style={{ display: "flex", gap: "5px" }}>
           {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
             <div
@@ -39,7 +39,6 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
             />
           ))}
         </div>
-        {/* URL bar */}
         <div
           style={{
             flex: 1,
@@ -57,11 +56,9 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
         >
           {url.replace("https://", "")}
         </div>
-        {/* External link icon */}
         <span style={{ fontSize: "10px", color: color, opacity: 0.7 }}>↗</span>
       </div>
 
-      {/* Screenshot viewport */}
       <div
         style={{
           position: "relative",
@@ -74,6 +71,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
         }}
       >
         {!imgError ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={screenshotUrl}
             alt={`${name} preview`}
@@ -116,7 +114,6 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
           </div>
         )}
 
-        {/* Hover overlay */}
         <div
           className="preview-overlay"
           style={{
@@ -153,9 +150,83 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
   );
 }
 
+/* ── stand-in for projects with no deployed URL (e.g. an OS that boots in QEMU) ── */
+function TerminalPreview({ project }: { project: Project }) {
+  return (
+    <a
+      href={project.github}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      style={{ display: "block", textDecoration: "none", marginBottom: "20px" }}
+    >
+      <div
+        style={{
+          borderRadius: "var(--r) var(--r) 0 0",
+          background: "var(--bg3)",
+          border: `1px solid ${project.color}33`,
+          borderBottom: "none",
+          padding: "8px 12px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          fontFamily: "var(--font-mono)",
+          fontSize: "9px",
+          color: "var(--muted)",
+          letterSpacing: "0.08em",
+        }}
+      >
+        <div style={{ display: "flex", gap: "5px" }}>
+          {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+            <div
+              key={c}
+              style={{ width: "10px", height: "10px", borderRadius: "50%", background: c }}
+            />
+          ))}
+        </div>
+        <span style={{ flex: 1 }}>{project.repo}</span>
+        <span style={{ color: project.color, opacity: 0.7, fontSize: "10px" }}>↗</span>
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          aspectRatio: "16/9",
+          border: `1px solid ${project.color}33`,
+          borderRadius: "0 0 6px 6px",
+          background: "var(--bg)",
+          padding: "18px 20px",
+          fontFamily: "var(--font-mono)",
+          fontSize: "10.5px",
+          lineHeight: 1.9,
+          color: "var(--muted)",
+          overflow: "hidden",
+        }}
+      >
+        <div>
+          <span style={{ color: project.color }}>$</span> make && qemu-system-i386 -kernel dug_os
+        </div>
+        <div style={{ color: "var(--text)" }}>[  ok  ] GRUB 2 multiboot handoff</div>
+        <div style={{ color: "var(--text)" }}>[  ok  ] protected mode · GDT · IDT</div>
+        <div style={{ color: "var(--text)" }}>[  ok  ] 8259A PIC remapped → 32–47</div>
+        <div style={{ color: "var(--text)" }}>[  ok  ] PS/2 keyboard · FAT mounted</div>
+        <div>
+          <span style={{ color: project.color }}>dugos&gt;</span> _
+        </div>
+      </div>
+    </a>
+  );
+}
+
 export default function Projects() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [filter, setFilter] = useState<Filter>("All");
+
+  const visible = useMemo(
+    () => (filter === "All" ? projects : projects.filter((p) => p.category === filter)),
+    [filter],
+  );
 
   return (
     <section
@@ -181,12 +252,61 @@ export default function Projects() {
           style={{
             color: "var(--muted)",
             fontSize: "14px",
-            marginBottom: "64px",
+            marginBottom: "28px",
             fontFamily: "var(--font-mono)",
+            lineHeight: 1.7,
           }}
         >
-          Click any card to see more details. Live previews link to deployed sites.
+          Every project here is a public repository on{" "}
+          <a
+            href="https://github.com/aaaranas"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "var(--accent)" }}
+          >
+            github.com/aaaranas
+          </a>
+          . Click a card to expand it — previews link to the deployed site.
         </p>
+      </ScrollReveal>
+
+      {/* ── category filter ── */}
+      <ScrollReveal delay={60}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "8px",
+            marginBottom: "48px",
+          }}
+        >
+          {FILTERS.map((f) => {
+            const active = filter === f;
+            const count = f === "All" ? projects.length : projects.filter((p) => p.category === f).length;
+            return (
+              <button
+                key={f}
+                data-hover
+                onClick={() => setFilter(f)}
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  letterSpacing: "0.08em",
+                  padding: "7px 14px",
+                  borderRadius: "var(--r)",
+                  cursor: "pointer",
+                  border: `1px solid ${active ? "var(--accent)" : "var(--border)"}`,
+                  background: active ? "var(--accent-soft)" : "transparent",
+                  color: active ? "var(--accent)" : "var(--muted)",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                {f.toLowerCase()}{" "}
+                <span style={{ opacity: 0.55 }}>{count}</span>
+              </button>
+            );
+          })}
+        </div>
       </ScrollReveal>
 
       <div
@@ -194,9 +314,10 @@ export default function Projects() {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
           gap: "24px",
+          alignItems: "start",
         }}
       >
-        {vercelProjects.map((proj, i) => {
+        {visible.map((proj, i) => {
           const isHovered = hovered === proj.id;
           const isExpanded = expanded === proj.id;
 
@@ -205,8 +326,6 @@ export default function Projects() {
               <div
                 data-hover
                 onClick={() => setExpanded(isExpanded ? null : proj.id)}
-                onMouseEnter={() => setHovered(proj.id)}
-                onMouseLeave={() => setHovered(null)}
                 style={{
                   background: isHovered || isExpanded ? "var(--bg3)" : "var(--card)",
                   border: `1px solid ${isHovered || isExpanded ? proj.color : "var(--border)"}`,
@@ -219,6 +338,8 @@ export default function Projects() {
                   overflow: "hidden",
                   height: "100%",
                 }}
+                onMouseEnter={() => setHovered(proj.id)}
+                onMouseLeave={() => setHovered(null)}
               >
                 {/* Top accent line */}
                 <div
@@ -234,8 +355,11 @@ export default function Projects() {
                   }}
                 />
 
-                {/* Live site preview */}
-                <BrowserPreview url={proj.live} color={proj.color} name={proj.name} />
+                {proj.live ? (
+                  <BrowserPreview url={proj.live} color={proj.color} name={proj.name} />
+                ) : (
+                  <TerminalPreview project={proj} />
+                )}
 
                 {/* Header */}
                 <div
@@ -243,7 +367,8 @@ export default function Projects() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "flex-start",
-                    marginBottom: "16px",
+                    marginBottom: "14px",
+                    gap: "12px",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -267,12 +392,11 @@ export default function Projects() {
                           letterSpacing: "0.08em",
                         }}
                       >
-                        {proj.role}
+                        {proj.role} · {proj.category}
                       </span>
                     </div>
                   </div>
 
-                  {/* Highlight badge */}
                   <span
                     style={{
                       fontFamily: "var(--font-mono)",
@@ -301,27 +425,58 @@ export default function Projects() {
                   {proj.tagline}
                 </p>
 
-                {/* Expanded description */}
-                <div
+                {/* Metrics — always visible, they carry the substance */}
+                <ul
                   style={{
-                    maxHeight: isExpanded ? "200px" : "0",
-                    overflow: "hidden",
-                    transition: "max-height 0.4s ease",
+                    listStyle: "none",
+                    padding: 0,
+                    margin: "0 0 16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "6px",
                   }}
                 >
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "12px",
-                      color: "var(--text)",
-                      lineHeight: 1.8,
-                      marginBottom: "16px",
-                      paddingTop: "8px",
-                      borderTop: "1px solid var(--border)",
-                    }}
-                  >
-                    {proj.description}
-                  </p>
+                  {proj.metrics.map((m) => (
+                    <li
+                      key={m}
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "11px",
+                        color: "var(--text)",
+                        lineHeight: 1.6,
+                        display: "flex",
+                        gap: "8px",
+                      }}
+                    >
+                      <span style={{ color: proj.color, flexShrink: 0 }}>▸</span>
+                      {m}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Expanded description — grid trick so any length animates cleanly */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateRows: isExpanded ? "1fr" : "0fr",
+                    transition: "grid-template-rows 0.35s ease",
+                  }}
+                >
+                  <div style={{ overflow: "hidden" }}>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "12px",
+                        color: "var(--text)",
+                        lineHeight: 1.85,
+                        margin: "0 0 16px",
+                        paddingTop: "12px",
+                        borderTop: "1px solid var(--border)",
+                      }}
+                    >
+                      {proj.description}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Tech stack */}
@@ -338,56 +493,37 @@ export default function Projects() {
                   style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {proj.github && (
-                    <a
-                      href={proj.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "10px",
-                        letterSpacing: "0.06em",
-                        padding: "5px 12px",
-                        border: `1px solid ${proj.color}55`,
-                        borderRadius: "3px",
-                        color: proj.color,
-                        transition: "background 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = `${proj.color}18`;
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "transparent";
-                      }}
-                    >
-                      GitHub ↗
-                    </a>
-                  )}
-                  {proj.live && (
-                    <a
-                      href={proj.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "10px",
-                        letterSpacing: "0.06em",
-                        padding: "5px 12px",
-                        border: `1px solid ${proj.color}55`,
-                        borderRadius: "3px",
-                        color: proj.color,
-                        transition: "background 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = `${proj.color}18`;
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "transparent";
-                      }}
-                    >
-                      Live ↗
-                    </a>
-                  )}
+                  {[
+                    { label: "GitHub ↗", href: proj.github },
+                    { label: "Live ↗", href: proj.live },
+                  ]
+                    .filter((l) => l.href)
+                    .map((l) => (
+                      <a
+                        key={l.label}
+                        href={l.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "10px",
+                          letterSpacing: "0.06em",
+                          padding: "5px 12px",
+                          border: `1px solid ${proj.color}55`,
+                          borderRadius: "3px",
+                          color: proj.color,
+                          transition: "background 0.2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = `${proj.color}18`;
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = "transparent";
+                        }}
+                      >
+                        {l.label}
+                      </a>
+                    ))}
                 </div>
 
                 {/* Expand indicator */}

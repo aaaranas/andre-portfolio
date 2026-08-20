@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { personal } from "@/lib/data";
+import { personal, projects, experience } from "@/lib/data";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -111,12 +111,14 @@ export default function Hero() {
         >
           <span style={{ display: "inline-flex", alignItems: "center", gap: "7px", color: "var(--accent)" }}>
             <span className="pulse" style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)", display: "inline-block" }} />
-            available for internship
+            {personal.subtitle}
           </span>
           <span style={{ color: "var(--dim)" }}>/</span>
           <span>{personal.location}</span>
           <span style={{ color: "var(--dim)" }}>/</span>
           <span>incoming 4th yr · bs cs · up cebu</span>
+          <span style={{ color: "var(--dim)" }}>/</span>
+          <span style={{ color: "var(--dim)" }}>{personal.availability.label}</span>
         </motion.div>
 
         {/* ── name + avatar row ── */}
@@ -281,8 +283,9 @@ export default function Hero() {
 
           <div className="hero-stats" style={{ display: "flex", gap: "38px" }}>
             {([
-              ["11", "shipped projects"],
-              ["3", "active roles"],
+              [`${projects.length}`, "public repos"],
+              [`${projects.filter((p) => p.live).length}`, "deployed live"],
+              [`${experience.filter((e) => e.current).length}`, "active roles"],
               ["2027", "expected grad"],
             ] as const).map(([v, l]) => (
               <div key={l}>

@@ -129,8 +129,7 @@ export default function Contact() {
             fontFamily: "var(--font-mono)", fontSize: "14px", color: "var(--muted)",
             marginBottom: "48px", lineHeight: 1.8, textAlign: "center",
           }}>
-            Currently interning at eComia and open to exciting opportunities.
-            Fill in the form or reach me directly.
+            {personal.availability.note} Fill in the form or reach me directly.
           </p>
         </ScrollReveal>
 

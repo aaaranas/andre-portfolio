@@ -40,18 +40,20 @@ export default function ExperienceSection() {
         />
 
         <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-          {experience.map((exp: ExpEntry, i) => (
+          {experience.map((exp: ExpEntry, i) => {
+            const live = exp.current;
+            return (
             <ScrollReveal key={i} delay={i * 80}>
               <div style={{ paddingLeft: "56px", position: "relative" }}>
                 <div
-                  className={i === 0 ? "pulse" : ""}
+                  className={live ? "pulse" : ""}
                   style={{
                     position: "absolute",
                     left: "10px",
                     top: "8px",
                     width: "13px",
                     height: "13px",
-                    background: i === 0 ? "var(--accent)" : "var(--bg3)",
+                    background: live ? "var(--accent)" : "var(--bg3)",
                     border: "2px solid var(--accent)",
                     borderRadius: "50%",
                   }}
@@ -61,7 +63,7 @@ export default function ExperienceSection() {
                   className="card-glow"
                   style={{
                     background: "var(--card)",
-                    border: `1px solid ${i === 0 ? "var(--accent)" : "var(--border)"}`,
+                    border: `1px solid ${live ? "var(--accent)" : "var(--border)"}`,
                     borderRadius: "var(--r)",
                     padding: "24px 28px",
                     transition: "border-color 0.2s",
@@ -70,7 +72,7 @@ export default function ExperienceSection() {
                     (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = i === 0 ? "var(--accent)" : "var(--border)";
+                    (e.currentTarget as HTMLElement).style.borderColor = live ? "var(--accent)" : "var(--border)";
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }}>
@@ -82,12 +84,12 @@ export default function ExperienceSection() {
                           gap: "6px",
                           fontFamily: "var(--font-mono)",
                           fontSize: "11px",
-                          color: i === 0 ? "var(--ok)" : "var(--muted)",
+                          color: live ? "var(--ok)" : "var(--muted)",
                           letterSpacing: "0.08em",
                           marginBottom: "4px",
                         }}
                       >
-                        {i === 0 && (
+                        {live && (
                           <span
                             style={{
                               width: "6px", height: "6px",
@@ -111,8 +113,11 @@ export default function ExperienceSection() {
                       >
                         {exp.role}
                       </h3>
-                      <p style={{ fontFamily: "var(--font-mono)", fontSize: "13px", color: "var(--accent)", fontWeight: 600 }}>
+                      <p style={{ fontFamily: "var(--font-mono)", fontSize: "13px", color: "var(--accent)", fontWeight: 600, marginBottom: "3px" }}>
                         {exp.company}
+                      </p>
+                      <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--dim)", letterSpacing: "0.04em" }}>
+                        {exp.location}
                       </p>
                     </div>
                     <span
@@ -154,7 +159,8 @@ export default function ExperienceSection() {
                 </div>
               </div>
             </ScrollReveal>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

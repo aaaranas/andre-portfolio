@@ -205,7 +205,7 @@ export default function Nav() {
               (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
             }}
           >
-            Hire Me
+            Get in Touch
           </a>
         </div>
 
