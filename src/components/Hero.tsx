@@ -94,9 +94,6 @@ export default function Hero() {
       className="hero-pad"
       style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", overflow: "hidden" }}
     >
-      {/* blueprint grid */}
-      <div className="grid-bg" style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.6, maskImage: "radial-gradient(ellipse 90% 70% at 50% 40%, black, transparent)" }} />
-
       {/* soft matcha glow that follows the active track */}
       <motion.div
         animate={{ background: `radial-gradient(circle, ${t.color === "var(--accent)" ? "rgba(168,207,142,0.10)" : t.color === "var(--accent2)" ? "rgba(240,168,192,0.09)" : "rgba(232,201,138,0.08)"} 0%, transparent 68%)` }}

@@ -205,14 +205,6 @@ body::after {
 }
 [data-theme="light"] body::after { opacity: 0.06; }
 
-/* ─── Blueprint grid ─── */
-.grid-bg {
-  background-image:
-    linear-gradient(var(--border2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border2) 1px, transparent 1px);
-  background-size: 48px 48px;
-}
-
 /* ─── Tags ─── */
 .tag {
   display: inline-block;
