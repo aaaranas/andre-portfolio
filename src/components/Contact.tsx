@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { personal } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
+import { Check, CheckCircle2, ArrowRight } from "lucide-react";
 
 function CopyField({ label, value, href, isExternal }: {
   label: string;
@@ -60,7 +61,14 @@ function CopyField({ label, value, href, isExternal }: {
           onClick={copy}
           aria-label={copied ? "Copied!" : `Copy ${label.toLowerCase()}`}
         >
-          {copied ? "✓ copied" : "copy"}
+          {copied ? (
+            <>
+              <Check aria-hidden style={{ width: "12px", height: "12px" }} />
+              copied
+            </>
+          ) : (
+            "copy"
+          )}
         </button>
       )}
     </div>
@@ -139,7 +147,7 @@ export default function Contact() {
               background: "var(--accent-soft)", border: "1px solid var(--accent)",
               borderRadius: "var(--r)", padding: "48px 40px", textAlign: "center", marginBottom: "48px",
             }}>
-              <div style={{ fontSize: "48px", marginBottom: "16px" }}>✓</div>
+              <CheckCircle2 aria-hidden style={{ width: "48px", height: "48px", color: "var(--accent)", marginBottom: "16px" }} />
               <h3 style={{
                 fontFamily: "var(--font-display)", fontSize: "24px",
                 fontWeight: 700, marginBottom: "10px", color: "var(--accent)",
@@ -245,11 +253,22 @@ export default function Contact() {
                   opacity: sending ? 0.7 : 1,
                   transition: "opacity 0.2s, transform 0.2s",
                   alignSelf: "flex-end",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
                 }}
                 onMouseEnter={(e) => { if (!sending) (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
               >
-                {sending ? "Sending…" : "Send Message →"}
+                {sending ? (
+                  "Sending…"
+                ) : (
+                  <>
+                    Send Message
+                    <ArrowRight aria-hidden style={{ width: "14px", height: "14px" }} />
+                  </>
+                )}
               </button>
             </form>
           )}

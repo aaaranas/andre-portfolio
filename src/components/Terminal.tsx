@@ -11,7 +11,8 @@ import {
   dataAnalystProjects,
   automationProjects,
 } from "@/lib/data";
-import { ASCII_PORTRAIT, ASCII_COLS } from "@/lib/ascii";
+import { X } from "lucide-react";
+import { ASCII_PORTRAIT, ASCII_COLS, ASCII_LINE_HEIGHT } from "@/lib/ascii";
 
 /* ────────────────────────────────────────────────────────────────
    A real shell over the portfolio data. Every command below reads
@@ -72,7 +73,7 @@ function findProject(q: string) {
 
 function projectLines(p: (typeof projects)[number]): Line[] {
   return [
-    out(`${p.emoji}  ${p.name}`, "head"),
+    out(p.name, "head"),
     out(p.tagline, "muted"),
     blank(),
     out(`${pad("category", 10)} ${p.category}`, "out"),
@@ -88,8 +89,8 @@ function projectLines(p: (typeof projects)[number]): Line[] {
     out("about", "accent"),
     ...wrap(p.description).map((l) => out(l, "muted", 1)),
     blank(),
-    link(`github  → ${p.github}`, p.github),
-    ...(p.live ? [link(`live    → ${p.live}`, p.live)] : [out("live    → not deployed (boots in QEMU)", "muted")]),
+    link(`github  -> ${p.github}`, p.github),
+    ...(p.live ? [link(`live    -> ${p.live}`, p.live)] : [out("live    -> not deployed (boots in QEMU)", "muted")]),
   ];
 }
 
@@ -150,7 +151,7 @@ const COMMANDS: Command[] = [
       blank(),
       ...COMMANDS.map((c) => out(`${pad(c.usage, 22)} ${c.desc}`, "out", 1)),
       blank(),
-      out("tab completes · ↑/↓ walks history · esc closes", "muted"),
+      out("tab completes · up/down walks history · esc closes", "muted"),
     ],
   },
   {
@@ -262,7 +263,7 @@ const COMMANDS: Command[] = [
           out("tech across the featured builds", "accent"),
           blank(),
           ...sorted.map(([t, n]) =>
-            out(`${pad(t, 24)}${"▏".repeat(n * 3)} ${n}`, n > 1 ? "out" : "muted"),
+            out(`${pad(t, 24)}${"|".repeat(n * 3)} ${n}`, n > 1 ? "out" : "muted"),
           ),
           blank(),
           out("stack <tech> to see which projects use it", "muted"),
@@ -288,7 +289,7 @@ const COMMANDS: Command[] = [
       return rows.flatMap((e) => [
         out(`${e.role} · ${e.company}`, "head"),
         out(`${e.period}   ${e.type}   ${e.location}`, e.current ? "accent" : "muted"),
-        ...e.highlights.flatMap((h) => wrap(h, 74).map((l, k) => out(k === 0 ? `→ ${l}` : `  ${l}`, "out", 1))),
+        ...e.highlights.flatMap((h) => wrap(h, 74).map((l, k) => out(k === 0 ? `-> ${l}` : `   ${l}`, "out", 1))),
         blank(),
       ]);
     },
@@ -330,7 +331,7 @@ const COMMANDS: Command[] = [
       certifications.flatMap((c) => [
         out(c.title, "head"),
         out(`${c.issuer} · ${c.date} · ${c.credentialId}`, "muted"),
-        link(`verify → ${c.verificationUrl}`, c.verificationUrl, 1),
+        link(`verify -> ${c.verificationUrl}`, c.verificationUrl, 1),
         blank(),
       ]),
   },
@@ -390,7 +391,7 @@ const COMMANDS: Command[] = [
       if (!hit) return [out(`goto: no section named ${t}`, "err")];
       ctx.close();
       document.getElementById(hit)?.scrollIntoView({ behavior: "smooth" });
-      return [out(`→ #${hit}`, "accent")];
+      return [out(`-> #${hit}`, "accent")];
     },
   },
   {
@@ -401,7 +402,7 @@ const COMMANDS: Command[] = [
       const t = (args[0] ?? "").toLowerCase();
       const next = t === "dark" || t === "light" ? (t as "dark" | "light") : ctx.theme === "dark" ? "light" : "dark";
       ctx.setTheme(next);
-      return [out(`theme → ${next}`, "accent")];
+      return [out(`theme -> ${next}`, "accent")];
     },
   },
   {
@@ -421,27 +422,6 @@ const COMMANDS: Command[] = [
         out(`${pad("analytics case studies", 22)}${dataAnalystProjects.length}`),
         out(`${pad("automation builds", 22)}${automationProjects.length}`),
       ];
-    },
-  },
-  {
-    name: "ask",
-    usage: "ask <question>",
-    desc: "ask the AI assistant about my work",
-    run: async (args) => {
-      const q = args.join(" ");
-      if (!q) return [out('usage: ask "what did you build for Cebu commuters?"', "err")];
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: q }),
-        });
-        const data = await res.json();
-        if (data.reply) return wrap(String(data.reply), 78).map((l) => out(l, "out"));
-        return [out(data.error ?? "the assistant did not answer", "err")];
-      } catch {
-        return [out("ask: could not reach the assistant", "err")];
-      }
     },
   },
   {
@@ -707,9 +687,13 @@ export default function Terminal({
               cursor: "pointer",
               fontFamily: "var(--font-mono)",
               fontSize: "11px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "5px",
             }}
           >
-            esc ✕
+            esc
+            <X aria-hidden style={{ width: "12px", height: "12px" }} />
           </button>
         </div>
 
@@ -731,13 +715,14 @@ export default function Terminal({
             l.fetch ? (
               <div key={i} className="term-fetch">
                 <pre
-                  aria-label="ASCII portrait of Andre"
+                  role="img"
+                  aria-label="ASCII-art portrait of Andre Milan Arañas"
                   style={{
                     margin: 0,
                     color: "var(--accent)",
                     fontFamily: "var(--font-mono)",
                     fontSize: `${Math.min(10, 420 / ASCII_COLS)}px`,
-                    lineHeight: 1.25,
+                    lineHeight: ASCII_LINE_HEIGHT,
                     letterSpacing: 0,
                     flexShrink: 0,
                     userSelect: "none",

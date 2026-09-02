@@ -1,6 +1,7 @@
 "use client";
 import { experience } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
+import { ArrowRight } from "lucide-react";
 
 type ExpEntry = (typeof experience)[0];
 
@@ -150,7 +151,7 @@ export default function ExperienceSection() {
                           gap: "10px",
                         }}
                       >
-                        <span style={{ color: "var(--accent)", flexShrink: 0 }}>→</span>
+                        <ArrowRight aria-hidden style={{ width: "13px", height: "13px", color: "var(--accent)", flexShrink: 0, marginTop: "3px" }} />
                         {h}
                       </li>
                     ))}

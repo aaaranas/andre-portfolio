@@ -1,3 +1,5 @@
+import type { Certification } from "./types";
+
 export const personal = {
   name: "Andre Milan A. Arañas",
   shortName: "Andre",
@@ -8,7 +10,7 @@ export const personal = {
   github: "github.com/aaaranas",
   githubUrl: "https://github.com/aaaranas",
   location: "Cebu City, Philippines",
-  bio: "I build fast, accessible web apps that solve real problems — and analyze the data behind them. Incoming 4th year BS Computer Science at UP Cebu, working across three tracks: software engineering, data analysis, and AI automation.",
+  bio: "I build fast, accessible web apps that solve real problems — and analyze the data behind them. 4th year BS Computer Science at UP Cebu, working across three tracks: software engineering, data analysis, and AI automation.",
   portfolioUrl: "https://andre-milan-aranas.vercel.app/",
   // Availability shown in the hero status bar and on the contact section.
   availability: {
@@ -24,7 +26,8 @@ export type Project = {
   id: string;
   name: string;
   repo: string;
-  emoji: string;
+  /** Key into the icon registry in components/ui/icon.tsx. */
+  icon: string;
   category: ProjectCategory;
   tagline: string;
   description: string;
@@ -46,7 +49,7 @@ export const projects: Project[] = [
     id: "pitik",
     name: "Pitik",
     repo: "aaaranas/pitik",
-    emoji: "📸",
+    icon: "camera",
     category: "Product",
     tagline: "A digital camera that lives in the browser — 37 looks, nothing uploaded",
     description:
@@ -77,7 +80,7 @@ export const projects: Project[] = [
     id: "frag-avenue",
     name: "Frag Avenue",
     repo: "aaaranas/frag-avenue",
-    emoji: "🧴",
+    icon: "flask",
     category: "Product",
     tagline: "Explainable fragrance analytics — every recommendation shows its work",
     description:
@@ -109,7 +112,7 @@ export const projects: Project[] = [
     id: "komyut-ta-bai",
     name: "Komyut ta Bai",
     repo: "aaaranas/komyut-ta-bai",
-    emoji: "🚌",
+    icon: "bus",
     category: "Civic Tech",
     tagline: "The transit planner Cebu never had — Google Maps has zero coverage here",
     description:
@@ -138,7 +141,7 @@ export const projects: Project[] = [
     id: "irregskolar",
     name: "IrregSkolar",
     repo: "aaaranas/irregskolar",
-    emoji: "🎓",
+    icon: "graduation",
     category: "Product",
     tagline: "Upload your study plan, see exactly what you can enroll in next",
     description:
@@ -167,14 +170,14 @@ export const projects: Project[] = [
     id: "san-bidet-cebu",
     name: "San Bidet Cebu",
     repo: "aaaranas/san-bidet-cebu",
-    emoji: "🚽",
+    icon: "map-pin",
     category: "Civic Tech",
     tagline: "Crowdsourcing clean bidets across Cebu, one spray at a time",
     description:
       "A community-driven Flutter app that maps bidet locations across Cebu sorted by proximity. Contributors submit locations with photos and rate them across four axes — cleanliness, pressure, accessibility, privacy — and nothing reaches the public map until it clears an admin moderation queue, which is the part that keeps the dataset trustworthy. Handles the three real-world fixtures here (spray hose, tabo, bidet seat), exports GIS data for researchers and urban planners looking at sanitation infrastructure, and builds for iOS, Android, macOS, Linux, Windows and Web from a single codebase.",
     metrics: [
       "4-axis community rating system",
-      "Pending → approved moderation workflow",
+      "Pending-to-approved moderation workflow",
       "One Dart codebase, six build targets",
     ],
     stack: [
@@ -196,7 +199,7 @@ export const projects: Project[] = [
     id: "dugos",
     name: "DugOS",
     repo: "aaaranas/DugOS",
-    emoji: "💾",
+    icon: "cpu",
     category: "Systems",
     tagline: "A 32-bit operating system booted from scratch — no host OS, no libc",
     description:
@@ -378,7 +381,7 @@ export const education = [
   {
     school: "University of the Philippines Cebu",
     degree: "Bachelor of Science in Computer Science",
-    period: "Incoming 4th Year · Expected: Jul 2027",
+    period: "4th Year · Expected: Jul 2027",
     courses: [
       "Data Structures & Algorithms",
       "Operating Systems",
@@ -473,7 +476,7 @@ export const dataAnalystProjects = [
   {
     id: "lahug-flood-gis-mcda",
     name: "GIS Multi-Criteria Flood Risk Assessment (Barangay Lahug)",
-    emoji: "🗺️",
+    icon: "map",
     tagline: "7-Criterion weighted overlay MCDA & uniform 30m raster grid alignment in Python (CMSC 179)",
     summary: "GIS spatial decision analysis for urban flood vulnerability modeling in Barangay Lahug, Cebu City. Engineered a uniform 30m × 30m pixel grid resampling pipeline (snap_to_grid) in Python (GeoPandas, Rasterio, SciPy) to harmonize multi-source GeoTIFF rasters, OSM shapefiles, GeoPackage flood maps, and 48 field-surveyed waste dump GPS points into a composite 5-tier risk model.",
     dataFormats: [
@@ -509,7 +512,7 @@ export const dataAnalystProjects = [
         {
           type: "code",
           code: `WEIGHTS = {'flood':0.25,'population':0.15,'buildings':0.10,'drainage':0.15,'slope':0.15,'roads':0.05,'waste':0.15}\nprint(f"Weights sum: {sum(WEIGHTS.values()):.2f}")`,
-          output: `Weights sum: 1.00\n✅ snap_to_grid() pipeline ready for 7 multi-format layers`,
+          output: `Weights sum: 1.00\nsnap_to_grid() pipeline ready for 7 multi-format layers`,
         },
         {
           type: "markdown",
@@ -518,7 +521,7 @@ export const dataAnalystProjects = [
         {
           type: "code",
           code: `print("Zone           Area (ha)    % of Lahug")\nprint("Very Low       124.2 ha     18.6%")\nprint("Low            188.1 ha     28.2%")\nprint("Moderate       215.4 ha     32.3%")\nprint("High           112.5 ha     16.9%")\nprint("Very High       26.1 ha      4.0%")`,
-          output: `Zone           Area (ha)    % of Lahug\nVery Low       124.2 ha     18.6%\nLow            188.1 ha     28.2%\nModerate       215.4 ha     32.3%\nHigh           112.5 ha     16.9%\nVery High       26.1 ha      4.0%\n✅ Output GeoTIFF saved: FINAL_flood_risk_map.tif`,
+          output: `Zone           Area (ha)    % of Lahug\nVery Low       124.2 ha     18.6%\nLow            188.1 ha     28.2%\nModerate       215.4 ha     32.3%\nHigh           112.5 ha     16.9%\nVery High       26.1 ha      4.0%\nOutput GeoTIFF saved: FINAL_flood_risk_map.tif`,
         },
       ],
     },
@@ -526,7 +529,7 @@ export const dataAnalystProjects = [
   {
     id: "cebu-transit-analysis",
     name: "Cebu Public Transit & Commuter Mobility Study",
-    emoji: "📊",
+    icon: "bar-chart",
     tagline: "Exploratory spatial data analysis on 60+ Cebu jeepney & bus routes",
     summary: "Comprehensive Python data analysis on Cebu's commuter transit network. Analyzed route density, fare efficiency, travel delays, and commuter accessibility across Metro Cebu.",
     tools: ["Python", "Pandas", "GeoPandas", "Matplotlib", "Seaborn", "Folium", "Jupyter"],
@@ -563,7 +566,7 @@ export const dataAnalystProjects = [
   {
     id: "ecommerce-customer-churn",
     name: "E-Commerce Customer Retention & Cohort Analytics",
-    emoji: "📈",
+    icon: "trending",
     tagline: "Statistical analysis & cohort retention model for online retail platform",
     summary: "Data analytics project investigating user behavior, purchase frequency, RFM segmentation, and churn risk factors for digital storefronts.",
     tools: ["Python", "Pandas", "SQL / PostgreSQL", "Scikit-learn", "Plotly", "Power BI"],
@@ -602,16 +605,16 @@ export const automationProjects = [
   {
     id: "n8n-ai-triage-agent",
     name: "AI-Powered Lead Triage & Customer Support Agent",
-    emoji: "⚡",
+    icon: "zap",
     tagline: "Autonomous n8n workflow with Gemini 1.5 Pro tool calling, PostgreSQL & Slack alerts",
     courseNote: "AI Engineer Course Project — n8n & LLM Orchestration",
     description: "Multi-branch n8n automation workflow that ingests customer emails/webhooks, evaluates intent and sentiment using Gemini AI Agent nodes, queries product databases via custom HTTP tools, and routes high-priority cases directly to Slack and CRM.",
     n8nNodes: [
-      { name: "Webhook Listener", type: "Trigger", icon: "🌐" },
-      { name: "Gemini 1.5 Agent", type: "AI Engine", icon: "🤖" },
-      { name: "PostgreSQL Tool", type: "Database Query", icon: "🗄️" },
-      { name: "Slack Notification", type: "Alerting", icon: "💬" },
-      { name: "Resend Email Node", type: "Communication", icon: "📧" },
+      { name: "Webhook Listener", type: "Trigger", icon: "globe" },
+      { name: "Gemini 1.5 Agent", type: "AI Engine", icon: "bot" },
+      { name: "PostgreSQL Tool", type: "Database Query", icon: "database" },
+      { name: "Slack Notification", type: "Alerting", icon: "message" },
+      { name: "Resend Email Node", type: "Communication", icon: "mail" },
     ],
     workflowSteps: [
       "1. Webhook receives payload from frontend / contact form",
@@ -627,9 +630,9 @@ export const automationProjects = [
       outputUrgency: "9 / 10 (Critical)",
       outputSentiment: "Negative / Anxious",
       outputActions: [
-        "✅ Tool Executed: Searched Postgres table `tickets` for Order #9482 -> Status: CONFIRMED",
-        "⚡ Slack Alert Fired: Sent notification to #event-desk with direct re-send link",
-        "✉️ Resend API: Email sent with fresh QR ticket PDF attachment",
+        "Tool Executed: Searched Postgres table `tickets` for Order #9482 -> Status: CONFIRMED",
+        "Slack Alert Fired: Sent notification to #event-desk with direct re-send link",
+        "Resend API: Email sent with fresh QR ticket PDF attachment",
       ],
     },
     githubUrl: "https://github.com/aaaranas",
@@ -638,15 +641,15 @@ export const automationProjects = [
   {
     id: "n8n-github-ai-summarizer",
     name: "Automated GitHub PR Review & Issue Auto-Triage Bot",
-    emoji: "🐙",
+    icon: "git",
     tagline: "n8n workflow monitoring GitHub webhooks, generating LLM code summaries & labeling",
     courseNote: "AI Engineer Course Project — Autonomous Developer Tooling",
     description: "Automated devops assistant built in n8n. Triggered on GitHub pull request open / issue create events. Uses LLM embeddings & Gemini API to summarize code diffs, verify linting guidelines, auto-apply labels, and assign reviewers.",
     n8nNodes: [
-      { name: "GitHub Webhook", type: "Trigger", icon: "🐙" },
-      { name: "Code Diff Extractor", type: "Data Transform", icon: "⚙️" },
-      { name: "Gemini Code Reviewer", type: "AI Node", icon: "🧠" },
-      { name: "GitHub PR Commenter", type: "API Node", icon: "💬" },
+      { name: "GitHub Webhook", type: "Trigger", icon: "git" },
+      { name: "Code Diff Extractor", type: "Data Transform", icon: "settings" },
+      { name: "Gemini Code Reviewer", type: "AI Node", icon: "brain" },
+      { name: "GitHub PR Commenter", type: "API Node", icon: "message" },
     ],
     workflowSteps: [
       "1. GitHub Webhook triggers on PR opened or commit pushed",
@@ -661,9 +664,9 @@ export const automationProjects = [
       outputUrgency: "3 / 10 (Feature PR)",
       outputSentiment: "Neutral / Technical",
       outputActions: [
-        "🔍 Diff Inspected: 4 files changed (+180 lines, -24 lines)",
-        "🧠 AI Security Audit: Passed - No exposed tokens detected",
-        "💬 Posted PR Review Comment on GitHub with summary breakdown",
+        "Diff Inspected: 4 files changed (+180 lines, -24 lines)",
+        "AI Security Audit: Passed - No exposed tokens detected",
+        "Posted PR Review Comment on GitHub with summary breakdown",
       ],
     },
     githubUrl: "https://github.com/aaaranas",
@@ -671,7 +674,22 @@ export const automationProjects = [
   },
 ];
 
-export const certifications = [
+export const certifications: Certification[] = [
+  {
+    id: "datacamp-data-analyst-associate",
+    title: "Data Analyst Associate",
+    issuer: "DataCamp",
+    date: "Aug 2026",
+    expires: "Aug 2028",
+    credentialId: "DAA0012760794890",
+    category: "Data Analytics",
+    badgeColor: "#7fc2d4",
+    iconType: "trending",
+    skills: ["SQL", "Data Management", "Exploratory Analysis", "Statistical Experimentation", "Dashboards & Reporting"],
+    verificationUrl: "https://www.datacamp.com/certificate/DAA0012760794890",
+    description:
+      "Proctored DataCamp certification assessed across four domains — data management, exploratory analysis, statistical experimentation, and communication. Timed exams plus a practical submission solving a real business problem end to end, from cleaning multi-source SQL data to presenting the findings.",
+  },
   {
     id: "google-ai-professional",
     title: "Google AI Professional Certificate",

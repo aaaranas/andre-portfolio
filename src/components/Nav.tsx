@@ -1,9 +1,17 @@
 "use client";
 import { useState, useEffect } from "react";
-import { personal } from "@/lib/data";
 import Terminal from "./Terminal";
+import { ArrowUp, ArrowUpRight, Moon, Sun } from "lucide-react";
 
-const links = ["about", "projects", "experience", "education", "skills", "contact"];
+/**
+ * Sections reachable from the bar. "about" is the top of the page and "contact"
+ * is where the Get in Touch CTA already lands, so neither earns a slot here —
+ * they stay in the scroll-spy list below so the bar still tracks them.
+ */
+const links = ["projects", "experience", "education", "skills"];
+
+/** Every section the active-link indicator watches, including the two not linked. */
+const observed = ["about", ...links, "contact"];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,7 +38,7 @@ export default function Nav() {
   // Active section via IntersectionObserver
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
-    links.forEach((id) => {
+    observed.forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
       const obs = new IntersectionObserver(
@@ -61,7 +69,7 @@ export default function Nav() {
 
   const toggleTheme = () => applyTheme(theme === "dark" ? "light" : "dark");
 
-  // Global shortcuts: "/" or ⌘K / Ctrl-K open the shell, from anywhere on the page.
+  // Global shortcuts: "/" or Cmd-K / Ctrl-K open the shell, from anywhere on the page.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const el = document.activeElement;
@@ -157,7 +165,7 @@ export default function Nav() {
           }}>
             /
           </span>
-          <span className="term-caret" style={{ color: "var(--accent)" }}>▍</span>
+          <span className="term-caret" style={{ width: "5px", height: "13px", background: "var(--accent)", display: "inline-block" }} />
         </button>
 
         {/* Desktop links */}
@@ -201,11 +209,13 @@ export default function Nav() {
               fontFamily: "var(--font-mono)", fontSize: "11px",
               letterSpacing: "0.1em", textTransform: "uppercase",
               color: "var(--muted)", transition: "color 0.2s",
+              display: "inline-flex", alignItems: "center", gap: "5px",
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
           >
-            résumé ↗
+            résumé
+            <ArrowUpRight aria-hidden style={{ width: "12px", height: "12px" }} />
           </a>
 
           {/* Theme toggle */}
@@ -237,11 +247,13 @@ export default function Nav() {
               (e.currentTarget as HTMLElement).style.color = "var(--muted)";
             }}
           >
-            {theme === "dark" ? "☀" : "◑"}
+            {theme === "dark"
+              ? <Sun aria-hidden style={{ width: "14px", height: "14px" }} />
+              : <Moon aria-hidden style={{ width: "14px", height: "14px" }} />}
           </button>
 
           <a
-            href={`mailto:${personal.email}`}
+            href="#contact"
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "11px",
@@ -294,6 +306,13 @@ export default function Nav() {
             {link}
           </a>
         ))}
+        <a
+          href="#contact"
+          className="nav-mobile-link"
+          onClick={() => { setActive("contact"); setMenuOpen(false); }}
+        >
+          contact
+        </a>
         <button
           onClick={() => { setMenuOpen(false); setTermOpen(true); }}
           className="nav-mobile-link"
@@ -317,9 +336,18 @@ export default function Nav() {
             padding: "12px 24px",
             fontFamily: "var(--font-mono)",
             fontSize: "13px",
+            display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px",
           }}
         >
-          {theme === "dark" ? "☀ Light Mode" : "◑ Dark Mode"}
+          {theme === "dark" ? (
+            <>
+              <Sun aria-hidden style={{ width: "15px", height: "15px" }} /> Light Mode
+            </>
+          ) : (
+            <>
+              <Moon aria-hidden style={{ width: "15px", height: "15px" }} /> Dark Mode
+            </>
+          )}
         </button>
       </div>
 
@@ -337,7 +365,7 @@ export default function Nav() {
         aria-label="Back to top"
         title="Back to top"
       >
-        ↑
+        <ArrowUp aria-hidden style={{ width: "16px", height: "16px" }} />
       </button>
     </>
   );

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { dataAnalystProjects } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 import { BarChart3, X, FileText } from "lucide-react";
+import Icon from "./ui/icon";
 
 type Project = (typeof dataAnalystProjects)[0];
 type Cell = { type: string; content?: string; code?: string; output?: string };
@@ -104,7 +105,7 @@ export default function DataAnalystSection() {
                 }}
               >
                 <div>
-                  <div style={{ fontSize: "28px", marginBottom: "14px" }}>{proj.emoji}</div>
+                  <Icon name={proj.icon} size={28} style={{ color: "var(--accent2)", marginBottom: "14px" }} />
                   <h3 style={{ fontFamily: "var(--font-display)", fontSize: "19px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
                     {proj.name}
                   </h3>

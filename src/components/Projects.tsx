@@ -2,6 +2,8 @@
 import { useMemo, useState } from "react";
 import { projects, projectCategories, type Project } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
+import { ArrowRight, ArrowUpRight, ChevronRight, Globe } from "lucide-react";
+import Icon from "./ui/icon";
 
 const FILTERS = ["All", ...projectCategories] as const;
 type Filter = (typeof FILTERS)[number];
@@ -56,7 +58,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
         >
           {url.replace("https://", "")}
         </div>
-        <span style={{ fontSize: "10px", color: color, opacity: 0.7 }}>↗</span>
+        <ArrowUpRight aria-hidden style={{ width: "11px", height: "11px", color, opacity: 0.7 }} />
       </div>
 
       <div
@@ -97,7 +99,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
               color: "var(--muted)",
             }}
           >
-            <span style={{ fontSize: "28px" }}>🌐</span>
+            <Globe aria-hidden style={{ width: "28px", height: "28px", color }} />
             <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px" }}>
               Preview unavailable
             </span>
@@ -107,9 +109,13 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
                 fontSize: "9px",
                 color: color,
                 opacity: 0.7,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
               }}
             >
-              Click to visit →
+              Click to visit
+              <ArrowRight aria-hidden style={{ width: "12px", height: "12px" }} />
             </span>
           </div>
         )}
@@ -136,9 +142,13 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
               padding: "6px 14px",
               borderRadius: "4px",
               border: `1px solid ${color}55`,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "5px",
             }}
           >
-            Open site ↗
+            Open site
+            <ArrowUpRight aria-hidden style={{ width: "12px", height: "12px" }} />
           </span>
         </div>
       </div>
@@ -185,7 +195,7 @@ function TerminalPreview({ project }: { project: Project }) {
           ))}
         </div>
         <span style={{ flex: 1 }}>{project.repo}</span>
-        <span style={{ color: project.color, opacity: 0.7, fontSize: "10px" }}>↗</span>
+        <ArrowUpRight aria-hidden style={{ width: "11px", height: "11px", color: project.color, opacity: 0.7 }} />
       </div>
 
       <div
@@ -208,7 +218,7 @@ function TerminalPreview({ project }: { project: Project }) {
         </div>
         <div style={{ color: "var(--text)" }}>[  ok  ] GRUB 2 multiboot handoff</div>
         <div style={{ color: "var(--text)" }}>[  ok  ] protected mode · GDT · IDT</div>
-        <div style={{ color: "var(--text)" }}>[  ok  ] 8259A PIC remapped → 32–47</div>
+        <div style={{ color: "var(--text)" }}>[  ok  ] 8259A PIC remapped to 32–47</div>
         <div style={{ color: "var(--text)" }}>[  ok  ] PS/2 keyboard · FAT mounted</div>
         <div>
           <span style={{ color: project.color }}>dugos&gt;</span> _
@@ -372,7 +382,7 @@ export default function Projects() {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <span style={{ fontSize: "24px" }}>{proj.emoji}</span>
+                    <Icon name={proj.icon} size={24} style={{ color: proj.color }} />
                     <div>
                       <h3
                         style={{
@@ -448,7 +458,7 @@ export default function Projects() {
                         gap: "8px",
                       }}
                     >
-                      <span style={{ color: proj.color, flexShrink: 0 }}>▸</span>
+                      <ChevronRight aria-hidden style={{ width: "13px", height: "13px", color: proj.color, flexShrink: 0, marginTop: "3px" }} />
                       {m}
                     </li>
                   ))}
@@ -494,8 +504,8 @@ export default function Projects() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   {[
-                    { label: "GitHub ↗", href: proj.github },
-                    { label: "Live ↗", href: proj.live },
+                    { label: "GitHub", href: proj.github },
+                    { label: "Live", href: proj.live },
                   ]
                     .filter((l) => l.href)
                     .map((l) => (
@@ -513,6 +523,9 @@ export default function Projects() {
                           borderRadius: "3px",
                           color: proj.color,
                           transition: "background 0.2s",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "5px",
                         }}
                         onMouseEnter={(e) => {
                           (e.currentTarget as HTMLElement).style.background = `${proj.color}18`;
@@ -522,6 +535,7 @@ export default function Projects() {
                         }}
                       >
                         {l.label}
+                        <ArrowUpRight aria-hidden style={{ width: "11px", height: "11px" }} />
                       </a>
                     ))}
                 </div>

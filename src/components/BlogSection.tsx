@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { blogPosts } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
+import { PenLine, Heart, Calendar, Clock, ArrowRight, X } from "lucide-react";
 
 export default function BlogSection() {
   const [selectedPost, setSelectedPost] = useState<typeof blogPosts[0] | null>(null);
@@ -30,7 +31,7 @@ export default function BlogSection() {
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", gap: "20px" }}>
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--accent2)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>
-                <span>✍️</span> Technical Writing & Thoughts
+                <PenLine aria-hidden style={{ width: "15px", height: "15px" }} /> Technical Writing & Thoughts
               </div>
               <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 700, color: "var(--text)" }}>
                 Articles & Blog Posts
@@ -119,9 +120,13 @@ export default function BlogSection() {
                         onClick={(e) => handleLike(post.id, e)}
                         style={{ background: "none", border: "none", color: "var(--muted)", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px" }}
                       >
-                        ❤️ <span>{likes[post.id] || 0}</span>
+                        <Heart aria-hidden style={{ width: "14px", height: "14px" }} />
+                        <span>{likes[post.id] || 0}</span>
                       </button>
-                      <span style={{ color: "var(--accent2)", fontWeight: 600 }}>Read Article →</span>
+                      <span style={{ color: "var(--accent2)", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                        Read Article
+                        <ArrowRight aria-hidden style={{ width: "13px", height: "13px" }} />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -143,16 +148,23 @@ export default function BlogSection() {
                   {selectedPost.title}
                 </h2>
                 <div style={{ display: "flex", gap: "16px", marginTop: "12px", fontSize: "13px", fontFamily: "var(--font-mono)", color: "var(--muted)" }}>
-                  <span>📅 {selectedPost.date}</span>
-                  <span>⏱️ {selectedPost.readTime}</span>
-                  <span>❤️ {likes[selectedPost.id] || 0}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                    <Calendar aria-hidden style={{ width: "13px", height: "13px" }} /> {selectedPost.date}
+                  </span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                    <Clock aria-hidden style={{ width: "13px", height: "13px" }} /> {selectedPost.readTime}
+                  </span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                    <Heart aria-hidden style={{ width: "13px", height: "13px" }} /> {likes[selectedPost.id] || 0}
+                  </span>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedPost(null)}
-                style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}
+                aria-label="Close article"
+                style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
               >
-                ✕
+                <X aria-hidden style={{ width: "17px", height: "17px" }} />
               </button>
             </div>
             <div style={{ borderTop: "1px solid var(--border)", paddingTop: "24px", color: "var(--text)", fontSize: "15px", lineHeight: 1.85, whiteSpace: "pre-line", maxHeight: "55vh", overflowY: "auto" }}>
@@ -161,9 +173,10 @@ export default function BlogSection() {
             <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "flex-end", gap: "12px" }}>
               <button
                 onClick={(e) => handleLike(selectedPost.id, e)}
-                style={{ background: "var(--accent2-soft)", border: "1px solid var(--accent2)", color: "var(--accent2)", padding: "8px 18px", borderRadius: "var(--r)", fontSize: "13px", fontFamily: "var(--font-mono)", cursor: "pointer", fontWeight: 600 }}
+                style={{ background: "var(--accent2-soft)", border: "1px solid var(--accent2)", color: "var(--accent2)", padding: "8px 18px", borderRadius: "var(--r)", fontSize: "13px", fontFamily: "var(--font-mono)", cursor: "pointer", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "7px" }}
               >
-                ❤️ Like ({likes[selectedPost.id] || 0})
+                <Heart aria-hidden style={{ width: "14px", height: "14px" }} />
+                Like ({likes[selectedPost.id] || 0})
               </button>
               <button
                 onClick={() => setSelectedPost(null)}

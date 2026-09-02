@@ -2,14 +2,17 @@
 import React, { useState } from "react";
 import { certifications } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { Award, BarChart3, Zap, Sparkles, ExternalLink, CheckCircle2, ShieldCheck, X } from "lucide-react";
+import { Award, BarChart3, Zap, Sparkles, ExternalLink, CheckCircle2, ShieldCheck, TrendingUp, X } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { Badge } from "@/components/ui/badge";
+import CertificatePreview from "./CertificatePreview";
+import type { Certification } from "@/lib/types";
 
 function getCertIcon(iconType: string, color: string) {
   const style = { width: "22px", height: "22px", color };
   switch (iconType) {
     case "bar-chart": return <BarChart3 style={style} />;
+    case "trending": return <TrendingUp style={style} />;
     case "zap": return <Zap style={style} />;
     case "ai": return <Sparkles style={style} />;
     case "github": return <SiGithub style={{ width: "22px", height: "22px", color }} />;
@@ -18,7 +21,7 @@ function getCertIcon(iconType: string, color: string) {
 }
 
 export default function CertificationsSection() {
-  const [activeCert, setActiveCert] = useState<typeof certifications[0] | null>(null);
+  const [activeCert, setActiveCert] = useState<Certification | null>(null);
 
   return (
     <section id="certifications" className="s-pad" style={{ background: "var(--bg2)", borderTop: "1px solid var(--border)" }}>
@@ -64,6 +67,9 @@ export default function CertificationsSection() {
                 }}
               >
                 <div>
+                  <div style={{ marginBottom: "20px" }}>
+                    <CertificatePreview cert={cert} compact />
+                  </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
                     <div style={{ background: `${cert.badgeColor}18`, padding: "10px", borderRadius: "var(--r)", display: "inline-flex" }}>
                       {getCertIcon(cert.iconType, cert.badgeColor)}
@@ -115,7 +121,7 @@ export default function CertificationsSection() {
                   onMouseLeave={(e) => { e.currentTarget.style.background = `${cert.badgeColor}12`; }}
                 >
                   <ShieldCheck style={{ width: "15px", height: "15px" }} />
-                  View Certificate Details
+                  Enlarge & Verify
                 </button>
               </div>
             </ScrollReveal>
@@ -125,7 +131,7 @@ export default function CertificationsSection() {
 
       {activeCert && (
         <div className="modal-backdrop" onClick={() => setActiveCert(null)}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "560px", padding: "32px" }}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "640px", padding: "32px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div style={{ background: `${activeCert.badgeColor}20`, padding: "12px", borderRadius: "var(--r)", display: "inline-flex" }}>
@@ -140,6 +146,14 @@ export default function CertificationsSection() {
                 <X style={{ width: "16px", height: "16px" }} />
               </button>
             </div>
+            <div style={{ marginBottom: "10px" }}>
+              <CertificatePreview cert={activeCert} />
+            </div>
+            <p style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--dim)", marginBottom: "20px", lineHeight: 1.6 }}>
+              {activeCert.previewImage
+                ? "Scan of the issued certificate."
+                : "Summary rendered from the credential record — open the issuer's page for the original."}
+            </p>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 700, color: "var(--text)", marginBottom: "8px", lineHeight: 1.3 }}>
               {activeCert.title}
             </h2>
@@ -154,6 +168,12 @@ export default function CertificationsSection() {
                   <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--muted)" }}>ISSUE DATE</div>
                   <div style={{ fontSize: "13px", fontFamily: "var(--font-mono)", color: "var(--text)", fontWeight: 600 }}>{activeCert.date}</div>
                 </div>
+                {activeCert.expires && (
+                  <div>
+                    <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--muted)" }}>VALID THROUGH</div>
+                    <div style={{ fontSize: "13px", fontFamily: "var(--font-mono)", color: "var(--text)", fontWeight: 600 }}>{activeCert.expires}</div>
+                  </div>
+                )}
               </div>
               <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--muted)", marginBottom: "8px" }}>VERIFIED SKILLS</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>

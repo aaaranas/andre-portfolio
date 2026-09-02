@@ -14,7 +14,6 @@ engineer from Cebu City, Philippines. Live at
 | Styling | Tailwind CSS v4 + CSS custom properties |
 | Animation | Framer Motion · CSS keyframes · IntersectionObserver |
 | Email | Resend (`/api/contact`) |
-| AI assistant | Google Gemini via `@google/genai` (`/api/chat`) |
 | Analytics | Vercel Analytics |
 | Hosting | Vercel |
 
@@ -29,11 +28,10 @@ The header is a live prompt. Click it — or press `/` anywhere on the page, or 
 ~/ama $ stack typescript     # which projects use a given technology
 ~/ama $ find offline         # search every project field at once
 ~/ama $ neofetch             # ASCII portrait beside the vitals
-~/ama $ ask <question>       # routed to the Gemini assistant
 ~/ama $ goto experience      # scrolls the page and closes
 ```
 
-Tab completes commands and project ids, `↑`/`↓` walk history, `esc` closes. `help` lists all 20
+Tab completes commands and project ids, `↑`/`↓` walk history, `esc` closes. `help` lists all 22
 commands. Every one reads from [`src/lib/data.ts`](src/lib/data.ts) — there are no canned transcripts,
 so the shell cannot drift from the rest of the page.
 
@@ -78,7 +76,6 @@ Optional environment variables — see [`.env.example`](.env.example):
 | Variable | Needed for |
 |---|---|
 | `RESEND_API_KEY` | Delivering contact-form messages |
-| `GEMINI_API_KEY` | The AI assistant route |
 
 ## Checks
 

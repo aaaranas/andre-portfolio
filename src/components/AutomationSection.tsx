@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { automationProjects } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { Zap, Bot, X, Play, Terminal } from "lucide-react";
+import { Zap, Bot, X, Play, Terminal, ArrowRight } from "lucide-react";
+import Icon from "./ui/icon";
 
 type Project = (typeof automationProjects)[0];
 
@@ -17,13 +18,13 @@ export default function AutomationSection() {
     setSimRunning(true);
     setActiveTab("simulator");
     const steps = [
-      `▶ Webhook received — ${proj.sampleExecution.inputName} <${proj.sampleExecution.inputEmail}>`,
-      `📨 Message: "${proj.sampleExecution.inputMessage.slice(0, 80)}..."`,
-      `🧠 Gemini Agent analyzing intent, urgency, and sentiment...`,
-      `⚡ Urgency Score: ${proj.sampleExecution.outputUrgency}`,
-      `😟 Sentiment: ${proj.sampleExecution.outputSentiment}`,
+      `Webhook received — ${proj.sampleExecution.inputName} <${proj.sampleExecution.inputEmail}>`,
+      `Message: "${proj.sampleExecution.inputMessage.slice(0, 80)}..."`,
+      `Gemini Agent analyzing intent, urgency, and sentiment...`,
+      `Urgency Score: ${proj.sampleExecution.outputUrgency}`,
+      `Sentiment: ${proj.sampleExecution.outputSentiment}`,
       ...proj.sampleExecution.outputActions,
-      `✅ Workflow execution complete.`,
+      `Workflow execution complete.`,
     ];
     steps.forEach((step, i) => {
       setTimeout(() => {
@@ -76,7 +77,7 @@ export default function AutomationSection() {
               >
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
-                    <span style={{ fontSize: "28px" }}>{proj.emoji}</span>
+                    <Icon name={proj.icon} size={28} style={{ color: "var(--accent3)" }} />
                     <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", padding: "3px 10px", border: "1px solid var(--accent3)", borderRadius: "var(--r)", color: "var(--accent3)", background: "transparent" }}>
                       {proj.courseNote}
                     </span>
@@ -94,7 +95,8 @@ export default function AutomationSection() {
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
                     {proj.n8nNodes.map((node) => (
                       <span key={node.name} style={{ fontFamily: "var(--font-mono)", fontSize: "11px", padding: "3px 10px", border: "1px solid var(--accent3)", borderRadius: "6px", color: "var(--accent3)", background: "transparent", display: "flex", alignItems: "center", gap: "4px" }}>
-                        {node.icon} {node.name}
+                        <Icon name={node.icon} size={13} />
+                        {node.name}
                       </span>
                     ))}
                   </div>
@@ -173,7 +175,7 @@ export default function AutomationSection() {
                   <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>Workflow Steps</h4>
                   {activeProject.workflowSteps.map((step, i) => (
                     <div key={i} style={{ display: "flex", gap: "12px", marginBottom: "8px" }}>
-                      <span style={{ color: "var(--accent3)", fontFamily: "var(--font-mono)", fontSize: "12px", flexShrink: 0 }}>→</span>
+                      <ArrowRight aria-hidden style={{ width: "13px", height: "13px", color: "var(--accent3)", flexShrink: 0, marginTop: "3px" }} />
                       <span style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--muted)", lineHeight: 1.6 }}>{step}</span>
                     </div>
                   ))}
@@ -189,7 +191,7 @@ export default function AutomationSection() {
                     {simLogs.map((log, i) => (
                       <div key={i} style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--ok)", lineHeight: 1.8 }}>{log}</div>
                     ))}
-                    {simRunning && <div style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--accent3)" }}>▋</div>}
+                    {simRunning && <div className="blink" style={{ width: "7px", height: "14px", background: "var(--accent3)" }} />}
                   </div>
                   <button
                     onClick={() => runSimulation(activeProject)}
@@ -213,7 +215,7 @@ export default function AutomationSection() {
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
                   {activeProject.n8nNodes.map((node) => (
                     <div key={node.name} style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: "var(--r)", padding: "14px 16px" }}>
-                      <div style={{ fontSize: "22px", marginBottom: "6px" }}>{node.icon}</div>
+                      <Icon name={node.icon} size={22} style={{ color: "var(--accent3)", marginBottom: "6px" }} />
                       <div style={{ fontFamily: "var(--font-display)", fontSize: "14px", fontWeight: 700, color: "var(--text)", marginBottom: "4px" }}>{node.name}</div>
                       <div style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--accent3)", textTransform: "uppercase", letterSpacing: "0.08em" }}>{node.type}</div>
                     </div>

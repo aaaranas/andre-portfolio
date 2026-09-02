@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { personal, projects, experience } from "@/lib/data";
-import { ASCII_PORTRAIT } from "@/lib/ascii";
+import { ASCII_PORTRAIT, ASCII_LINE_HEIGHT } from "@/lib/ascii";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -75,7 +75,7 @@ function Reveal({ text, delay = 0 }: { text: string; delay?: number }) {
 }
 
 export default function Hero() {
-  const [ascii, setAscii] = useState(false);
+  const [lit, setLit] = useState(false);
   const [active, setActive] = useState(0);
   const [locked, setLocked] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -118,7 +118,7 @@ export default function Hero() {
           <span style={{ color: "var(--dim)" }}>/</span>
           <span>{personal.location}</span>
           <span style={{ color: "var(--dim)" }}>/</span>
-          <span>incoming 4th yr · bs cs · up cebu</span>
+          <span>4th yr · bs cs · up cebu</span>
           <span style={{ color: "var(--dim)" }}>/</span>
           <span style={{ color: "var(--dim)" }}>{personal.availability.label}</span>
         </motion.div>
@@ -136,57 +136,44 @@ export default function Hero() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
             style={{ position: "relative", flexShrink: 0 }}
+            onMouseEnter={() => setLit(true)}
+            onMouseLeave={() => setLit(false)}
           >
-            <button
-              onClick={() => setAscii((v) => !v)}
-              onMouseEnter={() => setAscii(true)}
-              onMouseLeave={() => setAscii(false)}
-              aria-pressed={ascii}
-              aria-label={ascii ? "Show the photo" : "Show the ASCII portrait"}
-              title={ascii ? "photo" : "render as ASCII"}
+            <div
+              role="img"
+              aria-label="ASCII-art portrait of Andre Milan Arañas"
+              className="ascii-portrait"
               style={{
-                width: "132px", height: "132px", padding: 0,
-                borderRadius: "var(--r)", overflow: "hidden",
-                border: `1px solid ${ascii ? "var(--accent)" : "var(--border)"}`,
-                position: "relative", cursor: "pointer", display: "block",
+                borderRadius: "var(--r)",
+                border: `1px solid ${lit ? "var(--accent)" : "var(--border)"}`,
                 background: "var(--bg2)",
-                filter: ascii ? "none" : "grayscale(0.35) contrast(1.05)",
-                transition: "border-color 0.25s",
+                padding: "12px 14px",
+                boxShadow: lit ? "0 0 30px var(--accent-glow)" : "none",
+                transition: "border-color 0.3s, box-shadow 0.3s",
               }}
             >
-              <Image
-                src="/photo.jpg"
-                alt="Andre Milan Arañas"
-                fill
-                sizes="132px"
-                priority
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "50% 18%",
-                  opacity: ascii ? 0 : 1,
-                  transition: "opacity 0.28s ease",
-                }}
-              />
               <pre
                 aria-hidden="true"
                 style={{
-                  position: "absolute", inset: 0, margin: 0,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontFamily: "var(--font-mono)", fontSize: "5.2px", lineHeight: "5.5px",
-                  letterSpacing: 0, color: "var(--accent)",
-                  opacity: ascii ? 1 : 0,
-                  transition: "opacity 0.28s ease",
-                  pointerEvents: "none", userSelect: "none",
+                  margin: 0,
+                  fontFamily: "var(--font-mono)",
+                  lineHeight: ASCII_LINE_HEIGHT,
+                  letterSpacing: 0,
+                  whiteSpace: "pre",
+                  color: "var(--accent)",
+                  opacity: lit ? 1 : 0.88,
+                  transition: "opacity 0.3s",
+                  userSelect: "none",
                 }}
               >
                 {ASCII_PORTRAIT.join("\n")}
               </pre>
-            </button>
+            </div>
             {/* corner ticks */}
-            {[["-5px","-5px","top left"],["-5px","-5px","top right"],["-5px","-5px","bottom left"],["-5px","-5px","bottom right"]].map((_, i) => (
+            {[0, 1, 2, 3].map((i) => (
               <span key={i} style={{
                 position: "absolute", width: "8px", height: "8px",
                 borderColor: "var(--accent)",
@@ -296,32 +283,35 @@ export default function Hero() {
             <a href="#projects" style={{
               fontFamily: "var(--font-mono)", fontSize: "11.5px", letterSpacing: "0.06em", fontWeight: 600,
               padding: "12px 26px", borderRadius: "var(--r)", background: "var(--accent)", color: "var(--bg)",
-              transition: "opacity 0.2s, transform 0.2s", display: "inline-block",
+              transition: "opacity 0.2s, transform 0.2s", display: "inline-flex", alignItems: "center", gap: "8px",
             }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.opacity = "0.9"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.opacity = "1"; }}
             >
-              view work →
+              view work
+              <ArrowRight aria-hidden style={{ width: "14px", height: "14px" }} />
             </a>
             <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" style={{
               fontFamily: "var(--font-mono)", fontSize: "11.5px", letterSpacing: "0.06em",
               padding: "12px 26px", borderRadius: "var(--r)", border: "1px solid var(--border)", color: "var(--text)",
-              transition: "all 0.2s", display: "inline-block",
+              transition: "all 0.2s", display: "inline-flex", alignItems: "center", gap: "8px",
             }}
               onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-soft)"; e.currentTarget.style.borderColor = "var(--accent)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "var(--border)"; }}
             >
-              résumé ↗
+              résumé
+              <ArrowUpRight aria-hidden style={{ width: "14px", height: "14px" }} />
             </a>
             <a href={personal.githubUrl} target="_blank" rel="noopener noreferrer" style={{
               fontFamily: "var(--font-mono)", fontSize: "11.5px", letterSpacing: "0.06em",
               padding: "12px 26px", borderRadius: "var(--r)", border: "1px solid var(--border2)", color: "var(--muted)",
-              transition: "all 0.2s", display: "inline-block",
+              transition: "all 0.2s", display: "inline-flex", alignItems: "center", gap: "8px",
             }}
               onMouseEnter={(e) => { e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.borderColor = "var(--accent)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.color = "var(--muted)"; e.currentTarget.style.borderColor = "var(--border2)"; }}
             >
-              github ↗
+              github
+              <ArrowUpRight aria-hidden style={{ width: "14px", height: "14px" }} />
             </a>
           </div>
 

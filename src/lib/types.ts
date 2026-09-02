@@ -54,10 +54,23 @@ export interface Certification {
   id: string;
   title: string;
   issuer: string;
+  /** Month the credential was issued, e.g. "Aug 2026". */
   date: string;
+  /** Only set for credentials that lapse. */
+  expires?: string;
   credentialId: string;
-  badgeUrl: string;
-  verifyUrl: string;
+  category: string;
+  /** Drives the accent used by the card, badge and certificate preview. */
+  badgeColor: string;
+  iconType: string;
+  skills: string[];
+  verificationUrl: string;
+  description: string;
+  /**
+   * Path under /public to a scan of the issued certificate. When absent the
+   * section renders its own summary panel instead.
+   */
+  previewImage?: string;
 }
 
 export interface EducationItem {
