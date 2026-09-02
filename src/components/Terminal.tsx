@@ -7,7 +7,6 @@ import {
   experience,
   education,
   certifications,
-  blogPosts,
   dataAnalystProjects,
   automationProjects,
 } from "@/lib/data";
@@ -36,7 +35,6 @@ const SECTIONS = [
   "automation",
   "experience",
   "education",
-  "blog",
   "certifications",
   "skills",
   "contact",
@@ -184,8 +182,7 @@ const COMMANDS: Command[] = [
       if (!what)
         return [
           out("projects/      experience/    education/     skills/", "out"),
-          out("certs/         blog/          analytics/     automation/", "out"),
-          out("sections/", "out"),
+          out("certs/         analytics/     automation/    sections/", "out"),
           blank(),
           out("try: ls projects", "muted"),
         ];
@@ -206,7 +203,6 @@ const COMMANDS: Command[] = [
         return Object.entries(skills).map(([k, v]) => out(`${pad(k, 22)}${v.length} entries`));
       if (what.startsWith("cert"))
         return certifications.map((c) => out(`${pad(c.date, 12)}${pad(c.issuer, 12)}${c.title}`));
-      if (what.startsWith("blog")) return blogPosts.map((b) => out(`${pad(b.date, 18)}${b.title}`));
       if (what.startsWith("analy"))
         return dataAnalystProjects.map((d) => out(`${pad(d.id, 26)}${d.name}`));
       if (what.startsWith("auto"))
@@ -336,18 +332,6 @@ const COMMANDS: Command[] = [
       ]),
   },
   {
-    name: "blog",
-    usage: "blog",
-    desc: "things I have written up",
-    run: () =>
-      blogPosts.flatMap((b) => [
-        out(b.title, "head"),
-        out(`${b.date} · ${b.readTime} · ${b.category}`, "muted"),
-        ...wrap(b.excerpt, 76).map((l) => out(l, "out", 1)),
-        blank(),
-      ]),
-  },
-  {
     name: "contact",
     usage: "contact",
     desc: "how to reach me",
@@ -362,16 +346,15 @@ const COMMANDS: Command[] = [
   {
     name: "open",
     usage: "open <project|target>",
-    desc: "open a repo, live site, or résumé",
+    desc: "open a repo or live site",
     run: (args) => {
       const t = (args[0] ?? "").toLowerCase();
-      if (!t) return [out("usage: open <project|github|resume>", "err")];
+      if (!t) return [out("usage: open <project|github|portfolio>", "err")];
       const go = (url: string, label: string) => {
         window.open(url, "_blank", "noopener,noreferrer");
         return [out(`opening ${label}…`, "accent")];
       };
       if (t === "github") return go(personal.githubUrl, personal.github);
-      if (t === "resume" || t === "cv") return go("/resume.pdf", "résumé");
       if (t === "portfolio" || t === "site") return go(personal.portfolioUrl, "portfolio");
       const p = findProject(args.join(" "));
       if (!p) return [out(`open: unknown target: ${t}`, "err")];

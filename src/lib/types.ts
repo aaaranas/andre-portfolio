@@ -81,14 +81,3 @@ export interface EducationItem {
   location: string;
   highlights: string[];
 }
-
-export interface BlogPost {
-  slug: string;
-  title: string;
-  summary: string;
-  content: string;
-  date: string;
-  readTime: string;
-  category: string;
-  tags: string[];
-}

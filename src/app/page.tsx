@@ -5,7 +5,6 @@ import DataAnalystSection from "@/components/DataAnalystSection";
 import AutomationSection from "@/components/AutomationSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import Education from "@/components/Education";
-import BlogSection from "@/components/BlogSection";
 import CertificationsSection from "@/components/CertificationsSection";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
@@ -23,7 +22,6 @@ export default function Home() {
         <AutomationSection />
         <ExperienceSection />
         <Education />
-        <BlogSection />
         <CertificationsSection />
         <Skills />
         <Contact />

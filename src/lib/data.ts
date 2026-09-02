@@ -315,11 +315,11 @@ export const experience: ExperienceEntry[] = [
     company: "Accelokal",
     role: "Head of Technology",
     period: "Aug 2026 · Present",
-    type: "Part-time",
+    type: "Tech Startup",
     location: "Cebu, Central Visayas · Remote",
     current: true,
     highlights: [
-      "Leading technology at Accelokal part-time and fully remote from Cebu.",
+      "Heading technology at Accelokal, an early-stage tech startup, working fully remote from Cebu.",
       "Owning technical direction — architecture, stack decisions, and engineering delivery.",
     ],
   },
@@ -401,74 +401,6 @@ export const education = [
     degree: "Science, Technology, Engineering & Mathematics",
     period: "Graduated: May 2021",
     courses: ["With High Honors"],
-  },
-];
-
-export const blogPosts = [
-  {
-    id: "n8n-ai-agent-automation",
-    title: "Building Autonomous AI Agents with n8n: From Prompt to Production Workflow",
-    excerpt: "How I created a self-healing lead scoring and triage system using n8n, Gemini 1.5 Pro, and PostgreSQL webhooks during my AI Engineer course.",
-    date: "July 15, 2026",
-    readTime: "6 min read",
-    category: "AI & Automation",
-    tags: ["n8n", "AI Agents", "LLM", "Automation", "Python"],
-    content: `Building intelligent workflows used to require custom Python microservices for every LLM integration. With n8n and modern AI node tool-calling capabilities, we can build autonomous multi-step agents that interact with databases, webhooks, and third-party APIs with full auditability.
-
-The Problem: Manual Customer Support Triage
-During my coursework in AI Engineering with n8n, I tackled a real-world enterprise problem: handling incoming support and inquiry emails. Traditional rule-based filters fail when messages are vague or multilingual.
-
-The Architecture:
-1. Webhook / Email Trigger — captures raw message payload
-2. AI Agent Node (Gemini 1.5 / OpenAI) — analyzes intent, extracts structured JSON fields (urgency score 1-10, sentiment, product category, actionable next steps)
-3. Tool Calling — if urgency > 8, invoke Slack Alert node; if query asks about order status, invoke custom HTTP tool to query PostgreSQL DB; otherwise generate draft reply
-4. Error Handling & Fallback — retries transient API failures with exponential backoff and logs failed executions to a Supabase table
-
-Key Insights:
-- Structured Outputs Matter: Forcing the LLM node to return strictly typed JSON schema prevents workflow execution crashes downstream.
-- Memory Buffer: Using short-term memory nodes (Window Buffer Memory) lets the AI agent maintain conversation state across webhooks.
-- n8n vs Custom Code: n8n speeds up development by 10x while allowing custom JavaScript/Python Code nodes whenever complex data transformation is required.`,
-  },
-  {
-    id: "cebu-transit-data-analysis",
-    title: "Analyzing Cebu's Public Transit Bottlenecks with Python & OpenStreetMap Data",
-    excerpt: "A deep dive into 60+ jeepney and bus routes across Cebu City to map commuter dead zones, peak congestion corridors, and transit equity.",
-    date: "June 28, 2026",
-    readTime: "8 min read",
-    category: "Data Analytics",
-    tags: ["Data Analytics", "Python", "Pandas", "Spatial Data", "Cebu"],
-    content: `Public transit in metropolitan Cebu relies heavily on traditional jeepneys, modern PUVs, and v-hires. Unlike major global capitals with standardized GTFS feeds, Cebu's transit grid is informal and dynamic.
-
-Data Collection & Cleaning:
-To build the dataset for my Komyut ta Bai project and this analytical study:
-- Scraped and mapped 64 distinct route codes across Metro Cebu
-- Parsed 120,000+ spatial GPS track points into GeoPandas DataFrames
-- Cleaned missing fare stops, standardized route names, and normalized peak vs off-peak speeds
-
-Key Findings:
-1. The Colon / Fuente Corridor Bottleneck: Over 72% of all jeepney routes converge on a single 2.4km road segment, causing a 3.8x drop in average speed during 5:00 PM - 7:30 PM peak hours.
-2. Transit Deserts in Suburban Mandaue & Talisay: Commuters in outer barangays wait up to 42 minutes for a single jeepney transfer compared to <5 minutes in urban Cebu City center.
-3. Fare Efficiency: Distance-to-fare ratios revealed that short-distance transfers cost 35% more per kilometer than long-haul direct routes.`,
-  },
-  {
-    id: "websocket-offline-sync",
-    title: "Lessons Learned Building an Offline-First Real-Time Kanban with WebSockets",
-    excerpt: "How I architected Donezo to handle instant drag-and-drop state updates, offline event queues, and conflict resolution over custom Socket.io handlers.",
-    date: "May 10, 2026",
-    readTime: "5 min read",
-    category: "Web Development",
-    tags: ["React", "WebSockets", "Node.js", "PostgreSQL", "Offline-First"],
-    content: `Building real-time web applications is exciting, but handling network instability gracefully is what separates good software from great software.
-
-The Challenge:
-When a user drags a task card to a new column while entering a tunnel or experiencing poor Wi-Fi, the UI shouldn't freeze or revert silently.
-
-Solution Strategy:
-1. Optimistic UI Updates: Instantly update React state and local storage when the user interacts.
-2. Offline Mutation Queue: If the WebSocket connection drops, save the action with a timestamp and ID to IndexedDB / localStorage.
-3. Reconnection & Last-Write-Wins Reconciliation: Upon reconnection, emit the queued events in sequence. The server validates token auth and timestamps, updating PostgreSQL and broadcasting diffs to room peers.
-
-This project cemented my understanding of asynchronous event loops, WebSocket heartbeat protocols, and database transaction locks.`,
   },
 ];
 
@@ -689,6 +621,7 @@ export const certifications: Certification[] = [
     verificationUrl: "https://www.datacamp.com/certificate/DAA0012760794890",
     description:
       "Proctored DataCamp certification assessed across four domains — data management, exploratory analysis, statistical experimentation, and communication. Timed exams plus a practical submission solving a real business problem end to end, from cleaning multi-source SQL data to presenting the findings.",
+    previewImage: "/certificates/datacamp-data-analyst-associate.png",
   },
   {
     id: "google-ai-professional",
@@ -709,6 +642,7 @@ export const certifications: Certification[] = [
     ],
     verificationUrl: "https://coursera.org/verify/professional-cert/NHZNG6TPG57Z",
     description: "Seven-course Google program on applying AI across real workplace tasks — brainstorming, research, communication, content creation, data analysis, and coding. Completed with a portfolio of 20+ AI-built artifacts and a custom AI solution.",
+    previewImage: "/certificates/google-ai-professional.jpg",
   },
   {
     id: "ibm-data-analyst",
@@ -735,6 +669,7 @@ export const certifications: Certification[] = [
     skills: ["n8n", "AI Automation", "Webhook Routing", "Data Transformation", "Error Handling"],
     verificationUrl: "https://github.com/aaaranas",
     description: "Practical training in designing automated workflows, routing webhooks, parsing API payloads, and orchestrating AI agent pipelines with robust error recovery.",
+    previewImage: "/certificates/learnkarts-n8n-automation.jpg",
   },
   {
     id: "datacamp-github-foundations",
@@ -748,6 +683,7 @@ export const certifications: Certification[] = [
     skills: ["GitHub", "Git", "Version Control", "Pull Requests", "Code Review"],
     verificationUrl: "https://github.com/aaaranas",
     description: "Validation of Git version control fundamentals, structured pull request management, branching strategies, and collaborative team workflows on GitHub.",
+    previewImage: "/certificates/datacamp-github-foundations.jpg",
   },
   {
     id: "csc-professional-eligibility",

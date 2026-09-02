@@ -24,6 +24,11 @@ export default function CertificatePreview({
   const c = cert.badgeColor;
 
   if (cert.previewImage) {
+    // Scans arrive in whatever shape the issuer exports (roughly 1.29:1 to 1.74:1).
+    // They share the drawn panel's 1.55:1 frame and are contained inside it, so
+    // every card in the grid is the same size whatever the source ratio; the
+    // matte stays paper-light in both themes so the letterbox bands read as a
+    // mount board around the document rather than a gap in the card.
     return (
       <div
         style={{
@@ -33,7 +38,8 @@ export default function CertificatePreview({
           borderRadius: "var(--r)",
           overflow: "hidden",
           border: `1px solid ${c}33`,
-          background: "var(--bg3)",
+          background: "#f4f3ef",
+          padding: compact ? "6px" : "10px",
         }}
       >
         <Image
@@ -41,7 +47,7 @@ export default function CertificatePreview({
           alt={`${cert.title} certificate issued by ${cert.issuer}`}
           fill
           sizes={compact ? "(max-width: 700px) 90vw, 340px" : "(max-width: 860px) 90vw, 720px"}
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: "contain", padding: "inherit" }}
         />
       </div>
     );

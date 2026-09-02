@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Terminal from "./Terminal";
-import { ArrowUp, ArrowUpRight, Moon, Sun } from "lucide-react";
+import { ArrowUp, Moon, Sun } from "lucide-react";
 
 /**
  * Sections reachable from the bar. "about" is the top of the page and "contact"
@@ -199,24 +199,6 @@ export default function Nav() {
               )}
             </a>
           ))}
-
-          {/* Resume */}
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontFamily: "var(--font-mono)", fontSize: "11px",
-              letterSpacing: "0.1em", textTransform: "uppercase",
-              color: "var(--muted)", transition: "color 0.2s",
-              display: "inline-flex", alignItems: "center", gap: "5px",
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
-          >
-            résumé
-            <ArrowUpRight aria-hidden style={{ width: "12px", height: "12px" }} />
-          </a>
 
           {/* Theme toggle */}
           <button

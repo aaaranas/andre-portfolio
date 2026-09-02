@@ -291,17 +291,6 @@ export default function Hero() {
               view work
               <ArrowRight aria-hidden style={{ width: "14px", height: "14px" }} />
             </a>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" style={{
-              fontFamily: "var(--font-mono)", fontSize: "11.5px", letterSpacing: "0.06em",
-              padding: "12px 26px", borderRadius: "var(--r)", border: "1px solid var(--border)", color: "var(--text)",
-              transition: "all 0.2s", display: "inline-flex", alignItems: "center", gap: "8px",
-            }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-soft)"; e.currentTarget.style.borderColor = "var(--accent)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "var(--border)"; }}
-            >
-              résumé
-              <ArrowUpRight aria-hidden style={{ width: "14px", height: "14px" }} />
-            </a>
             <a href={personal.githubUrl} target="_blank" rel="noopener noreferrer" style={{
               fontFamily: "var(--font-mono)", fontSize: "11.5px", letterSpacing: "0.06em",
               padding: "12px 26px", borderRadius: "var(--r)", border: "1px solid var(--border2)", color: "var(--muted)",
