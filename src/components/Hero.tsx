@@ -26,7 +26,7 @@ const TRACKS: Track[] = [
     role: "Software Engineer",
     short: "SWE",
     color: "var(--accent)",
-    line: "Frontend-leaning full stack. React, Next.js, TypeScript, Node. I own architecture and ship to production.",
+    line: "Frontend-leaning full stack. React, Next.js, TypeScript, Node. I take a build from the schema to the deploy.",
     stack: ["React", "Next.js", "TypeScript", "Node", "PostgreSQL"],
     href: "#projects",
     cmd: "npm run build",
@@ -37,7 +37,7 @@ const TRACKS: Track[] = [
     role: "Data Analyst",
     short: "DATA",
     color: "var(--accent2)",
-    line: "Python spatial analysis, GIS multi-criteria modeling, cohort retention. Notebooks that answer real questions.",
+    line: "Python spatial analysis, GIS multi-criteria modelling, cohort retention. The notebooks are here to read, outputs and all.",
     stack: ["Python", "Pandas", "GeoPandas", "SQL", "Jupyter"],
     href: "#data-analyst",
     cmd: "jupyter lab",
@@ -120,22 +120,27 @@ export default function Hero() {
           <span style={{ color: "var(--dim)" }}>{personal.availability.label}</span>
         </motion.div>
 
-        {/* ── name + avatar row ── */}
-        <div className="hero-split" style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "60px", alignItems: "flex-end", marginBottom: "18px" }}>
-          <div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)", marginBottom: "18px", letterSpacing: "0.1em" }}>
-              <span style={{ color: "var(--accent)" }}>$</span> whoami
-            </div>
-            <h1 style={{ fontSize: "clamp(44px, 8.2vw, 108px)", fontWeight: 700, lineHeight: 0.92, letterSpacing: "-0.055em", marginBottom: "0" }}>
-              <div><Reveal text="Andre Milan" delay={0.15} /></div>
-              <div style={{ color: "var(--accent)" }}><Reveal text="Arañas" delay={0.42} /></div>
-            </h1>
-          </div>
+        {/* ── nameplate: the portrait sits behind the name, not beside it ── */}
+        <div className="hero-name" style={{ position: "relative", marginBottom: "18px" }}>
 
+          {/* hairline the name hangs from, running out past the portrait */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
-            style={{ position: "relative", flexShrink: 0 }}
+            initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+            transition={{ delay: 0.55, duration: 1.1, ease: EASE }}
+            aria-hidden
+            className="hero-rule"
+            style={{
+              position: "absolute", left: 0, right: 0, top: "0.42em", height: "1px",
+              background: "linear-gradient(to right, var(--accent), var(--border) 42%, transparent)",
+              transformOrigin: "left", zIndex: 0,
+            }}
+          />
+
+          {/* portrait, overlapped by the surname */}
+          <motion.div
+            initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.45, duration: 0.7, ease: EASE }}
+            className="hero-portrait"
             onMouseEnter={() => setLit(true)}
             onMouseLeave={() => setLit(false)}
           >
@@ -145,10 +150,10 @@ export default function Hero() {
               className="ascii-portrait"
               style={{
                 borderRadius: "var(--r)",
-                border: `1px solid ${lit ? "var(--accent)" : "var(--border)"}`,
+                border: `1px solid ${lit ? "var(--accent)" : "var(--border2)"}`,
                 background: "var(--bg2)",
                 padding: "12px 14px",
-                boxShadow: lit ? "0 0 30px var(--accent-glow)" : "none",
+                boxShadow: lit ? "0 0 36px var(--accent-glow)" : "none",
                 transition: "border-color 0.3s, box-shadow 0.3s",
               }}
             >
@@ -161,7 +166,7 @@ export default function Hero() {
                   letterSpacing: 0,
                   whiteSpace: "pre",
                   color: "var(--accent)",
-                  opacity: lit ? 1 : 0.88,
+                  opacity: lit ? 1 : 0.72,
                   transition: "opacity 0.3s",
                   userSelect: "none",
                 }}
@@ -169,18 +174,28 @@ export default function Hero() {
                 {ASCII_PORTRAIT.join("\n")}
               </pre>
             </div>
-            {/* corner ticks */}
-            {[0, 1, 2, 3].map((i) => (
-              <span key={i} style={{
-                position: "absolute", width: "8px", height: "8px",
-                borderColor: "var(--accent)",
-                ...(i < 2 ? { top: "-4px" } : { bottom: "-4px" }),
-                ...(i % 2 === 0 ? { left: "-4px" } : { right: "-4px" }),
-                ...(i < 2 ? { borderTop: "1px solid" } : { borderBottom: "1px solid" }),
-                ...(i % 2 === 0 ? { borderLeft: "1px solid" } : { borderRight: "1px solid" }),
-              }} />
-            ))}
           </motion.div>
+
+          {/* crop marks bracketing the whole nameplate */}
+          {[0, 1, 2, 3].map((i) => (
+            <span key={i} aria-hidden className="hero-tick" style={{
+              position: "absolute", width: "10px", height: "10px",
+              borderColor: "var(--accent)", opacity: lit ? 0.9 : 0.4, transition: "opacity 0.3s",
+              ...(i < 2 ? { top: 0 } : { bottom: 0 }),
+              ...(i % 2 === 0 ? { left: 0 } : { right: 0 }),
+              ...(i < 2 ? { borderTop: "1px solid" } : { borderBottom: "1px solid" }),
+              ...(i % 2 === 0 ? { borderLeft: "1px solid" } : { borderRight: "1px solid" }),
+            }} />
+          ))}
+
+          {/* the name itself, in front */}
+          <h1 className="hero-h1">
+            <span className="hero-kicker">
+              <span style={{ color: "var(--accent)" }}>$</span> whoami
+            </span>
+            <span className="hero-line-1"><Reveal text="Andre Milan" delay={0.15} /></span>
+            <span className="hero-line-2"><Reveal text="Arañas" delay={0.42} /></span>
+          </h1>
         </div>
 
         {/* ── rule ── */}

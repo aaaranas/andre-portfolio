@@ -103,19 +103,26 @@ export default function ExperienceSection() {
                     >
                       {company.span}
                     </span>
-                    {company.roles.length > 1 && (
+                    {company.progression && (
                       <span
                         style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "7px",
                           fontFamily: "var(--font-mono)",
                           fontSize: "10px",
-                          color: "var(--accent)",
+                          letterSpacing: "0.08em",
                           border: "1px solid var(--border)",
                           borderRadius: "var(--r)",
-                          padding: "2px 8px",
-                          letterSpacing: "0.08em",
+                          padding: "3px 10px",
+                          background: "var(--bg3)",
                         }}
                       >
-                        {company.roles.length} roles
+                        <span style={{ color: "var(--dim)" }}>{company.progression[0]}</span>
+                        <Mark name="arrow" size={11} color="var(--accent)" />
+                        <span style={{ color: "var(--accent)", fontWeight: 600 }}>
+                          {company.progression[company.progression.length - 1]}
+                        </span>
                       </span>
                     )}
                   </div>
@@ -197,11 +204,12 @@ export default function ExperienceSection() {
                             style={{
                               fontFamily: "var(--font-mono)",
                               fontSize: "10px",
+                              fontWeight: r.current ? 700 : 400,
                               padding: "3px 10px",
-                              border: "1px solid var(--border)",
+                              border: `1px solid ${r.current ? "var(--accent)" : "var(--border)"}`,
                               borderRadius: "var(--r)",
-                              color: "var(--muted)",
-                              background: "var(--bg3)",
+                              color: r.current ? "var(--bg)" : "var(--muted)",
+                              background: r.current ? "var(--accent)" : "var(--bg3)",
                               letterSpacing: "0.08em",
                               whiteSpace: "nowrap",
                             }}

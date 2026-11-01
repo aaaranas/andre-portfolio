@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { projects, projectCategories, type Project } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 import Mark, { Numeral } from "./ui/mark";
@@ -8,9 +8,37 @@ const FILTERS = ["All", ...projectCategories] as const;
 type Filter = (typeof FILTERS)[number];
 
 /* ── live site preview in a fake browser chrome ── */
-function BrowserPreview({ url, color, name }: { url: string; color: string; name: string }) {
-  const screenshotUrl = `https://image.thum.io/get/width/800/crop/450/noanimate/allowJPG/${url}`;
-  const [imgError, setImgError] = useState(false);
+function BrowserPreview({ project }: { project: Project }) {
+  const { id, live: url, color, name } = project;
+  /**
+   * Our own capture first (committed by `npm run previews`), the hosted
+   * screenshot service only as a stand-in for a project not captured yet, and
+   * a plain card if neither answers.
+   */
+  const sources = useMemo(
+    () => [
+      `/previews/${id}.png`,
+      `https://image.thum.io/get/width/800/crop/450/noanimate/allowJPG/${url}`,
+    ],
+    [id, url],
+  );
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const imgError = sourceIndex >= sources.length;
+  const nextSource = useCallback(() => setSourceIndex((i) => i + 1), []);
+
+  /**
+   * The server renders the first source, so the browser can finish failing it
+   * before React hydrates and an onError handler exists to hear it. The ref
+   * runs on commit and catches that already-broken case; onError covers every
+   * load after. Keyed on sourceIndex so it re-checks each time the src changes.
+   */
+  const checkLoaded = useCallback(
+    (el: HTMLImageElement | null) => {
+      if (el && el.complete && el.naturalWidth === 0) nextSource();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [sourceIndex, nextSource],
+  );
 
   return (
     <a
@@ -74,9 +102,10 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
         {!imgError ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={screenshotUrl}
-            alt={`${name} preview`}
-            onError={() => setImgError(true)}
+            ref={checkLoaded}
+            src={sources[sourceIndex]}
+            alt={`${name} home page`}
+            onError={nextSource}
             style={{
               width: "100%",
               height: "100%",
@@ -364,7 +393,7 @@ export default function Projects() {
                 />
 
                 {proj.live ? (
-                  <BrowserPreview url={proj.live} color={proj.color} name={proj.name} />
+                  <BrowserPreview project={proj} />
                 ) : (
                   <TerminalPreview project={proj} />
                 )}

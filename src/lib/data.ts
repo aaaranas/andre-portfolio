@@ -10,7 +10,7 @@ export const personal = {
   github: "github.com/aaaranas",
   githubUrl: "https://github.com/aaaranas",
   location: "Cebu City, Philippines",
-  bio: "I build fast, accessible web apps that solve real problems — and analyze the data behind them. 4th year BS Computer Science at UP Cebu, working across three tracks: software engineering, data analysis, and AI automation.",
+  bio: "Fourth-year computer science at UP Cebu. I build web apps for people here in Cebu — getting across the province, getting enrolled, running a small business — and do the data work sitting behind them.",
   portfolioUrl: "https://andre-milan-aranas.vercel.app/",
   // Availability shown in the hero status bar and on the contact section.
   availability: {
@@ -309,6 +309,8 @@ export type ExperienceRole = {
 export type ExperienceEntry = {
   company: string;
   span: string;
+  /** Set when one engagement became another, e.g. an internship converting to contract work. */
+  progression?: string[];
   roles: ExperienceRole[];
 };
 
@@ -316,11 +318,13 @@ export const experience: ExperienceEntry[] = [
   {
     company: "eComia",
     span: "Jun 2026 · Present",
+    /** Reads left to right in the company header: where the engagement started, where it is now. */
+    progression: ["Internship", "Project-Based"],
     roles: [
       {
         role: "Web Developer",
         period: "Sep 2026 · Present",
-        type: "Freelance",
+        type: "Project-Based",
         location: "Cebu City, PH · Hybrid",
         current: true,
         highlights: [
@@ -433,7 +437,8 @@ export const dataAnalystProjects = [
     id: "lahug-flood-gis-mcda",
     name: "GIS Multi-Criteria Flood Risk Assessment (Barangay Lahug)",
     tagline: "7-Criterion weighted overlay MCDA & uniform 30m raster grid alignment in Python (CMSC 179)",
-    summary: "GIS spatial decision analysis for urban flood vulnerability modeling in Barangay Lahug, Cebu City. Engineered a uniform 30m × 30m pixel grid resampling pipeline (snap_to_grid) in Python (GeoPandas, Rasterio, SciPy) to harmonize multi-source GeoTIFF rasters, OSM shapefiles, GeoPackage flood maps, and 48 field-surveyed waste dump GPS points into a composite 5-tier risk model.",
+    summary:
+      "Which parts of Barangay Lahug flood first, and what makes them worse. The hard part was that none of the source layers agreed: GeoTIFF rasters, OSM shapefiles, a GeoPackage flood map and 48 waste-dump GPS points I surveyed on foot, all on different grids. A snap_to_grid pipeline in GeoPandas, Rasterio and SciPy resamples everything onto one 30m × 30m grid so the seven weighted criteria can be overlaid into a five-tier risk model.",
     dataFormats: [
       "GeoPackage (.gpkg) — NAMRIA Flood Hazard Map",
       "GeoTIFF (.tif) — WorldPop 2024 Population Density & SRTM 30m DEM Elevation",
@@ -485,7 +490,8 @@ export const dataAnalystProjects = [
     id: "cebu-transit-analysis",
     name: "Cebu Public Transit & Commuter Mobility Study",
     tagline: "Exploratory spatial data analysis on 60+ Cebu jeepney & bus routes",
-    summary: "Comprehensive Python data analysis on Cebu's commuter transit network. Analyzed route density, fare efficiency, travel delays, and commuter accessibility across Metro Cebu.",
+    summary:
+      "Where Metro Cebu's transit network thins out, and where it seizes up. Cleaned 120,000+ route and GPS points across 64 jeepney and bus routes, then measured route density, fare efficiency and travel delay against each other — including the corridor where peak-hour speed drops by a factor of almost four.",
     tools: ["Python", "Pandas", "GeoPandas", "Matplotlib", "Seaborn", "Folium", "Jupyter"],
     keyMetrics: [
       { label: "Routes Analyzed", value: "64 Routes" },
@@ -519,9 +525,10 @@ export const dataAnalystProjects = [
   },
   {
     id: "ecommerce-customer-churn",
-    name: "E-Commerce Customer Retention & Cohort Analytics",
+    name: "Customer Retention & Cohort Analysis",
     tagline: "Statistical analysis & cohort retention model for online retail platform",
-    summary: "Data analytics project investigating user behavior, purchase frequency, RFM segmentation, and churn risk factors for digital storefronts.",
+    summary:
+      "Which customers are about to stop buying, and what that is worth leaving on the table. Sorted 85,000 transactions into five RFM clusters by recency, frequency and spend, then modelled churn risk against each cluster's buying pattern.",
     tools: ["Python", "Pandas", "SQL / PostgreSQL", "Scikit-learn", "Plotly", "Power BI"],
     keyMetrics: [
       { label: "Transactions Analyzed", value: "85,000+" },
@@ -557,10 +564,11 @@ export const dataAnalystProjects = [
 export const automationProjects = [
   {
     id: "n8n-ai-triage-agent",
-    name: "AI-Powered Lead Triage & Customer Support Agent",
-    tagline: "Autonomous n8n workflow with Gemini 1.5 Pro tool calling, PostgreSQL & Slack alerts",
+    name: "Support Inbox Triage Agent",
+    tagline: "Reads an incoming message, works out how urgent it is, then acts on it",
     courseNote: "AI Engineer Course Project — n8n & LLM Orchestration",
-    description: "Multi-branch n8n automation workflow that ingests customer emails/webhooks, evaluates intent and sentiment using Gemini AI Agent nodes, queries product databases via custom HTTP tools, and routes high-priority cases directly to Slack and CRM.",
+    description:
+      "Support mail lands on a webhook and the workflow decides what to do with it. A Gemini agent reads the message for intent and urgency; if it cites an order number, the agent runs a Postgres query tool and looks it up before replying. Anything scoring above seven goes to the on-call Slack channel with a summary attached. Everything else gets a drafted reply out through Resend.",
     n8nNodes: [
       { name: "Webhook Listener", type: "Trigger" },
       { name: "Gemini 1.5 Agent", type: "AI Engine" },
@@ -578,7 +586,7 @@ export const automationProjects = [
     sampleExecution: {
       inputName: "Maria Santos",
       inputEmail: "maria.santos@example.com",
-      inputMessage: "URGENT: My QR ticket for tonight's Cebu tech summit isn't downloading! Order #9482. Please help!",
+      inputMessage: "Hi, my QR ticket for the Cebu tech summit tonight won't download. Order #9482. Is there another way to get it?",
       outputUrgency: "9 / 10 (Critical)",
       outputSentiment: "Negative / Anxious",
       outputActions: [
@@ -592,10 +600,11 @@ export const automationProjects = [
   },
   {
     id: "n8n-github-ai-summarizer",
-    name: "Automated GitHub PR Review & Issue Auto-Triage Bot",
-    tagline: "n8n workflow monitoring GitHub webhooks, generating LLM code summaries & labeling",
+    name: "Pull Request Review Bot",
+    tagline: "Takes a first pass at the diff before a human opens the pull request",
     courseNote: "AI Engineer Course Project — Autonomous Developer Tooling",
-    description: "Automated devops assistant built in n8n. Triggered on GitHub pull request open / issue create events. Uses LLM embeddings & Gemini API to summarize code diffs, verify linting guidelines, auto-apply labels, and assign reviewers.",
+    description:
+      "A GitHub webhook fires when a pull request opens. The workflow pulls the file diffs, checks them against the repo's style guide, and hands them to Gemini for a read on risk and clarity. It posts one structured Markdown review back on the PR thread — the obvious things caught before a reviewer spends attention on them.",
     n8nNodes: [
       { name: "GitHub Webhook", type: "Trigger" },
       { name: "Code Diff Extractor", type: "Data Transform" },

@@ -32,8 +32,7 @@ export default function Skills() {
           Tech Stack
         </h2>
         <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px", marginBottom: "48px" }}>
-          What I reach for, grouped by where it sits in a build. Everything listed here has
-          shipped in something on this page.
+          What I reach for, grouped by where it sits in a build.
         </p>
 
         {/* Category tabs */}
