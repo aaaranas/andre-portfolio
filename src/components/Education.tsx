@@ -18,11 +18,15 @@ export default function Education() {
             fontFamily: "var(--font-display)",
             fontSize: "clamp(36px, 5vw, 60px)",
             fontWeight: 600,
-            marginBottom: "64px",
+            marginBottom: "20px",
           }}
         >
           Education
         </h2>
+        <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px", marginBottom: "64px" }}>
+          Computer science at UP Cebu, after two years of statistics — which is where the
+          data side of this portfolio comes from.
+        </p>
       </ScrollReveal>
 
       <div style={{ position: "relative" }}>

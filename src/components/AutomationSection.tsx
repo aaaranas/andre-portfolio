@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import { automationProjects } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { Zap, Bot, X, Play, Terminal, ArrowRight } from "lucide-react";
-import Icon from "./ui/icon";
+import Mark, { Numeral } from "./ui/mark";
 
 type Project = (typeof automationProjects)[0];
 
@@ -39,14 +38,15 @@ export default function AutomationSection() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <ScrollReveal>
           <div style={{ marginBottom: "48px" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--accent3)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
-              <Zap style={{ width: "16px", height: "16px" }} /> AI & Automation Track
+            <div className="section-label" style={{ marginBottom: "16px", color: "var(--accent3)" }}>
+              03 / ai automation
             </div>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 600, color: "var(--text)", marginBottom: "12px" }}>
-              n8n AI Automation Projects
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 600, color: "var(--text)", marginBottom: "20px" }}>
+              Workflows That Run Without Me
             </h2>
-            <p style={{ color: "var(--muted)", maxWidth: "600px", fontSize: "14px", lineHeight: 1.7, fontFamily: "var(--font-mono)" }}>
-              Production-grade n8n workflows with Gemini LLM agents, webhook routing, tool-calling pipelines, and live execution simulators.
+            <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px" }}>
+              n8n orchestrations with Gemini agents, tool-calling, and webhook routing. Open one
+              to walk the nodes and run the execution simulator.
             </p>
           </div>
         </ScrollReveal>
@@ -77,7 +77,7 @@ export default function AutomationSection() {
               >
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
-                    <Icon name={proj.icon} size={28} style={{ color: "var(--accent3)" }} />
+                    <Numeral n={idx + 1} color="var(--accent3)" size={13} />
                     <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", padding: "3px 10px", border: "1px solid var(--accent3)", borderRadius: "var(--r)", color: "var(--accent3)", background: "transparent" }}>
                       {proj.courseNote}
                     </span>
@@ -95,7 +95,6 @@ export default function AutomationSection() {
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
                     {proj.n8nNodes.map((node) => (
                       <span key={node.name} style={{ fontFamily: "var(--font-mono)", fontSize: "11px", padding: "3px 10px", border: "1px solid var(--accent3)", borderRadius: "6px", color: "var(--accent3)", background: "transparent", display: "flex", alignItems: "center", gap: "4px" }}>
-                        <Icon name={node.icon} size={13} />
                         {node.name}
                       </span>
                     ))}
@@ -124,8 +123,8 @@ export default function AutomationSection() {
                   onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent3)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                 >
-                  <Bot style={{ width: "15px", height: "15px" }} />
-                  View Workflow & Run Simulator
+                  <Mark name="arrow" size={13} />
+                  View Workflow &amp; Run Simulator
                 </button>
               </div>
             </ScrollReveal>
@@ -138,11 +137,11 @@ export default function AutomationSection() {
           <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "760px", padding: "0", overflow: "hidden" }}>
             <div style={{ background: "var(--bg3)", borderBottom: "1px solid var(--border)", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <Zap style={{ width: "18px", height: "18px", color: "var(--accent3)" }} />
+                <span aria-hidden style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "0.1em", color: "var(--accent3)", border: "1px solid var(--accent3)", borderRadius: "2px", padding: "2px 6px", opacity: 0.8 }}>n8n</span>
                 <span style={{ fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: 700, color: "var(--text)" }}>{activeProject.name}</span>
               </div>
               <button onClick={() => setActiveProject(null)} style={{ background: "none", border: "1px solid var(--border)", color: "var(--text)", width: "30px", height: "30px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <X style={{ width: "14px", height: "14px" }} />
+                <Mark name="close" size={15} />
               </button>
             </div>
 
@@ -175,7 +174,7 @@ export default function AutomationSection() {
                   <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>Workflow Steps</h4>
                   {activeProject.workflowSteps.map((step, i) => (
                     <div key={i} style={{ display: "flex", gap: "12px", marginBottom: "8px" }}>
-                      <ArrowRight aria-hidden style={{ width: "13px", height: "13px", color: "var(--accent3)", flexShrink: 0, marginTop: "3px" }} />
+                      <Mark name="arrow" size={13} color="var(--accent3)" style={{ marginTop: "2px" }} />
                       <span style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--muted)", lineHeight: 1.6 }}>{step}</span>
                     </div>
                   ))}
@@ -186,7 +185,7 @@ export default function AutomationSection() {
                 <div>
                   <div style={{ background: "#0d1117", borderRadius: "var(--r)", border: "1px solid var(--border)", padding: "18px", marginBottom: "16px", minHeight: "200px" }}>
                     {simLogs.length === 0 && !simRunning && (
-                      <p style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--muted)" }}>Click "Run Simulation" to see the workflow execute live.</p>
+                      <p style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--muted)" }}>Click &ldquo;Run Simulation&rdquo; to see the workflow execute live.</p>
                     )}
                     {simLogs.map((log, i) => (
                       <div key={i} style={{ fontFamily: "var(--font-mono)", fontSize: "12px", color: "var(--ok)", lineHeight: 1.8 }}>{log}</div>
@@ -205,7 +204,7 @@ export default function AutomationSection() {
                       cursor: simRunning ? "not-allowed" : "pointer",
                     }}
                   >
-                    {simRunning ? <Terminal style={{ width: "15px", height: "15px" }} /> : <Play style={{ width: "15px", height: "15px" }} />}
+                    <Mark name="prompt" size={13} />
                     {simRunning ? "Running..." : "Run Simulation"}
                   </button>
                 </div>
@@ -213,9 +212,11 @@ export default function AutomationSection() {
 
               {activeTab === "nodes" && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
-                  {activeProject.n8nNodes.map((node) => (
+                  {activeProject.n8nNodes.map((node, i) => (
                     <div key={node.name} style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: "var(--r)", padding: "14px 16px" }}>
-                      <Icon name={node.icon} size={22} style={{ color: "var(--accent3)", marginBottom: "6px" }} />
+                      <div style={{ marginBottom: "6px" }}>
+                        <Numeral n={i + 1} color="var(--accent3)" size={12} />
+                      </div>
                       <div style={{ fontFamily: "var(--font-display)", fontSize: "14px", fontWeight: 700, color: "var(--text)", marginBottom: "4px" }}>{node.name}</div>
                       <div style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--accent3)", textTransform: "uppercase", letterSpacing: "0.08em" }}>{node.type}</div>
                     </div>

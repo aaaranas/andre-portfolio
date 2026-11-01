@@ -2,8 +2,7 @@
 import { useMemo, useState } from "react";
 import { projects, projectCategories, type Project } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { ArrowRight, ArrowUpRight, ChevronRight, Globe } from "lucide-react";
-import Icon from "./ui/icon";
+import Mark, { Numeral } from "./ui/mark";
 
 const FILTERS = ["All", ...projectCategories] as const;
 type Filter = (typeof FILTERS)[number];
@@ -58,7 +57,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
         >
           {url.replace("https://", "")}
         </div>
-        <ArrowUpRight aria-hidden style={{ width: "11px", height: "11px", color, opacity: 0.7 }} />
+        <Mark name="external" size={11} color={color} style={{ opacity: 0.7 }} />
       </div>
 
       <div
@@ -99,8 +98,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
               color: "var(--muted)",
             }}
           >
-            <Globe aria-hidden style={{ width: "28px", height: "28px", color }} />
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "0.08em" }}>
               Preview unavailable
             </span>
             <span
@@ -115,7 +113,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
               }}
             >
               Click to visit
-              <ArrowRight aria-hidden style={{ width: "12px", height: "12px" }} />
+              <Mark name="arrow" size={12} />
             </span>
           </div>
         )}
@@ -148,7 +146,7 @@ function BrowserPreview({ url, color, name }: { url: string; color: string; name
             }}
           >
             Open site
-            <ArrowUpRight aria-hidden style={{ width: "12px", height: "12px" }} />
+            <Mark name="external" size={12} />
           </span>
         </div>
       </div>
@@ -195,7 +193,7 @@ function TerminalPreview({ project }: { project: Project }) {
           ))}
         </div>
         <span style={{ flex: 1 }}>{project.repo}</span>
-        <ArrowUpRight aria-hidden style={{ width: "11px", height: "11px", color: project.color, opacity: 0.7 }} />
+        <Mark name="external" size={11} color={project.color} style={{ opacity: 0.7 }} />
       </div>
 
       <div
@@ -246,7 +244,7 @@ export default function Projects() {
     >
       <ScrollReveal>
         <div className="section-label" style={{ marginBottom: "16px" }}>
-          02 / projects
+          01 / selected work
         </div>
         <h2
           style={{
@@ -261,10 +259,10 @@ export default function Projects() {
         <p
           style={{
             color: "var(--muted)",
-            fontSize: "14px",
+            fontSize: "15px",
             marginBottom: "28px",
-            fontFamily: "var(--font-mono)",
             lineHeight: 1.7,
+            maxWidth: "620px",
           }}
         >
           Every project here is a public repository on{" "}
@@ -381,8 +379,8 @@ export default function Projects() {
                     gap: "12px",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <Icon name={proj.icon} size={24} style={{ color: proj.color }} />
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                    <Numeral n={i + 1} color={proj.color} size={14} style={{ marginTop: "3px" }} />
                     <div>
                       <h3
                         style={{
@@ -458,7 +456,7 @@ export default function Projects() {
                         gap: "8px",
                       }}
                     >
-                      <ChevronRight aria-hidden style={{ width: "13px", height: "13px", color: proj.color, flexShrink: 0, marginTop: "3px" }} />
+                      <Mark name="chevron" size={13} color={proj.color} style={{ marginTop: "1px" }} />
                       {m}
                     </li>
                   ))}
@@ -535,7 +533,7 @@ export default function Projects() {
                         }}
                       >
                         {l.label}
-                        <ArrowUpRight aria-hidden style={{ width: "11px", height: "11px" }} />
+                        <Mark name="external" size={11} />
                       </a>
                     ))}
                 </div>

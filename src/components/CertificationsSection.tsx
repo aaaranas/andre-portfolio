@@ -2,23 +2,10 @@
 import React, { useState } from "react";
 import { certifications } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { Award, BarChart3, Zap, Sparkles, ExternalLink, CheckCircle2, ShieldCheck, TrendingUp, X } from "lucide-react";
-import { SiGithub } from "react-icons/si";
+import Mark, { Monogram } from "./ui/mark";
 import { Badge } from "@/components/ui/badge";
 import CertificatePreview from "./CertificatePreview";
 import type { Certification } from "@/lib/types";
-
-function getCertIcon(iconType: string, color: string) {
-  const style = { width: "22px", height: "22px", color };
-  switch (iconType) {
-    case "bar-chart": return <BarChart3 style={style} />;
-    case "trending": return <TrendingUp style={style} />;
-    case "zap": return <Zap style={style} />;
-    case "ai": return <Sparkles style={style} />;
-    case "github": return <SiGithub style={{ width: "22px", height: "22px", color }} />;
-    default: return <Award style={style} />;
-  }
-}
 
 export default function CertificationsSection() {
   const [activeCert, setActiveCert] = useState<Certification | null>(null);
@@ -28,14 +15,15 @@ export default function CertificationsSection() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <ScrollReveal>
           <div style={{ marginBottom: "40px" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--ok)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>
-              <Award style={{ width: "16px", height: "16px" }} /> Certifications & Accreditation
+            <div className="section-label" style={{ marginBottom: "16px" }}>
+              06 / certifications
             </div>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 700, color: "var(--text)", marginBottom: "12px" }}>
-              Certifications & Qualifications
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 600, color: "var(--text)", marginBottom: "20px" }}>
+              Certifications
             </h2>
-            <p style={{ color: "var(--muted)", maxWidth: "680px", fontSize: "15px", lineHeight: 1.6 }}>
-              Professional certifications, specialized coursework, and government eligibility credentials.
+            <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px" }}>
+              Proctored certifications and specialised coursework. Each card opens the issued
+              certificate and links to the issuer&apos;s own verification page.
             </p>
           </div>
         </ScrollReveal>
@@ -71,9 +59,7 @@ export default function CertificationsSection() {
                     <CertificatePreview cert={cert} compact />
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-                    <div style={{ background: `${cert.badgeColor}18`, padding: "10px", borderRadius: "var(--r)", display: "inline-flex" }}>
-                      {getCertIcon(cert.iconType, cert.badgeColor)}
-                    </div>
+                    <Monogram text={cert.issuer} color={cert.badgeColor} size={38} />
                     <Badge variant="outline" style={{ color: cert.badgeColor, borderColor: `${cert.badgeColor}40` }}>
                       {cert.category}
                     </Badge>
@@ -120,8 +106,8 @@ export default function CertificationsSection() {
                   onMouseEnter={(e) => { e.currentTarget.style.background = `${cert.badgeColor}22`; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = `${cert.badgeColor}12`; }}
                 >
-                  <ShieldCheck style={{ width: "15px", height: "15px" }} />
-                  Enlarge & Verify
+                  <Mark name="arrow" size={13} />
+                  Enlarge &amp; Verify
                 </button>
               </div>
             </ScrollReveal>
@@ -134,16 +120,14 @@ export default function CertificationsSection() {
           <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "640px", padding: "32px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{ background: `${activeCert.badgeColor}20`, padding: "12px", borderRadius: "var(--r)", display: "inline-flex" }}>
-                  {getCertIcon(activeCert.iconType, activeCert.badgeColor)}
-                </div>
+                <Monogram text={activeCert.issuer} color={activeCert.badgeColor} size={44} />
                 <div>
                   <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: activeCert.badgeColor, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>Official Credential</div>
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: "13px", color: "var(--muted)" }}>{activeCert.issuer}</div>
                 </div>
               </div>
               <button onClick={() => setActiveCert(null)} style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", width: "32px", height: "32px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <X style={{ width: "16px", height: "16px" }} />
+                <Mark name="close" size={16} />
               </button>
             </div>
             <div style={{ marginBottom: "10px" }}>
@@ -192,9 +176,9 @@ export default function CertificationsSection() {
                 rel="noreferrer"
                 style={{ background: activeCert.badgeColor, color: "var(--bg)", padding: "10px 20px", borderRadius: "var(--r)", fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: "12px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
               >
-                <CheckCircle2 style={{ width: "14px", height: "14px" }} />
+                <Mark name="check" size={12} />
                 Verify Credential
-                <ExternalLink style={{ width: "12px", height: "12px" }} />
+                <Mark name="external" size={11} />
               </a>
             </div>
           </div>

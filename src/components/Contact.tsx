@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { personal } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { Check, CheckCircle2, ArrowRight } from "lucide-react";
+import Mark from "./ui/mark";
 
 function CopyField({ label, value, href, isExternal }: {
   label: string;
@@ -63,7 +63,7 @@ function CopyField({ label, value, href, isExternal }: {
         >
           {copied ? (
             <>
-              <Check aria-hidden style={{ width: "12px", height: "12px" }} />
+              <Mark name="check" size={12} />
               copied
             </>
           ) : (
@@ -124,7 +124,7 @@ export default function Contact() {
       <div style={{ maxWidth: "660px", margin: "0 auto" }}>
         <ScrollReveal>
           <div className="section-label" style={{ marginBottom: "16px", justifyContent: "center" }}>
-            05 / contact
+            08 / contact
           </div>
           <h2 style={{
             fontFamily: "var(--font-display)", fontSize: "clamp(40px, 6vw, 72px)",
@@ -134,7 +134,7 @@ export default function Contact() {
             <span style={{ color: "var(--accent)" }}>Together.</span>
           </h2>
           <p style={{
-            fontFamily: "var(--font-mono)", fontSize: "14px", color: "var(--muted)",
+            fontSize: "15px", color: "var(--muted)",
             marginBottom: "48px", lineHeight: 1.8, textAlign: "center",
           }}>
             {personal.availability.note} Fill in the form or reach me directly.
@@ -147,7 +147,7 @@ export default function Contact() {
               background: "var(--accent-soft)", border: "1px solid var(--accent)",
               borderRadius: "var(--r)", padding: "48px 40px", textAlign: "center", marginBottom: "48px",
             }}>
-              <CheckCircle2 aria-hidden style={{ width: "48px", height: "48px", color: "var(--accent)", marginBottom: "16px" }} />
+              <Mark name="check" size={40} color="var(--accent)" style={{ marginBottom: "16px" }} />
               <h3 style={{
                 fontFamily: "var(--font-display)", fontSize: "24px",
                 fontWeight: 700, marginBottom: "10px", color: "var(--accent)",
@@ -266,7 +266,7 @@ export default function Contact() {
                 ) : (
                   <>
                     Send Message
-                    <ArrowRight aria-hidden style={{ width: "14px", height: "14px" }} />
+                    <Mark name="arrow" size={13} />
                   </>
                 )}
               </button>

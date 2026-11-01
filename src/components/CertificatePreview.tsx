@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Check } from "lucide-react";
+import Mark from "./ui/mark";
 import type { Certification } from "@/lib/types";
 import { personal } from "@/lib/data";
 
@@ -182,7 +182,7 @@ export default function CertificatePreview({
             flexShrink: 0,
           }}
         >
-          <Check style={{ width: compact ? "12px" : "18px", height: compact ? "12px" : "18px" }} />
+          <Mark name="check" size={compact ? 12 : 18} />
         </div>
 
         <div style={{ fontFamily: "var(--font-mono)", fontSize: compact ? "7.5px" : "9.5px", color: "var(--muted)", lineHeight: 1.7, textAlign: "right", minWidth: 0 }}>

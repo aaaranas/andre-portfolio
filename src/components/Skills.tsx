@@ -19,18 +19,22 @@ export default function Skills() {
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <div className="section-label" style={{ marginBottom: "16px" }}>
-          06 / skills
+          07 / skills
         </div>
         <h2
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(36px, 5vw, 60px)",
             fontWeight: 600,
-            marginBottom: "48px",
+            marginBottom: "20px",
           }}
         >
           Tech Stack
         </h2>
+        <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px", marginBottom: "48px" }}>
+          What I reach for, grouped by where it sits in a build. Everything listed here has
+          shipped in something on this page.
+        </p>
 
         {/* Category tabs */}
         <div

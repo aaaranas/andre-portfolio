@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import Terminal from "./Terminal";
-import { ArrowUp, Moon, Sun } from "lucide-react";
+import Mark from "./ui/mark";
 
 /**
  * Sections reachable from the bar. "about" is the top of the page and "contact"
@@ -13,10 +13,20 @@ const links = ["projects", "experience", "education", "skills"];
 /** Every section the active-link indicator watches, including the two not linked. */
 const observed = ["about", ...links, "contact"];
 
+/** data-theme on <html> is the store; a MutationObserver is its subscription. */
+function subscribeTheme(onChange: () => void) {
+  const obs = new MutationObserver(onChange);
+  obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => obs.disconnect();
+}
+
+function readTheme(): "dark" | "light" {
+  return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+}
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("about");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);
@@ -51,20 +61,18 @@ export default function Nav() {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  // Persist theme
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "light") {
-      setTheme("light");
-      document.documentElement.setAttribute("data-theme", "light");
-    }
-  }, []);
+  // The inline script in layout.tsx sets data-theme before first paint, so the
+  // document element is the source of truth and React subscribes to it.
+  const theme = useSyncExternalStore(subscribeTheme, readTheme, () => "dark" as const);
 
   const applyTheme = (next: "dark" | "light") => {
-    setTheme(next);
     if (next === "light") document.documentElement.setAttribute("data-theme", "light");
     else document.documentElement.removeAttribute("data-theme");
-    localStorage.setItem("theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      /* private mode — the toggle still works for this session */
+    }
   };
 
   const toggleTheme = () => applyTheme(theme === "dark" ? "light" : "dark");
@@ -230,8 +238,8 @@ export default function Nav() {
             }}
           >
             {theme === "dark"
-              ? <Sun aria-hidden style={{ width: "14px", height: "14px" }} />
-              : <Moon aria-hidden style={{ width: "14px", height: "14px" }} />}
+              ? <Mark name="sun" size={14} />
+              : <Mark name="moon" size={14} />}
           </button>
 
           <a
@@ -323,11 +331,11 @@ export default function Nav() {
         >
           {theme === "dark" ? (
             <>
-              <Sun aria-hidden style={{ width: "15px", height: "15px" }} /> Light Mode
+              <Mark name="sun" size={15} /> Light Mode
             </>
           ) : (
             <>
-              <Moon aria-hidden style={{ width: "15px", height: "15px" }} /> Dark Mode
+              <Mark name="moon" size={15} /> Dark Mode
             </>
           )}
         </button>
@@ -347,7 +355,7 @@ export default function Nav() {
         aria-label="Back to top"
         title="Back to top"
       >
-        <ArrowUp aria-hidden style={{ width: "16px", height: "16px" }} />
+        <Mark name="up" size={15} />
       </button>
     </>
   );

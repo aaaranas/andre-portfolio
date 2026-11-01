@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { personal, projects, experience } from "@/lib/data";
+import Mark from "./ui/mark";
+import { personal, projects, allRoles } from "@/lib/data";
 import { ASCII_PORTRAIT, ASCII_LINE_HEIGHT } from "@/lib/ascii";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -286,7 +286,7 @@ export default function Hero() {
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.opacity = "1"; }}
             >
               view work
-              <ArrowRight aria-hidden style={{ width: "14px", height: "14px" }} />
+              <Mark name="arrow" size={13} />
             </a>
             <a href={personal.githubUrl} target="_blank" rel="noopener noreferrer" style={{
               fontFamily: "var(--font-mono)", fontSize: "11.5px", letterSpacing: "0.06em",
@@ -297,7 +297,7 @@ export default function Hero() {
               onMouseLeave={(e) => { e.currentTarget.style.color = "var(--muted)"; e.currentTarget.style.borderColor = "var(--border2)"; }}
             >
               github
-              <ArrowUpRight aria-hidden style={{ width: "14px", height: "14px" }} />
+              <Mark name="external" size={13} />
             </a>
           </div>
 
@@ -305,7 +305,7 @@ export default function Hero() {
             {([
               [`${projects.length}`, "featured builds"],
               [`${projects.filter((p) => p.live).length}`, "deployed live"],
-              [`${experience.filter((e) => e.current).length}`, "active roles"],
+              [`${allRoles.filter((r) => r.current).length}`, "active roles"],
               ["2027", "expected grad"],
             ] as const).map(([v, l]) => (
               <div key={l}>

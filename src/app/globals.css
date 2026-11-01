@@ -272,6 +272,9 @@ textarea.form-input { resize: vertical; min-height: 130px; line-height: 1.7; }
 /* ─── Nav ─── */
 .nav-desktop-links { display: flex; gap: 22px; align-items: center; }
 
+/* ─── Experience cards ─── */
+.exp-card:hover { border-color: var(--accent) !important; }
+
 /* ─── Header shell trigger ─── */
 .term-fetch { display: flex; gap: 22px; align-items: flex-start; margin: 4px 0 8px; }
 @media (max-width: 640px) {

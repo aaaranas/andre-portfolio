@@ -4,7 +4,7 @@ export const personal = {
   name: "Andre Milan A. Arañas",
   shortName: "Andre",
   title: "BS Computer Science",
-  subtitle: "Head of Technology · Accelokal",
+  subtitle: "Web Developer · eComia",
   email: "aaaranas@up.edu.ph",
   phone: "+639287056564",
   github: "github.com/aaaranas",
@@ -16,7 +16,7 @@ export const personal = {
   availability: {
     open: false,
     label: "not seeking internships",
-    note: "Not open for internships at the moment — heading technology at Accelokal. Still happy to talk about freelance builds and collaborations.",
+    note: "Not seeking internships at the moment — building with eComia and taking freelance work. Still happy to talk about collaborations and contract builds.",
   },
 };
 
@@ -26,8 +26,6 @@ export type Project = {
   id: string;
   name: string;
   repo: string;
-  /** Key into the icon registry in components/ui/icon.tsx. */
-  icon: string;
   category: ProjectCategory;
   tagline: string;
   description: string;
@@ -49,7 +47,6 @@ export const projects: Project[] = [
     id: "pitik",
     name: "Pitik",
     repo: "aaaranas/pitik",
-    icon: "camera",
     category: "Product",
     tagline: "A digital camera that lives in the browser — 37 looks, nothing uploaded",
     description:
@@ -80,7 +77,6 @@ export const projects: Project[] = [
     id: "frag-avenue",
     name: "Frag Avenue",
     repo: "aaaranas/frag-avenue",
-    icon: "flask",
     category: "Product",
     tagline: "Explainable fragrance analytics — every recommendation shows its work",
     description:
@@ -112,7 +108,6 @@ export const projects: Project[] = [
     id: "komyut-ta-bai",
     name: "Komyut ta Bai",
     repo: "aaaranas/komyut-ta-bai",
-    icon: "bus",
     category: "Civic Tech",
     tagline: "The transit planner Cebu never had — Google Maps has zero coverage here",
     description:
@@ -141,7 +136,6 @@ export const projects: Project[] = [
     id: "irregskolar",
     name: "IrregSkolar",
     repo: "aaaranas/irregskolar",
-    icon: "graduation",
     category: "Product",
     tagline: "Upload your study plan, see exactly what you can enroll in next",
     description:
@@ -170,7 +164,6 @@ export const projects: Project[] = [
     id: "san-bidet-cebu",
     name: "San Bidet Cebu",
     repo: "aaaranas/san-bidet-cebu",
-    icon: "map-pin",
     category: "Civic Tech",
     tagline: "Crowdsourcing clean bidets across Cebu, one spray at a time",
     description:
@@ -199,7 +192,6 @@ export const projects: Project[] = [
     id: "dugos",
     name: "DugOS",
     repo: "aaaranas/DugOS",
-    icon: "cpu",
     category: "Systems",
     tagline: "A 32-bit operating system booted from scratch — no host OS, no libc",
     description:
@@ -300,8 +292,8 @@ export const skills = {
   ],
 };
 
-export type ExperienceEntry = {
-  company: string;
+/** One role. A company may hold several of them. */
+export type ExperienceRole = {
   role: string;
   period: string;
   type: string;
@@ -310,72 +302,104 @@ export type ExperienceEntry = {
   highlights: string[];
 };
 
+/**
+ * Roles are grouped under their employer rather than listed flat, so a second
+ * role at the same company reads as a promotion rather than a separate job.
+ */
+export type ExperienceEntry = {
+  company: string;
+  span: string;
+  roles: ExperienceRole[];
+};
+
 export const experience: ExperienceEntry[] = [
   {
-    company: "Accelokal",
-    role: "Head of Technology",
-    period: "Aug 2026 · Present",
-    type: "Tech Startup",
-    location: "Cebu, Central Visayas · Remote",
-    current: true,
-    highlights: [
-      "Heading technology at Accelokal, an early-stage tech startup, working fully remote from Cebu.",
-      "Owning technical direction — architecture, stack decisions, and engineering delivery.",
+    company: "eComia",
+    span: "Jun 2026 · Present",
+    roles: [
+      {
+        role: "Web Developer",
+        period: "Sep 2026 · Present",
+        type: "Freelance",
+        location: "Cebu City, PH · Hybrid",
+        current: true,
+        highlights: [
+          "Co-lead architecture and full-stack delivery of two internal web and mobile systems in a three-engineer team, from planning through deployment.",
+          "Refactored legacy codebases into a cross-platform mobile scanner with offline sync, paired with a web portal for real-time tracking.",
+          "Engineered a high-availability web platform with real-time data sync, dynamic visual feedback, and background processing for automated distribution.",
+        ],
+      },
+      {
+        role: "Web Developer",
+        period: "Jun 2026 · Aug 2026",
+        type: "Internship",
+        location: "Cebu City, PH",
+        current: false,
+        highlights: [
+          "Project manager on two internal systems, leading a five-person team from planning through delivery.",
+          "Set the frontend architecture and authentication layer on a company resource-tracking platform, delegating feature work while holding review and architecture decisions.",
+          "Coordinated a real-time check-in system spanning a live display, a mobile scanner, and an admin panel on one shared backend — and built the display myself.",
+        ],
+      },
     ],
   },
   {
     company: "FlyRank AI",
-    role: "Front-End AI Engineering Intern",
-    period: "Jul 2026 · Present",
-    type: "Internship",
-    location: "Remote",
-    current: true,
-    highlights: [
-      "Building front-end interfaces for AI workflows and wiring generative model capabilities into production React/Next.js systems.",
-      "Focused on front-end AI engineering — streaming output, tool-call state, and the UI patterns that make model behaviour legible.",
-    ],
-  },
-  {
-    company: "eComia",
-    role: "Web Developer Intern",
-    period: "Jun 2026 · Aug 2026",
-    type: "Internship · Completed",
-    location: "Cebu City, PH",
-    current: false,
-    highlights: [
-      "Acted as Project Manager and Frontend Developer across two internal systems, leading a five-person team from planning through delivery.",
-      "Built the Event QR admission system end-to-end: a full-screen kiosk display in React + Vite reacting to real-time Firestore writes with animated reveals.",
-      "Coordinated a multi-platform stack — web display, Flutter mobile QR scanner, and a JetAdmin admin panel — all wired to one Firebase project.",
-      "Set the frontend architecture and authentication layer on a company resource-tracking platform, delegating feature work while holding review and architecture decisions.",
+    span: "Jul 2026 · Present",
+    roles: [
+      {
+        role: "Front-End AI Engineering Intern",
+        period: "Jul 2026 · Present",
+        type: "Internship",
+        location: "Remote",
+        current: true,
+        highlights: [
+          "Building front-end interfaces for AI workflows and wiring generative model capabilities into production React/Next.js systems.",
+          "Focused on front-end AI engineering — streaming output, tool-call state, and the UI patterns that make model behaviour legible.",
+        ],
+      },
     ],
   },
   {
     company: "Freelance · Upwork",
-    role: "Software Developer",
-    period: "Aug 2024 · Present",
-    type: "Freelance",
-    location: "Cebu City, PH · Remote",
-    current: true,
-    highlights: [
-      "Web and mobile developer for Cebu-based clients and civic projects, scoping and shipping each build solo.",
-      "Built a province-wide multimodal transport planner for Cebu with Next.js and MapLibre GL.",
-      "Built a crowdsourced Flutter app mapping bidet locations across Cebu, backed by Supabase.",
-      "Built a portfolio and booking site with a private photo CMS for a Cebu event photographer.",
+    span: "Aug 2024 · Present",
+    roles: [
+      {
+        role: "Software Developer",
+        period: "Aug 2024 · Present",
+        type: "Freelance",
+        location: "Cebu City, PH · Remote",
+        current: true,
+        highlights: [
+          "Web and mobile developer for Cebu-based clients and civic projects, scoping and shipping each build solo.",
+          "Built a province-wide multimodal transport planner for Cebu with Next.js and MapLibre GL.",
+          "Built a crowdsourced Flutter app mapping bidet locations across Cebu, backed by Supabase.",
+          "Built a portfolio and booking site with a private photo CMS for a Cebu event photographer.",
+        ],
+      },
     ],
   },
   {
     company: "University of San Carlos",
-    role: "Electronics & Communications Engineering Intern",
-    period: "Jun 2019 · Jul 2019",
-    type: "Research Internship",
-    location: "Cebu City, PH",
-    current: false,
-    highlights: [
-      "Two-month research immersion in electronics and IoT — Arduino prototyping and sensor integration.",
-      "Contributed to SIMOY, an air-quality monitor for communities near landfill sites that earned a Philippine industrial design patent (PH32020050104) and an International Award of Merit at the Malaysia Technology Expo.",
+    span: "Jun 2019 · Jul 2019",
+    roles: [
+      {
+        role: "Electronics & Communications Engineering Intern",
+        period: "Jun 2019 · Jul 2019",
+        type: "Research Internship",
+        location: "Cebu City, PH",
+        current: false,
+        highlights: [
+          "Two-month research immersion in electronics and IoT — Arduino prototyping and sensor integration.",
+          "Contributed to SIMOY, an air-quality monitor for communities near landfill sites that earned a Philippine industrial design patent (PH32020050104) and an International Award of Merit at the Malaysia Technology Expo.",
+        ],
+      },
     ],
   },
 ];
+
+/** Flattened view for counts and the shell's listings. */
+export const allRoles: ExperienceRole[] = experience.flatMap((e) => e.roles);
 
 export const education = [
   {
@@ -408,7 +432,6 @@ export const dataAnalystProjects = [
   {
     id: "lahug-flood-gis-mcda",
     name: "GIS Multi-Criteria Flood Risk Assessment (Barangay Lahug)",
-    icon: "map",
     tagline: "7-Criterion weighted overlay MCDA & uniform 30m raster grid alignment in Python (CMSC 179)",
     summary: "GIS spatial decision analysis for urban flood vulnerability modeling in Barangay Lahug, Cebu City. Engineered a uniform 30m × 30m pixel grid resampling pipeline (snap_to_grid) in Python (GeoPandas, Rasterio, SciPy) to harmonize multi-source GeoTIFF rasters, OSM shapefiles, GeoPackage flood maps, and 48 field-surveyed waste dump GPS points into a composite 5-tier risk model.",
     dataFormats: [
@@ -461,7 +484,6 @@ export const dataAnalystProjects = [
   {
     id: "cebu-transit-analysis",
     name: "Cebu Public Transit & Commuter Mobility Study",
-    icon: "bar-chart",
     tagline: "Exploratory spatial data analysis on 60+ Cebu jeepney & bus routes",
     summary: "Comprehensive Python data analysis on Cebu's commuter transit network. Analyzed route density, fare efficiency, travel delays, and commuter accessibility across Metro Cebu.",
     tools: ["Python", "Pandas", "GeoPandas", "Matplotlib", "Seaborn", "Folium", "Jupyter"],
@@ -498,7 +520,6 @@ export const dataAnalystProjects = [
   {
     id: "ecommerce-customer-churn",
     name: "E-Commerce Customer Retention & Cohort Analytics",
-    icon: "trending",
     tagline: "Statistical analysis & cohort retention model for online retail platform",
     summary: "Data analytics project investigating user behavior, purchase frequency, RFM segmentation, and churn risk factors for digital storefronts.",
     tools: ["Python", "Pandas", "SQL / PostgreSQL", "Scikit-learn", "Plotly", "Power BI"],
@@ -537,16 +558,15 @@ export const automationProjects = [
   {
     id: "n8n-ai-triage-agent",
     name: "AI-Powered Lead Triage & Customer Support Agent",
-    icon: "zap",
     tagline: "Autonomous n8n workflow with Gemini 1.5 Pro tool calling, PostgreSQL & Slack alerts",
     courseNote: "AI Engineer Course Project — n8n & LLM Orchestration",
     description: "Multi-branch n8n automation workflow that ingests customer emails/webhooks, evaluates intent and sentiment using Gemini AI Agent nodes, queries product databases via custom HTTP tools, and routes high-priority cases directly to Slack and CRM.",
     n8nNodes: [
-      { name: "Webhook Listener", type: "Trigger", icon: "globe" },
-      { name: "Gemini 1.5 Agent", type: "AI Engine", icon: "bot" },
-      { name: "PostgreSQL Tool", type: "Database Query", icon: "database" },
-      { name: "Slack Notification", type: "Alerting", icon: "message" },
-      { name: "Resend Email Node", type: "Communication", icon: "mail" },
+      { name: "Webhook Listener", type: "Trigger" },
+      { name: "Gemini 1.5 Agent", type: "AI Engine" },
+      { name: "PostgreSQL Tool", type: "Database Query" },
+      { name: "Slack Notification", type: "Alerting" },
+      { name: "Resend Email Node", type: "Communication" },
     ],
     workflowSteps: [
       "1. Webhook receives payload from frontend / contact form",
@@ -573,15 +593,14 @@ export const automationProjects = [
   {
     id: "n8n-github-ai-summarizer",
     name: "Automated GitHub PR Review & Issue Auto-Triage Bot",
-    icon: "git",
     tagline: "n8n workflow monitoring GitHub webhooks, generating LLM code summaries & labeling",
     courseNote: "AI Engineer Course Project — Autonomous Developer Tooling",
     description: "Automated devops assistant built in n8n. Triggered on GitHub pull request open / issue create events. Uses LLM embeddings & Gemini API to summarize code diffs, verify linting guidelines, auto-apply labels, and assign reviewers.",
     n8nNodes: [
-      { name: "GitHub Webhook", type: "Trigger", icon: "git" },
-      { name: "Code Diff Extractor", type: "Data Transform", icon: "settings" },
-      { name: "Gemini Code Reviewer", type: "AI Node", icon: "brain" },
-      { name: "GitHub PR Commenter", type: "API Node", icon: "message" },
+      { name: "GitHub Webhook", type: "Trigger" },
+      { name: "Code Diff Extractor", type: "Data Transform" },
+      { name: "Gemini Code Reviewer", type: "AI Node" },
+      { name: "GitHub PR Commenter", type: "API Node" },
     ],
     workflowSteps: [
       "1. GitHub Webhook triggers on PR opened or commit pushed",
@@ -616,7 +635,6 @@ export const certifications: Certification[] = [
     credentialId: "DAA0012760794890",
     category: "Data Analytics",
     badgeColor: "#7fc2d4",
-    iconType: "trending",
     skills: ["SQL", "Data Management", "Exploratory Analysis", "Statistical Experimentation", "Dashboards & Reporting"],
     verificationUrl: "https://www.datacamp.com/certificate/DAA0012760794890",
     description:
@@ -631,7 +649,6 @@ export const certifications: Certification[] = [
     credentialId: "NHZNG6TPG57Z",
     category: "AI & Automation",
     badgeColor: "#a8cf8e",
-    iconType: "ai",
     skills: [
       "AI Fundamentals",
       "Prompt Engineering",
@@ -652,7 +669,6 @@ export const certifications: Certification[] = [
     credentialId: "CTK71TABQ26S",
     category: "AI & Automation",
     badgeColor: "#e8c98a",
-    iconType: "zap",
     skills: ["n8n", "AI Automation", "Webhook Routing", "Data Transformation", "Error Handling"],
     verificationUrl: "https://www.coursera.org/account/accomplishments/verify/CTK71TABQ26S",
     description: "Practical training in designing automated workflows, routing webhooks, parsing API payloads, and orchestrating AI agent pipelines with robust error recovery.",
@@ -666,7 +682,6 @@ export const certifications: Certification[] = [
     credentialId: "13fbf0d0fa7006496d710e4357b34945bf4ea87f",
     category: "Software Engineering",
     badgeColor: "#8fc9a8",
-    iconType: "github",
     skills: ["GitHub", "Git", "Version Control", "Pull Requests", "Code Review"],
     verificationUrl: "https://www.datacamp.com/completed/statement-of-accomplishment/track/13fbf0d0fa7006496d710e4357b34945bf4ea87f",
     description: "Validation of Git version control fundamentals, structured pull request management, branching strategies, and collaborative team workflows on GitHub.",
@@ -680,7 +695,6 @@ export const certifications: Certification[] = [
     credentialId: "CSC-PROF-2025",
     category: "Professional License",
     badgeColor: "#c8b4e0",
-    iconType: "award",
     skills: ["Civil Service Eligibility", "Professional Standard", "Technical Qualification"],
     verificationUrl: "https://github.com/aaaranas",
     description: "Second-level professional eligibility granted by the Civil Service Commission of the Philippines, qualifying for technical and government service roles.",

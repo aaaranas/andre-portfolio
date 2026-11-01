@@ -5,12 +5,13 @@ import {
   projects,
   skills,
   experience,
+  allRoles,
   education,
   certifications,
   dataAnalystProjects,
   automationProjects,
 } from "@/lib/data";
-import { X } from "lucide-react";
+import Mark from "./ui/mark";
 import { ASCII_PORTRAIT, ASCII_COLS, ASCII_LINE_HEIGHT } from "@/lib/ascii";
 
 /* ────────────────────────────────────────────────────────────────
@@ -113,7 +114,7 @@ function wrap(text: string, width = 78): string[] {
 function fetchBlock(): Fetch {
   const deployed = projects.filter((p) => p.live).length;
   const techs = new Set(projects.flatMap((p) => p.stack)).size;
-  const current = experience.filter((e) => e.current);
+  const current = experience.filter((e) => e.roles.some((r) => r.current));
   const row = (k: string, v: string, tone: Tone = "out") => out(`${pad(k, 11)}${v}`, tone);
   return {
     portrait: ASCII_PORTRAIT,
@@ -194,8 +195,10 @@ const COMMANDS: Command[] = [
           out(`${projects.length} projects · cat <id> for detail`, "muted"),
         ];
       if (what.startsWith("exp"))
-        return experience.map((e) =>
-          out(`${pad(e.period, 22)}${pad(e.role, 42)}${e.company}`, e.current ? "accent" : "out"),
+        return experience.flatMap((e) =>
+          e.roles.map((r) =>
+            out(`${pad(r.period, 22)}${pad(r.role, 48)}${e.company}`, r.current ? "accent" : "out"),
+          ),
         );
       if (what.startsWith("edu"))
         return education.map((e) => out(`${pad(e.period, 34)}${e.degree} — ${e.school}`));
@@ -282,12 +285,14 @@ const COMMANDS: Command[] = [
       const q = args.join(" ").toLowerCase();
       const rows = q ? experience.filter((e) => e.company.toLowerCase().includes(q)) : experience;
       if (!rows.length) return [out(`no role matching "${q}"`, "err")];
-      return rows.flatMap((e) => [
-        out(`${e.role} · ${e.company}`, "head"),
-        out(`${e.period}   ${e.type}   ${e.location}`, e.current ? "accent" : "muted"),
-        ...e.highlights.flatMap((h) => wrap(h, 74).map((l, k) => out(k === 0 ? `-> ${l}` : `   ${l}`, "out", 1))),
-        blank(),
-      ]);
+      return rows.flatMap((e) =>
+        e.roles.flatMap((r) => [
+          out(`${r.role} · ${e.company}`, "head"),
+          out(`${r.period}   ${r.type}   ${r.location}`, r.current ? "accent" : "muted"),
+          ...r.highlights.flatMap((h) => wrap(h, 74).map((l, k) => out(k === 0 ? `-> ${l}` : `   ${l}`, "out", 1))),
+          blank(),
+        ]),
+      );
     },
   },
   {
@@ -395,15 +400,15 @@ const COMMANDS: Command[] = [
     run: () => {
       const deployed = projects.filter((p) => p.live).length;
       const techs = new Set(projects.flatMap((p) => p.stack)).size;
-      const active = experience.filter((e) => e.current).length;
+      const active = allRoles.filter((r) => r.current).length;
       return [
-        out(`${pad("featured builds", 22)}${projects.length}`),
-        out(`${pad("deployed live", 22)}${deployed}`),
-        out(`${pad("distinct technologies", 22)}${techs}`),
-        out(`${pad("roles running now", 22)}${active}`),
-        out(`${pad("certifications", 22)}${certifications.length}`),
-        out(`${pad("analytics case studies", 22)}${dataAnalystProjects.length}`),
-        out(`${pad("automation builds", 22)}${automationProjects.length}`),
+        out(`${pad("featured builds", 25)}${projects.length}`),
+        out(`${pad("deployed live", 25)}${deployed}`),
+        out(`${pad("distinct technologies", 25)}${techs}`),
+        out(`${pad("roles running now", 25)}${active}`),
+        out(`${pad("certifications", 25)}${certifications.length}`),
+        out(`${pad("analytics case studies", 25)}${dataAnalystProjects.length}`),
+        out(`${pad("automation builds", 25)}${automationProjects.length}`),
       ];
     },
   },
@@ -676,7 +681,7 @@ export default function Terminal({
             }}
           >
             esc
-            <X aria-hidden style={{ width: "12px", height: "12px" }} />
+            <Mark name="close" size={13} />
           </button>
         </div>
 

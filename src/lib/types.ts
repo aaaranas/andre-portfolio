@@ -47,7 +47,7 @@ export interface GitHubRepo {
 
 export interface SkillCategory {
   category: string;
-  skills: { name: string; level: number; icon?: string }[];
+  skills: { name: string; level: number }[];
 }
 
 export interface Certification {
@@ -62,7 +62,6 @@ export interface Certification {
   category: string;
   /** Drives the accent used by the card, badge and certificate preview. */
   badgeColor: string;
-  iconType: string;
   skills: string[];
   verificationUrl: string;
   description: string;

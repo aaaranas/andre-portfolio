@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import { dataAnalystProjects } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
-import { BarChart3, X, FileText } from "lucide-react";
-import Icon from "./ui/icon";
+import Mark, { Numeral } from "./ui/mark";
 
 type Project = (typeof dataAnalystProjects)[0];
 type Cell = { type: string; content?: string; code?: string; output?: string };
@@ -18,7 +17,7 @@ function NotebookViewer({ project, onClose }: { project: Project; onClose: () =>
       >
         <div style={{ background: "var(--bg3)", borderBottom: "1px solid var(--border)", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <FileText style={{ width: "18px", height: "18px", color: "var(--accent2)" }} />
+            <span aria-hidden style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "0.1em", color: "var(--accent2)", border: "1px solid var(--accent2)", borderRadius: "2px", padding: "2px 6px", opacity: 0.8 }}>ipynb</span>
             <span style={{ fontFamily: "var(--font-mono)", fontSize: "13px", color: "var(--text)", fontWeight: 600 }}>{project.notebook.title}</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -29,7 +28,7 @@ function NotebookViewer({ project, onClose }: { project: Project; onClose: () =>
               onClick={onClose}
               style={{ background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", width: "30px", height: "30px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
             >
-              <X style={{ width: "14px", height: "14px" }} />
+              <Mark name="close" size={15} />
             </button>
           </div>
         </div>
@@ -68,14 +67,15 @@ export default function DataAnalystSection() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <ScrollReveal>
           <div style={{ marginBottom: "48px" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--accent2)", fontFamily: "var(--font-mono)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
-              <BarChart3 style={{ width: "16px", height: "16px" }} /> Data Analyst Track
+            <div className="section-label" style={{ marginBottom: "16px", color: "var(--accent2)" }}>
+              02 / data analysis
             </div>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 600, color: "var(--text)", marginBottom: "12px" }}>
-              Data Projects & Analysis
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 600, color: "var(--text)", marginBottom: "20px" }}>
+              Data Projects &amp; Analysis
             </h2>
-            <p style={{ color: "var(--muted)", maxWidth: "600px", fontSize: "14px", lineHeight: 1.7, fontFamily: "var(--font-mono)" }}>
-              Python-based spatial analysis, cohort modeling, and exploratory data science — with interactive Jupyter notebooks.
+            <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px" }}>
+              Python spatial analysis, cohort modeling, and exploratory data science. Each one
+              opens as a runnable Jupyter notebook, cells and outputs intact.
             </p>
           </div>
         </ScrollReveal>
@@ -105,7 +105,9 @@ export default function DataAnalystSection() {
                 }}
               >
                 <div>
-                  <Icon name={proj.icon} size={28} style={{ color: "var(--accent2)", marginBottom: "14px" }} />
+                  <div style={{ marginBottom: "14px" }}>
+                    <Numeral n={idx + 1} color="var(--accent2)" size={13} />
+                  </div>
                   <h3 style={{ fontFamily: "var(--font-display)", fontSize: "19px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
                     {proj.name}
                   </h3>
@@ -154,7 +156,7 @@ export default function DataAnalystSection() {
                   onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent2-soft)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent2-soft)"; }}
                 >
-                  <FileText style={{ width: "15px", height: "15px" }} />
+                  <Mark name="arrow" size={13} />
                   View Jupyter Notebook
                 </button>
               </div>

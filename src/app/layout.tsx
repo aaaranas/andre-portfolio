@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://andre-milan-aranas.vercel.app"),
   title: "Andre Milan Arañas | Software Developer",
   description:
-    "Frontend-leaning full-stack developer at UP Cebu and Head of Technology at Accelokal. Nine public repositories — a province-wide Cebu transit planner, a local-first camera PWA, an explainable fragrance analytics app, and a 32-bit OS booted from scratch.",
+    "Frontend-leaning full-stack developer at UP Cebu, building with eComia and freelancing from Cebu City. Public repositories include a province-wide Cebu transit planner, a local-first camera PWA, an explainable fragrance analytics app, and a 32-bit OS booted from scratch.",
   openGraph: {
     title: "Andre Milan Arañas | Software Developer Portfolio",
     description:
-      "React · Next.js · TypeScript · Flutter · Head of Technology at Accelokal and Front-End AI Engineering Intern at FlyRank AI, from Cebu City.",
+      "React · Next.js · TypeScript · Flutter · Web Developer at eComia and Front-End AI Engineering Intern at FlyRank AI, from Cebu City.",
     type: "website",
     url: "https://andre-milan-aranas.vercel.app",
   },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Andre Milan Arañas | Software Developer",
     description:
-      "React · Next.js · TypeScript · Flutter · Head of Technology at Accelokal and Front-End AI Engineering Intern at FlyRank AI, from Cebu City.",
+      "React · Next.js · TypeScript · Flutter · Web Developer at eComia and Front-End AI Engineering Intern at FlyRank AI, from Cebu City.",
   },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -20,5 +20,5 @@ export function Badge({ variant = "default", style, className, ...props }: Badge
       : { background: "var(--accent)", color: "#080c10", border: "none" }),
     ...style,
   };
-  return <span style={base} {...props} />;
+  return <span className={className} style={base} {...props} />;
 }
