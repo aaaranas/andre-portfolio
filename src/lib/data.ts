@@ -33,7 +33,6 @@ export type Project = {
   stack: string[];
   role: string;
   highlight: string;
-  color: string;
   github: string;
   live: string;
 };
@@ -69,7 +68,6 @@ export const projects: Project[] = [
     ],
     role: "Solo Dev",
     highlight: "Local-first PWA",
-    color: "#a8cf8e",
     github: "https://github.com/aaaranas/pitik",
     live: "https://pitik-orcin.vercel.app",
   },
@@ -100,7 +98,6 @@ export const projects: Project[] = [
     ],
     role: "Solo Dev",
     highlight: "279 tests green",
-    color: "#c8b4e0",
     github: "https://github.com/aaaranas/frag-avenue",
     live: "https://frag-avenue.vercel.app",
   },
@@ -128,7 +125,6 @@ export const projects: Project[] = [
     ],
     role: "Solo Dev",
     highlight: "WIP · Civic tech",
-    color: "#8fc9a8",
     github: "https://github.com/aaaranas/komyut-ta-bai",
     live: "https://komyut-ta-bai.vercel.app",
   },
@@ -156,7 +152,6 @@ export const projects: Project[] = [
     ],
     role: "Solo Dev",
     highlight: "Student tool",
-    color: "#9dc0d8",
     github: "https://github.com/aaaranas/irregskolar",
     live: "https://irregskolar.vercel.app",
   },
@@ -184,7 +179,6 @@ export const projects: Project[] = [
     ],
     role: "Sole Full Stack",
     highlight: "Flutter · 6 platforms",
-    color: "#e8c98a",
     github: "https://github.com/aaaranas/san-bidet-cebu",
     live: "https://san-bidet-cebu-admin.vercel.app",
   },
@@ -211,7 +205,6 @@ export const projects: Project[] = [
     ],
     role: "Team of 4",
     highlight: "Bare metal",
-    color: "#e8a89a",
     github: "https://github.com/aaaranas/DugOS",
     live: "",
   },
@@ -643,7 +636,6 @@ export const certifications: Certification[] = [
     expires: "Aug 2028",
     credentialId: "DAA0012760794890",
     category: "Data Analytics",
-    badgeColor: "#7fc2d4",
     skills: ["SQL", "Data Management", "Exploratory Analysis", "Statistical Experimentation", "Dashboards & Reporting"],
     verificationUrl: "https://www.datacamp.com/certificate/DAA0012760794890",
     description:
@@ -657,7 +649,6 @@ export const certifications: Certification[] = [
     date: "Jul 2026",
     credentialId: "NHZNG6TPG57Z",
     category: "AI & Automation",
-    badgeColor: "#a8cf8e",
     skills: [
       "AI Fundamentals",
       "Prompt Engineering",
@@ -677,7 +668,6 @@ export const certifications: Certification[] = [
     date: "Jul 2026",
     credentialId: "CTK71TABQ26S",
     category: "AI & Automation",
-    badgeColor: "#e8c98a",
     skills: ["n8n", "AI Automation", "Webhook Routing", "Data Transformation", "Error Handling"],
     verificationUrl: "https://www.coursera.org/account/accomplishments/verify/CTK71TABQ26S",
     description: "Practical training in designing automated workflows, routing webhooks, parsing API payloads, and orchestrating AI agent pipelines with robust error recovery.",
@@ -690,7 +680,6 @@ export const certifications: Certification[] = [
     date: "Jun 2026",
     credentialId: "13fbf0d0fa7006496d710e4357b34945bf4ea87f",
     category: "Software Engineering",
-    badgeColor: "#8fc9a8",
     skills: ["GitHub", "Git", "Version Control", "Pull Requests", "Code Review"],
     verificationUrl: "https://www.datacamp.com/completed/statement-of-accomplishment/track/13fbf0d0fa7006496d710e4357b34945bf4ea87f",
     description: "Validation of Git version control fundamentals, structured pull request management, branching strategies, and collaborative team workflows on GitHub.",
@@ -703,7 +692,6 @@ export const certifications: Certification[] = [
     date: "May 2025",
     credentialId: "CSC-PROF-2025",
     category: "Professional License",
-    badgeColor: "#c8b4e0",
     skills: ["Civil Service Eligibility", "Professional Standard", "Technical Qualification"],
     verificationUrl: "https://github.com/aaaranas",
     description: "Second-level professional eligibility granted by the Civil Service Commission of the Philippines, qualifying for technical and government service roles.",

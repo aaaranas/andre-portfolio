@@ -60,8 +60,6 @@ export interface Certification {
   expires?: string;
   credentialId: string;
   category: string;
-  /** Drives the accent used by the card, badge and certificate preview. */
-  badgeColor: string;
   skills: string[];
   verificationUrl: string;
   description: string;

@@ -124,7 +124,7 @@ export default function Contact() {
       <div style={{ maxWidth: "660px", margin: "0 auto" }}>
         <ScrollReveal>
           <div className="section-label" style={{ marginBottom: "16px", justifyContent: "center" }}>
-            08 / contact
+            04 / contact
           </div>
           <h2 style={{
             fontFamily: "var(--font-display)", fontSize: "clamp(40px, 6vw, 72px)",

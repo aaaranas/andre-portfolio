@@ -1,15 +1,12 @@
 "use client";
 import { useCallback, useMemo, useState } from "react";
-import { projects, projectCategories, type Project } from "@/lib/data";
+import { projects, type Project } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 import Mark, { Numeral } from "./ui/mark";
 
-const FILTERS = ["All", ...projectCategories] as const;
-type Filter = (typeof FILTERS)[number];
-
 /* ── live site preview in a fake browser chrome ── */
 function BrowserPreview({ project }: { project: Project }) {
-  const { id, live: url, color, name } = project;
+  const { id, live: url, name } = project;
   /**
    * Our own capture first (committed by `npm run previews`), the hosted
    * screenshot service only as a stand-in for a project not captured yet, and
@@ -52,7 +49,7 @@ function BrowserPreview({ project }: { project: Project }) {
         style={{
           borderRadius: "var(--r) var(--r) 0 0",
           background: "var(--bg3)",
-          border: `1px solid ${color}33`,
+          border: "1px solid var(--border)",
           borderBottom: "none",
           padding: "8px 12px",
           display: "flex",
@@ -85,7 +82,7 @@ function BrowserPreview({ project }: { project: Project }) {
         >
           {url.replace("https://", "")}
         </div>
-        <Mark name="external" size={11} color={color} style={{ opacity: 0.7 }} />
+        <Mark name="external" size={11} color="var(--accent)" style={{ opacity: 0.7 }} />
       </div>
 
       <div
@@ -94,7 +91,7 @@ function BrowserPreview({ project }: { project: Project }) {
           width: "100%",
           aspectRatio: "16/9",
           overflow: "hidden",
-          border: `1px solid ${color}33`,
+          border: "1px solid var(--border)",
           borderRadius: "0 0 6px 6px",
           background: "var(--bg)",
         }}
@@ -134,7 +131,7 @@ function BrowserPreview({ project }: { project: Project }) {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "9px",
-                color: color,
+                color: "var(--accent)",
                 opacity: 0.7,
                 display: "inline-flex",
                 alignItems: "center",
@@ -152,7 +149,7 @@ function BrowserPreview({ project }: { project: Project }) {
           style={{
             position: "absolute",
             inset: 0,
-            background: `${color}15`,
+            background: "var(--accent-soft)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -164,11 +161,11 @@ function BrowserPreview({ project }: { project: Project }) {
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "11px",
-              color: color,
+              color: "var(--accent)",
               background: "var(--bg)",
               padding: "6px 14px",
               borderRadius: "4px",
-              border: `1px solid ${color}55`,
+              border: "1px solid var(--accent)",
               display: "inline-flex",
               alignItems: "center",
               gap: "5px",
@@ -201,7 +198,7 @@ function TerminalPreview({ project }: { project: Project }) {
         style={{
           borderRadius: "var(--r) var(--r) 0 0",
           background: "var(--bg3)",
-          border: `1px solid ${project.color}33`,
+          border: "1px solid var(--border)",
           borderBottom: "none",
           padding: "8px 12px",
           display: "flex",
@@ -222,14 +219,14 @@ function TerminalPreview({ project }: { project: Project }) {
           ))}
         </div>
         <span style={{ flex: 1 }}>{project.repo}</span>
-        <Mark name="external" size={11} color={project.color} style={{ opacity: 0.7 }} />
+        <Mark name="external" size={11} color="var(--accent)" style={{ opacity: 0.7 }} />
       </div>
 
       <div
         style={{
           width: "100%",
           aspectRatio: "16/9",
-          border: `1px solid ${project.color}33`,
+          border: "1px solid var(--border)",
           borderRadius: "0 0 6px 6px",
           background: "var(--bg)",
           padding: "18px 20px",
@@ -241,111 +238,25 @@ function TerminalPreview({ project }: { project: Project }) {
         }}
       >
         <div>
-          <span style={{ color: project.color }}>$</span> make && qemu-system-i386 -kernel dug_os
+          <span style={{ color: "var(--accent)" }}>$</span> make && qemu-system-i386 -kernel dug_os
         </div>
         <div style={{ color: "var(--text)" }}>[  ok  ] GRUB 2 multiboot handoff</div>
         <div style={{ color: "var(--text)" }}>[  ok  ] protected mode · GDT · IDT</div>
         <div style={{ color: "var(--text)" }}>[  ok  ] 8259A PIC remapped to 32–47</div>
         <div style={{ color: "var(--text)" }}>[  ok  ] PS/2 keyboard · FAT mounted</div>
         <div>
-          <span style={{ color: project.color }}>dugos&gt;</span> _
+          <span style={{ color: "var(--accent)" }}>dugos&gt;</span> _
         </div>
       </div>
     </a>
   );
 }
 
-export default function Projects() {
+export default function ProjectsGrid() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
-  const [filter, setFilter] = useState<Filter>("All");
-
-  const visible = useMemo(
-    () => (filter === "All" ? projects : projects.filter((p) => p.category === filter)),
-    [filter],
-  );
 
   return (
-    <section
-      id="projects"
-      className="s-pad"
-      style={{ maxWidth: "1200px", margin: "0 auto" }}
-    >
-      <ScrollReveal>
-        <div className="section-label" style={{ marginBottom: "16px" }}>
-          01 / selected work
-        </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(36px, 5vw, 60px)",
-            fontWeight: 600,
-            marginBottom: "8px",
-          }}
-        >
-          Things I&apos;ve Built
-        </h2>
-        <p
-          style={{
-            color: "var(--muted)",
-            fontSize: "15px",
-            marginBottom: "28px",
-            lineHeight: 1.7,
-            maxWidth: "620px",
-          }}
-        >
-          Every project here is a public repository on{" "}
-          <a
-            href="https://github.com/aaaranas"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "var(--accent)" }}
-          >
-            github.com/aaaranas
-          </a>
-          . Click a card to expand it — previews link to the deployed site.
-        </p>
-      </ScrollReveal>
-
-      {/* ── category filter ── */}
-      <ScrollReveal delay={60}>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "8px",
-            marginBottom: "48px",
-          }}
-        >
-          {FILTERS.map((f) => {
-            const active = filter === f;
-            const count = f === "All" ? projects.length : projects.filter((p) => p.category === f).length;
-            return (
-              <button
-                key={f}
-                data-hover
-                onClick={() => setFilter(f)}
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "11px",
-                  letterSpacing: "0.08em",
-                  padding: "7px 14px",
-                  borderRadius: "var(--r)",
-                  cursor: "pointer",
-                  border: `1px solid ${active ? "var(--accent)" : "var(--border)"}`,
-                  background: active ? "var(--accent-soft)" : "transparent",
-                  color: active ? "var(--accent)" : "var(--muted)",
-                  transition: "all 0.2s ease",
-                }}
-              >
-                {f.toLowerCase()}{" "}
-                <span style={{ opacity: 0.55 }}>{count}</span>
-              </button>
-            );
-          })}
-        </div>
-      </ScrollReveal>
-
       <div
         style={{
           display: "grid",
@@ -354,7 +265,7 @@ export default function Projects() {
           alignItems: "start",
         }}
       >
-        {visible.map((proj, i) => {
+        {projects.map((proj, i) => {
           const isHovered = hovered === proj.id;
           const isExpanded = expanded === proj.id;
 
@@ -365,7 +276,7 @@ export default function Projects() {
                 onClick={() => setExpanded(isExpanded ? null : proj.id)}
                 style={{
                   background: isHovered || isExpanded ? "var(--bg3)" : "var(--card)",
-                  border: `1px solid ${isHovered || isExpanded ? proj.color : "var(--border)"}`,
+                  border: `1px solid ${isHovered || isExpanded ? "var(--accent)" : "var(--border)"}`,
                   borderRadius: "var(--r)",
                   padding: "24px",
                   cursor: "pointer",
@@ -386,7 +297,7 @@ export default function Projects() {
                     left: 0,
                     right: 0,
                     height: "2px",
-                    background: proj.color,
+                    background: "var(--accent)",
                     opacity: isHovered || isExpanded ? 1 : 0,
                     transition: "opacity 0.25s",
                   }}
@@ -409,7 +320,7 @@ export default function Projects() {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-                    <Numeral n={i + 1} color={proj.color} size={14} style={{ marginTop: "3px" }} />
+                    <Numeral n={i + 1} color="var(--accent)" size={14} style={{ marginTop: "3px" }} />
                     <div>
                       <h3
                         style={{
@@ -425,7 +336,7 @@ export default function Projects() {
                         style={{
                           fontFamily: "var(--font-mono)",
                           fontSize: "10px",
-                          color: proj.color,
+                          color: "var(--accent)",
                           letterSpacing: "0.08em",
                         }}
                       >
@@ -439,10 +350,10 @@ export default function Projects() {
                       fontFamily: "var(--font-mono)",
                       fontSize: "10px",
                       padding: "4px 10px",
-                      border: `1px solid ${proj.color}33`,
+                      border: "1px solid var(--border)",
                       borderRadius: "var(--r)",
-                      color: proj.color,
-                      background: `${proj.color}11`,
+                      color: "var(--accent)",
+                      background: "var(--accent-soft)",
                       whiteSpace: "nowrap",
                     }}
                   >
@@ -485,7 +396,7 @@ export default function Projects() {
                         gap: "8px",
                       }}
                     >
-                      <Mark name="chevron" size={13} color={proj.color} style={{ marginTop: "1px" }} />
+                      <Mark name="chevron" size={13} color="var(--accent)" style={{ marginTop: "1px" }} />
                       {m}
                     </li>
                   ))}
@@ -546,16 +457,16 @@ export default function Projects() {
                           fontSize: "10px",
                           letterSpacing: "0.06em",
                           padding: "5px 12px",
-                          border: `1px solid ${proj.color}55`,
+                          border: "1px solid var(--accent)",
                           borderRadius: "3px",
-                          color: proj.color,
+                          color: "var(--accent)",
                           transition: "background 0.2s",
                           display: "inline-flex",
                           alignItems: "center",
                           gap: "5px",
                         }}
                         onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.background = `${proj.color}18`;
+                          (e.currentTarget as HTMLElement).style.background = "var(--accent-soft)";
                         }}
                         onMouseLeave={(e) => {
                           (e.currentTarget as HTMLElement).style.background = "transparent";
@@ -587,6 +498,5 @@ export default function Projects() {
           );
         })}
       </div>
-    </section>
   );
 }

@@ -12,7 +12,7 @@ export default function ExperienceSection() {
     >
       <ScrollReveal>
         <div className="section-label" style={{ marginBottom: "16px" }}>
-          04 / work experience
+          02 / experience
         </div>
         <h2
           style={{

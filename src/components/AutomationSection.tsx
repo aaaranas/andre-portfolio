@@ -6,7 +6,7 @@ import Mark, { Numeral } from "./ui/mark";
 
 type Project = (typeof automationProjects)[0];
 
-export default function AutomationSection() {
+export default function AutomationGrid() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [simLogs, setSimLogs] = useState<string[]>([]);
   const [simRunning, setSimRunning] = useState(false);
@@ -34,23 +34,7 @@ export default function AutomationSection() {
   }
 
   return (
-    <section id="automation" className="s-pad" style={{ background: "var(--bg)", borderTop: "1px solid var(--border)" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <ScrollReveal>
-          <div style={{ marginBottom: "48px" }}>
-            <div className="section-label" style={{ marginBottom: "16px", color: "var(--accent3)" }}>
-              03 / ai automation
-            </div>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 600, color: "var(--text)", marginBottom: "20px" }}>
-              Workflows That Run Without Me
-            </h2>
-            <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px" }}>
-              n8n orchestrations with Gemini agents, tool-calling, and webhook routing. Open one
-              to walk the nodes and run the execution simulator.
-            </p>
-          </div>
-        </ScrollReveal>
-
+    <>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "24px" }}>
           {automationProjects.map((proj, idx) => (
             <ScrollReveal key={proj.id} delay={idx * 80}>
@@ -130,7 +114,6 @@ export default function AutomationSection() {
             </ScrollReveal>
           ))}
         </div>
-      </div>
 
       {activeProject && (
         <div className="modal-backdrop" onClick={() => setActiveProject(null)}>
@@ -227,6 +210,6 @@ export default function AutomationSection() {
           </div>
         </div>
       )}
-    </section>
+    </>
   );
 }

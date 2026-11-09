@@ -12,7 +12,6 @@ import {
   automationProjects,
 } from "@/lib/data";
 import Mark from "./ui/mark";
-import { ASCII_PORTRAIT, ASCII_COLS, ASCII_LINE_HEIGHT } from "@/lib/ascii";
 
 /* ────────────────────────────────────────────────────────────────
    A real shell over the portfolio data. Every command below reads
@@ -29,17 +28,7 @@ const out = (text: string, tone: Tone = "out", indent = 0): Line => ({ text, ton
 const link = (text: string, href: string, indent = 0): Line => ({ text, href, tone: "accent", indent });
 const blank = (): Line => ({ text: "" });
 
-const SECTIONS = [
-  "about",
-  "projects",
-  "data-analyst",
-  "automation",
-  "experience",
-  "education",
-  "certifications",
-  "skills",
-  "contact",
-] as const;
+const SECTIONS = ["about", "work", "experience", "background", "contact"] as const;
 
 type Ctx = {
   close: () => void;
@@ -110,6 +99,19 @@ function wrap(text: string, width = 78): string[] {
   return lines;
 }
 
+/**
+ * A typographic monogram for the neofetch banner — the initials, drawn in the
+ * same characters the shell already prints. Plain ASCII, so it renders in any
+ * monospace fallback.
+ */
+const WORDMARK = [
+  "   /\\     |\\  /|    /\\   ",
+  "  /  \\    | \\/ |   /  \\  ",
+  " /----\\   |    |  /----\\ ",
+  "/      \\  |    | /      \\",
+];
+const WORDMARK_COLS = Math.max(...WORDMARK.map((l) => l.length));
+
 /** The neofetch payload: ASCII portrait on the left, real numbers on the right. */
 function fetchBlock(): Fetch {
   const deployed = projects.filter((p) => p.live).length;
@@ -117,7 +119,7 @@ function fetchBlock(): Fetch {
   const current = experience.filter((e) => e.roles.some((r) => r.current));
   const row = (k: string, v: string, tone: Tone = "out") => out(`${pad(k, 11)}${v}`, tone);
   return {
-    portrait: ASCII_PORTRAIT,
+    portrait: WORDMARK,
     info: [
       out(`${personal.shortName.toLowerCase()}@portfolio`, "accent"),
       out("-".repeat(28), "muted"),
@@ -156,8 +158,8 @@ const COMMANDS: Command[] = [
   {
     name: "neofetch",
     usage: "neofetch",
-    desc: "the portrait, plus the vitals",
-    aliases: ["me", "portrait", "ascii"],
+    desc: "the monogram, plus the vitals",
+    aliases: ["me", "whoareyou"],
     run: () => [{ text: "", fetch: fetchBlock() }],
   },
   {
@@ -709,8 +711,8 @@ export default function Terminal({
                     margin: 0,
                     color: "var(--accent)",
                     fontFamily: "var(--font-mono)",
-                    fontSize: `${Math.min(10, 420 / ASCII_COLS)}px`,
-                    lineHeight: ASCII_LINE_HEIGHT,
+                    fontSize: `${Math.min(15, 330 / WORDMARK_COLS)}px`,
+                    lineHeight: 1.05,
                     letterSpacing: 0,
                     flexShrink: 0,
                     userSelect: "none",

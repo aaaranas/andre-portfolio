@@ -2,33 +2,8 @@
 import { education } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 
-export default function Education() {
+export default function EducationBlock() {
   return (
-    <section
-      id="education"
-      className="s-pad"
-      style={{ maxWidth: "1200px", margin: "0 auto" }}
-    >
-      <ScrollReveal>
-        <div className="section-label" style={{ marginBottom: "16px" }}>
-          05 / education
-        </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(36px, 5vw, 60px)",
-            fontWeight: 600,
-            marginBottom: "20px",
-          }}
-        >
-          Education
-        </h2>
-        <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px", marginBottom: "64px" }}>
-          Computer science at UP Cebu, after two years of statistics — which is where the
-          data side of this portfolio comes from.
-        </p>
-      </ScrollReveal>
-
       <div style={{ position: "relative" }}>
         <div
           style={{
@@ -95,6 +70,5 @@ export default function Education() {
           ))}
         </div>
       </div>
-    </section>
   );
 }

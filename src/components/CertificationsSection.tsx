@@ -7,122 +7,70 @@ import { Badge } from "@/components/ui/badge";
 import CertificatePreview from "./CertificatePreview";
 import type { Certification } from "@/lib/types";
 
-export default function CertificationsSection() {
+export default function CertificationsBlock() {
   const [activeCert, setActiveCert] = useState<Certification | null>(null);
 
   return (
-    <section id="certifications" className="s-pad" style={{ background: "var(--bg2)", borderTop: "1px solid var(--border)" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <ScrollReveal>
-          <div style={{ marginBottom: "40px" }}>
-            <div className="section-label" style={{ marginBottom: "16px" }}>
-              06 / certifications
-            </div>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 600, color: "var(--text)", marginBottom: "20px" }}>
-              Certifications
-            </h2>
-            <p style={{ color: "var(--muted)", fontSize: "15px", lineHeight: 1.7, maxWidth: "620px" }}>
-              Proctored certifications and specialised coursework. Each card opens the issued
-              certificate and links to the issuer&apos;s own verification page.
-            </p>
-          </div>
-        </ScrollReveal>
+    <>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
+
+        <ul style={{ listStyle: "none", margin: 0, padding: 0, borderTop: "1px solid var(--border)" }}>
           {certifications.map((cert, idx) => (
-            <ScrollReveal key={cert.id} delay={idx * 80}>
-              <div
-                style={{
-                  background: "var(--card)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--r)",
-                  padding: "28px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  height: "100%",
-                  transition: "transform 0.2s, border-color 0.2s, box-shadow 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.borderColor = cert.badgeColor;
-                  e.currentTarget.style.boxShadow = `0 12px 30px -5px ${cert.badgeColor}20`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <div>
-                  <div style={{ marginBottom: "20px" }}>
-                    <CertificatePreview cert={cert} compact />
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-                    <Monogram text={cert.issuer} color={cert.badgeColor} size={38} />
-                    <Badge variant="outline" style={{ color: cert.badgeColor, borderColor: `${cert.badgeColor}40` }}>
-                      {cert.category}
-                    </Badge>
-                  </div>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
-                    {cert.title}
-                  </h3>
-                  <div style={{ fontSize: "13px", fontFamily: "var(--font-mono)", color: "var(--muted)", marginBottom: "4px", fontWeight: 600 }}>
-                    {cert.issuer}
-                  </div>
-                  <div style={{ fontSize: "12px", fontFamily: "var(--font-mono)", color: "var(--muted)", opacity: 0.8, marginBottom: "16px" }}>
-                    Issued {cert.date}
-                  </div>
-                  <p style={{ fontSize: "13px", color: "var(--muted)", lineHeight: 1.6, marginBottom: "20px" }}>
-                    {cert.description}
-                  </p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
-                    {cert.skills.map((skill) => (
-                      <span key={skill} style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--text)", background: "var(--bg3)", padding: "3px 8px", borderRadius: "6px", border: "1px solid var(--border)" }}>
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+            <ScrollReveal key={cert.id} delay={idx * 50}>
+              <li>
                 <button
+                  data-hover
                   onClick={() => setActiveCert(cert)}
+                  className="cert-row"
                   style={{
                     width: "100%",
-                    background: `${cert.badgeColor}12`,
-                    border: `1px solid ${cert.badgeColor}50`,
-                    color: cert.badgeColor,
-                    padding: "10px 14px",
-                    borderRadius: "var(--r)",
-                    fontSize: "12px",
-                    fontFamily: "var(--font-mono)",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    display: "inline-flex",
+                    display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
+                    gap: "18px",
+                    textAlign: "left",
+                    padding: "18px 10px",
+                    background: "transparent",
+                    border: "none",
+                    borderBottom: "1px solid var(--border)",
+                    cursor: "pointer",
                     transition: "background 0.2s",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = `${cert.badgeColor}22`; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = `${cert.badgeColor}12`; }}
                 >
-                  <Mark name="arrow" size={13} />
-                  Enlarge &amp; Verify
+                  <Monogram text={cert.issuer} color="var(--accent)" size={38} />
+
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: "block", fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: 600, color: "var(--text)", marginBottom: "3px" }}>
+                      {cert.title}
+                    </span>
+                    <span style={{ display: "block", fontFamily: "var(--font-mono)", fontSize: "11.5px", color: "var(--muted)" }}>
+                      {cert.issuer} · {cert.date}
+                      {cert.expires ? ` · expires ${cert.expires}` : ""}
+                    </span>
+                  </span>
+
+                  <span className="cert-row-cat">
+                    <Badge variant="outline" style={{ color: "var(--muted)", borderColor: "var(--border)" }}>
+                      {cert.category}
+                    </Badge>
+                  </span>
+
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--accent)", whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                    view <Mark name="arrow" size={12} />
+                  </span>
                 </button>
-              </div>
+              </li>
             </ScrollReveal>
           ))}
-        </div>
-      </div>
+        </ul>
 
       {activeCert && (
         <div className="modal-backdrop" onClick={() => setActiveCert(null)}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "640px", padding: "32px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <Monogram text={activeCert.issuer} color={activeCert.badgeColor} size={44} />
+                <Monogram text={activeCert.issuer} color="var(--accent)" size={44} />
                 <div>
-                  <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: activeCert.badgeColor, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>Official Credential</div>
+                  <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>Official Credential</div>
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: "13px", color: "var(--muted)" }}>{activeCert.issuer}</div>
                 </div>
               </div>
@@ -162,7 +110,7 @@ export default function CertificationsSection() {
               <div style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--muted)", marginBottom: "8px" }}>VERIFIED SKILLS</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                 {activeCert.skills.map((s) => (
-                  <span key={s} style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: activeCert.badgeColor, background: `${activeCert.badgeColor}15`, padding: "3px 10px", borderRadius: "6px" }}>{s}</span>
+                  <span key={s} style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--accent)", background: `var(--accent)15`, padding: "3px 10px", borderRadius: "6px" }}>{s}</span>
                 ))}
               </div>
             </div>
@@ -174,7 +122,7 @@ export default function CertificationsSection() {
                 href={activeCert.verificationUrl}
                 target="_blank"
                 rel="noreferrer"
-                style={{ background: activeCert.badgeColor, color: "var(--bg)", padding: "10px 20px", borderRadius: "var(--r)", fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: "12px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                style={{ background: "var(--accent)", color: "var(--bg)", padding: "10px 20px", borderRadius: "var(--r)", fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: "12px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
               >
                 <Mark name="check" size={12} />
                 Verify Credential
@@ -184,6 +132,6 @@ export default function CertificationsSection() {
           </div>
         </div>
       )}
-    </section>
+    </>
   );
 }

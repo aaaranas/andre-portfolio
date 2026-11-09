@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Mark from "./ui/mark";
 import { personal, projects, allRoles } from "@/lib/data";
-import { ASCII_PORTRAIT, ASCII_LINE_HEIGHT } from "@/lib/ascii";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -28,7 +27,7 @@ const TRACKS: Track[] = [
     color: "var(--accent)",
     line: "Frontend-leaning full stack. React, Next.js, TypeScript, Node. I take a build from the schema to the deploy.",
     stack: ["React", "Next.js", "TypeScript", "Node", "PostgreSQL"],
-    href: "#projects",
+    href: "#work",
     cmd: "npm run build",
   },
   {
@@ -39,7 +38,7 @@ const TRACKS: Track[] = [
     color: "var(--accent2)",
     line: "Python spatial analysis, GIS multi-criteria modelling, cohort retention. The notebooks are here to read, outputs and all.",
     stack: ["Python", "Pandas", "GeoPandas", "SQL", "Jupyter"],
-    href: "#data-analyst",
+    href: "#work",
     cmd: "jupyter lab",
   },
   {
@@ -50,7 +49,7 @@ const TRACKS: Track[] = [
     color: "var(--accent3)",
     line: "n8n orchestration with LLM agents, tool-calling, webhook routing. Workflows that run without me.",
     stack: ["n8n", "Gemini API", "Webhooks", "RAG", "Agents"],
-    href: "#automation",
+    href: "#work",
     cmd: "n8n execute",
   },
 ];
@@ -75,7 +74,6 @@ function Reveal({ text, delay = 0 }: { text: string; delay?: number }) {
 }
 
 export default function Hero() {
-  const [lit, setLit] = useState(false);
   const [active, setActive] = useState(0);
   const [locked, setLocked] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -94,11 +92,14 @@ export default function Hero() {
       className="hero-pad"
       style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", overflow: "hidden" }}
     >
-      {/* soft matcha glow that follows the active track */}
-      <motion.div
-        animate={{ background: `radial-gradient(circle, ${t.color === "var(--accent)" ? "rgba(168,207,142,0.10)" : t.color === "var(--accent2)" ? "rgba(240,168,192,0.09)" : "rgba(232,201,138,0.08)"} 0%, transparent 68%)` }}
-        transition={{ duration: 0.9 }}
-        style={{ position: "absolute", top: "-6%", right: "-4%", width: "760px", height: "760px", pointerEvents: "none", zIndex: 0 }}
+      {/* one soft wash of the accent, behind everything */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute", top: "-6%", right: "-4%", width: "760px", height: "760px",
+          background: "radial-gradient(circle, var(--accent-soft) 0%, transparent 68%)",
+          pointerEvents: "none", zIndex: 0,
+        }}
       />
 
       <div style={{ position: "relative", zIndex: 1, maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
@@ -120,10 +121,10 @@ export default function Hero() {
           <span style={{ color: "var(--dim)" }}>{personal.availability.label}</span>
         </motion.div>
 
-        {/* ── nameplate: the portrait sits behind the name, not beside it ── */}
+        {/* ── nameplate ── */}
         <div className="hero-name" style={{ position: "relative", marginBottom: "18px" }}>
 
-          {/* hairline the name hangs from, running out past the portrait */}
+          {/* hairline the name hangs from */}
           <motion.div
             initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
             transition={{ delay: 0.55, duration: 1.1, ease: EASE }}
@@ -136,51 +137,11 @@ export default function Hero() {
             }}
           />
 
-          {/* portrait, overlapped by the surname */}
-          <motion.div
-            initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.45, duration: 0.7, ease: EASE }}
-            className="hero-portrait"
-            onMouseEnter={() => setLit(true)}
-            onMouseLeave={() => setLit(false)}
-          >
-            <div
-              role="img"
-              aria-label="ASCII-art portrait of Andre Milan Arañas"
-              className="ascii-portrait"
-              style={{
-                borderRadius: "var(--r)",
-                border: `1px solid ${lit ? "var(--accent)" : "var(--border2)"}`,
-                background: "var(--bg2)",
-                padding: "12px 14px",
-                boxShadow: lit ? "0 0 36px var(--accent-glow)" : "none",
-                transition: "border-color 0.3s, box-shadow 0.3s",
-              }}
-            >
-              <pre
-                aria-hidden="true"
-                style={{
-                  margin: 0,
-                  fontFamily: "var(--font-mono)",
-                  lineHeight: ASCII_LINE_HEIGHT,
-                  letterSpacing: 0,
-                  whiteSpace: "pre",
-                  color: "var(--accent)",
-                  opacity: lit ? 1 : 0.72,
-                  transition: "opacity 0.3s",
-                  userSelect: "none",
-                }}
-              >
-                {ASCII_PORTRAIT.join("\n")}
-              </pre>
-            </div>
-          </motion.div>
-
           {/* crop marks bracketing the whole nameplate */}
           {[0, 1, 2, 3].map((i) => (
             <span key={i} aria-hidden className="hero-tick" style={{
               position: "absolute", width: "10px", height: "10px",
-              borderColor: "var(--accent)", opacity: lit ? 0.9 : 0.4, transition: "opacity 0.3s",
+              borderColor: "var(--accent)", opacity: 0.45,
               ...(i < 2 ? { top: 0 } : { bottom: 0 }),
               ...(i % 2 === 0 ? { left: 0 } : { right: 0 }),
               ...(i < 2 ? { borderTop: "1px solid" } : { borderBottom: "1px solid" }),
@@ -292,7 +253,7 @@ export default function Hero() {
           style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "40px", flexWrap: "wrap", marginTop: "44px" }}
         >
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            <a href="#projects" style={{
+            <a href="#work" style={{
               fontFamily: "var(--font-mono)", fontSize: "11.5px", letterSpacing: "0.06em", fontWeight: 600,
               padding: "12px 26px", borderRadius: "var(--r)", background: "var(--accent)", color: "var(--bg)",
               transition: "opacity 0.2s, transform 0.2s", display: "inline-flex", alignItems: "center", gap: "8px",

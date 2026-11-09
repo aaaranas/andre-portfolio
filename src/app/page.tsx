@@ -1,12 +1,8 @@
 import Hero from "@/components/Hero";
 import Nav from "@/components/Nav";
-import Projects from "@/components/Projects";
-import DataAnalystSection from "@/components/DataAnalystSection";
-import AutomationSection from "@/components/AutomationSection";
+import Work from "@/components/Work";
 import ExperienceSection from "@/components/ExperienceSection";
-import Education from "@/components/Education";
-import CertificationsSection from "@/components/CertificationsSection";
-import Skills from "@/components/Skills";
+import Background from "@/components/Background";
 import Contact from "@/components/Contact";
 import Cursor from "@/components/Cursor";
 
@@ -17,13 +13,9 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Projects />
-        <DataAnalystSection />
-        <AutomationSection />
+        <Work />
         <ExperienceSection />
-        <Education />
-        <CertificationsSection />
-        <Skills />
+        <Background />
         <Contact />
       </main>
     </>

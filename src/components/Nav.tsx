@@ -8,7 +8,7 @@ import Mark from "./ui/mark";
  * is where the Get in Touch CTA already lands, so neither earns a slot here —
  * they stay in the scroll-spy list below so the bar still tracks them.
  */
-const links = ["projects", "experience", "education", "skills"];
+const links = ["work", "experience", "background"];
 
 /** Every section the active-link indicator watches, including the two not linked. */
 const observed = ["about", ...links, "contact"];
@@ -21,7 +21,7 @@ function subscribeTheme(onChange: () => void) {
 }
 
 function readTheme(): "dark" | "light" {
-  return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 }
 
 export default function Nav() {
@@ -63,10 +63,10 @@ export default function Nav() {
 
   // The inline script in layout.tsx sets data-theme before first paint, so the
   // document element is the source of truth and React subscribes to it.
-  const theme = useSyncExternalStore(subscribeTheme, readTheme, () => "dark" as const);
+  const theme = useSyncExternalStore(subscribeTheme, readTheme, () => "light" as const);
 
   const applyTheme = (next: "dark" | "light") => {
-    if (next === "light") document.documentElement.setAttribute("data-theme", "light");
+    if (next === "dark") document.documentElement.setAttribute("data-theme", "dark");
     else document.documentElement.removeAttribute("data-theme");
     try {
       localStorage.setItem("theme", next);

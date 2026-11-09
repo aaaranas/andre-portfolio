@@ -21,7 +21,7 @@ export default function CertificatePreview({
   cert: Certification;
   compact?: boolean;
 }) {
-  const c = cert.badgeColor;
+  const c = "var(--accent)";
 
   if (cert.previewImage) {
     // Scans arrive in whatever shape the issuer exports (roughly 1.29:1 to 1.74:1).
@@ -37,7 +37,7 @@ export default function CertificatePreview({
           aspectRatio: "1.55 / 1",
           borderRadius: "var(--r)",
           overflow: "hidden",
-          border: `1px solid ${c}33`,
+          border: `1px solid color-mix(in srgb, var(--accent) 20%, transparent)`,
           background: "#f4f3ef",
           padding: compact ? "6px" : "10px",
         }}
@@ -72,10 +72,10 @@ export default function CertificatePreview({
         aspectRatio: "1.55 / 1",
         borderRadius: "var(--r)",
         overflow: "hidden",
-        border: `1px solid ${c}33`,
+        border: `1px solid color-mix(in srgb, var(--accent) 20%, transparent)`,
         background: `
-          radial-gradient(ellipse 120% 90% at 50% 0%, ${c}14, transparent 70%),
-          repeating-linear-gradient(45deg, ${c}08 0 1px, transparent 1px 7px),
+          radial-gradient(ellipse 120% 90% at 50% 0%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%),
+          repeating-linear-gradient(45deg, color-mix(in srgb, var(--accent) 3%, transparent) 0 1px, transparent 1px 7px),
           var(--bg3)
         `,
         display: "flex",
@@ -85,8 +85,8 @@ export default function CertificatePreview({
       }}
     >
       {/* double hairline frame — certificate cadence, drawn in our own palette */}
-      <span aria-hidden style={{ position: "absolute", inset: compact ? "5px" : "8px", border: `1px solid ${c}38`, borderRadius: "2px", pointerEvents: "none" }} />
-      <span aria-hidden style={{ position: "absolute", inset: compact ? "8px" : "12px", border: `1px solid ${c}16`, borderRadius: "1px", pointerEvents: "none" }} />
+      <span aria-hidden style={{ position: "absolute", inset: compact ? "5px" : "8px", border: `1px solid color-mix(in srgb, var(--accent) 22%, transparent)`, borderRadius: "2px", pointerEvents: "none" }} />
+      <span aria-hidden style={{ position: "absolute", inset: compact ? "8px" : "12px", border: `1px solid color-mix(in srgb, var(--accent) 9%, transparent)`, borderRadius: "1px", pointerEvents: "none" }} />
 
       {/* issuer line */}
       <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "10px" }}>
@@ -142,7 +142,7 @@ export default function CertificatePreview({
         >
           {personal.name}
         </div>
-        <div aria-hidden style={{ height: "1px", width: compact ? "38%" : "30%", margin: `0 auto ${compact ? 6 : 12}px`, background: `linear-gradient(90deg, transparent, ${c}66, transparent)` }} />
+        <div aria-hidden style={{ height: "1px", width: compact ? "38%" : "30%", margin: `0 auto ${compact ? 6 : 12}px`, background: `linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 40%, transparent), transparent)` }} />
         <div
           style={{
             fontFamily: "var(--font-display)",
@@ -174,11 +174,11 @@ export default function CertificatePreview({
             width: compact ? "26px" : "40px",
             height: compact ? "26px" : "40px",
             borderRadius: "50%",
-            border: `1px solid ${c}55`,
+            border: `1px solid color-mix(in srgb, var(--accent) 33%, transparent)`,
             display: "grid",
             placeItems: "center",
             color: "var(--cert-ink)",
-            background: `${c}10`,
+            background: `color-mix(in srgb, var(--accent) 6%, transparent)`,
             flexShrink: 0,
           }}
         >
