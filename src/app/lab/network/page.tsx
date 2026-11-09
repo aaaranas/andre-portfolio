@@ -95,14 +95,17 @@ export default function RoutePrototype() {
   const [active, setActive] = useState<Station | null>(null);
 
   // The line jogs right each time the phase changes, so a zone reads as a leg.
-  let lane = 0;
+  // Lane is derived, not accumulated in a mutable local: how many phase
+  // changes have happened before this station.
   const pts = STATIONS.map((s, i) => {
-    if (i > 0 && s.phase !== STATIONS[i - 1].phase) lane += 1;
+    const lane = STATIONS.slice(0, i + 1).filter(
+      (st, j) => j > 0 && st.phase !== STATIONS[j - 1].phase,
+    ).length;
     return { s, x: LEFT + lane * JOG, y: TOP + i * STEP };
   });
 
   const height = TOP + STEP * (STATIONS.length - 1) + 70;
-  const width = LEFT + JOG * lane + 460;
+  const width = Math.max(...pts.map((p) => p.x)) + 460;
 
   // One polyline through every station, with a square corner at each jog.
   const d = pts
