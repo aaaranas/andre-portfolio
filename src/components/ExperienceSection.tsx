@@ -3,40 +3,13 @@ import { experience } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
 import Mark from "./ui/mark";
 
-export default function ExperienceSection() {
+export default function ExperienceList() {
   return (
-    <section
-      id="experience"
-      className="s-pad"
-      style={{ maxWidth: "1200px", margin: "0 auto" }}
-    >
-      <ScrollReveal>
-        <div className="section-label" style={{ marginBottom: "16px" }}>
-          02 / experience
-        </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(36px, 5vw, 60px)",
-            fontWeight: 600,
-            marginBottom: "20px",
-          }}
-        >
-          Work Experience
-        </h2>
-        <p
-          style={{
-            color: "var(--muted)",
-            fontSize: "15px",
-            lineHeight: 1.7,
-            maxWidth: "620px",
-            marginBottom: "64px",
-          }}
-        >
-          Product work for a Cebu software team, front-end AI engineering, and freelance
-          builds for local clients — in parallel with the degree.
-        </p>
-      </ScrollReveal>
+    <>
+      <p className="win-blurb">
+        Product work for a Cebu software team, front-end AI engineering, and freelance
+        builds for local clients — in parallel with the degree.
+      </p>
 
       <div style={{ position: "relative" }}>
         {/* the spine the whole timeline hangs from */}
@@ -258,6 +231,6 @@ export default function ExperienceSection() {
           })}
         </div>
       </div>
-    </section>
+    </>
   );
 }

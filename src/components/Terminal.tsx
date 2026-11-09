@@ -28,7 +28,8 @@ const out = (text: string, tone: Tone = "out", indent = 0): Line => ({ text, ton
 const link = (text: string, href: string, indent = 0): Line => ({ text, href, tone: "accent", indent });
 const blank = (): Line => ({ text: "" });
 
-const SECTIONS = ["about", "work", "experience", "background", "contact"] as const;
+/** The OS applications. Setting the hash is what switches the pane. */
+const SECTIONS = ["readme", "work", "experience", "background", "shell", "contact"] as const;
 
 type Ctx = {
   close: () => void;
@@ -212,7 +213,7 @@ const COMMANDS: Command[] = [
         return dataAnalystProjects.map((d) => out(`${pad(d.id, 26)}${d.name}`));
       if (what.startsWith("auto"))
         return automationProjects.map((a) => out(`${pad(a.id, 26)}${a.name}`));
-      if (what.startsWith("section")) return SECTIONS.map((s) => out(`#${s}`));
+      if (what.startsWith("app") || what.startsWith("section")) return SECTIONS.map((s) => out(`~/${s}`));
       return [out(`ls: no such resource: ${what}`, "err")];
     },
   },
@@ -371,17 +372,18 @@ const COMMANDS: Command[] = [
   },
   {
     name: "goto",
-    usage: "goto <section>",
-    desc: "scroll the page to a section",
-    aliases: ["cd"],
+    usage: "goto <app>",
+    desc: "switch to another app",
+    aliases: ["cd", "app"],
     run: (args, ctx) => {
       const t = (args[0] ?? "").replace(/^#|\/$/g, "").toLowerCase();
-      if (!t) return [out(`sections: ${SECTIONS.join(", ")}`, "muted")];
+      if (!t) return [out(`apps: ${SECTIONS.join(", ")}`, "muted")];
       const hit = SECTIONS.find((s) => s === t) ?? SECTIONS.find((s) => s.startsWith(t));
-      if (!hit) return [out(`goto: no section named ${t}`, "err")];
+      if (!hit) return [out(`goto: no app named ${t}`, "err")];
+      // The window manager reads the hash, so this is all it takes.
+      window.location.hash = hit;
       ctx.close();
-      document.getElementById(hit)?.scrollIntoView({ behavior: "smooth" });
-      return [out(`-> #${hit}`, "accent")];
+      return [out(`-> ~/${hit}`, "accent")];
     },
   },
   {
@@ -463,26 +465,34 @@ COMMANDS.forEach((c) => {
   c.aliases?.forEach((a) => RESOLVE.set(a, c));
 });
 
-const banner = (): Line[] => [
+const banner = (embedded: boolean): Line[] => [
   { text: "", fetch: fetchBlock() },
   blank(),
-  out('type "help" for the command list · tab completes · esc closes', "muted"),
+  out(
+    embedded
+      ? 'type "help" for the command list · tab completes · \u2191 walks history'
+      : 'type "help" for the command list · tab completes · esc closes',
+    "muted",
+  ),
 ];
 
 /* ── component ── */
 
 export default function Terminal({
-  open,
+  open = true,
   onClose,
   theme,
   onTheme,
+  embedded = false,
 }: {
-  open: boolean;
-  onClose: () => void;
-  theme: "dark" | "light";
-  onTheme: (t: "dark" | "light") => void;
+  open?: boolean;
+  onClose?: () => void;
+  theme?: "dark" | "light";
+  onTheme?: (t: "dark" | "light") => void;
+  /** Rendered inside a window rather than as a floating overlay. */
+  embedded?: boolean;
 }) {
-  const [lines, setLines] = useState<Line[]>(banner);
+  const [lines, setLines] = useState<Line[]>(() => banner(embedded));
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [cursor, setCursor] = useState(-1);
@@ -492,10 +502,10 @@ export default function Terminal({
 
   const ctx = useMemo<Ctx>(
     () => ({
-      close: onClose,
+      close: onClose ?? (() => {}),
       clear: () => setLines([]),
-      setTheme: onTheme,
-      theme,
+      setTheme: onTheme ?? (() => {}),
+      theme: theme ?? "dark",
       history,
     }),
     [onClose, onTheme, theme, history],
@@ -560,7 +570,7 @@ export default function Terminal({
       return;
     }
     if (e.key === "Escape") {
-      onClose();
+      onClose?.();
       return;
     }
     if (e.key === "ArrowUp") {
@@ -610,41 +620,12 @@ export default function Terminal({
     head: "var(--text)",
   };
 
+  const Frame = embedded ? EmbeddedFrame : OverlayFrame;
+
   return (
-    <div
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 200,
-        background: "color-mix(in srgb, var(--bg) 72%, transparent)",
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        padding: "84px 16px 24px",
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Portfolio terminal"
-        style={{
-          width: "min(880px, 100%)",
-          maxHeight: "min(640px, calc(100vh - 120px))",
-          display: "flex",
-          flexDirection: "column",
-          background: "var(--card)",
-          border: "1px solid var(--accent)",
-          borderRadius: "var(--r2)",
-          boxShadow: "0 24px 80px rgba(0,0,0,0.45), 0 0 0 1px var(--accent-soft)",
-          overflow: "hidden",
-        }}
-      >
-        {/* title bar */}
-        <div
+    <Frame onClose={onClose}>
+        {/* title bar — the overlay draws its own; a window supplies it */}
+        {!embedded && <div
           style={{
             display: "flex",
             alignItems: "center",
@@ -685,7 +666,7 @@ export default function Terminal({
             esc
             <Mark name="close" size={13} />
           </button>
-        </div>
+        </div>}
 
         {/* output */}
         <div
@@ -815,7 +796,46 @@ export default function Terminal({
             }}
           />
         </div>
+    </Frame>
+  );
+}
+
+/** Floating overlay, opened with "/" from anywhere. */
+function OverlayFrame({ onClose, children }: { onClose?: () => void; children: React.ReactNode }) {
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed", inset: 0, zIndex: 200,
+        background: "color-mix(in srgb, var(--bg) 72%, transparent)",
+        backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
+        display: "flex", alignItems: "flex-start", justifyContent: "center",
+        padding: "84px 16px 24px",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Portfolio terminal"
+        style={{
+          width: "min(880px, 100%)",
+          maxHeight: "min(640px, calc(100vh - 120px))",
+          display: "flex", flexDirection: "column",
+          background: "var(--card)",
+          border: "1px solid var(--accent)",
+          borderRadius: "var(--r2)",
+          boxShadow: "0 24px 80px rgba(0,0,0,0.45), 0 0 0 1px var(--accent-soft)",
+          overflow: "hidden",
+        }}
+      >
+        {children}
       </div>
     </div>
   );
+}
+
+/** Inside a window: fills the pane, no chrome of its own. */
+function EmbeddedFrame({ children }: { children: React.ReactNode }) {
+  return <div className="shell-embed">{children}</div>;
 }

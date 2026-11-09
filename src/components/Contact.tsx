@@ -75,7 +75,7 @@ function CopyField({ label, value, href, isExternal }: {
   );
 }
 
-export default function Contact() {
+export default function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -116,30 +116,10 @@ export default function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      className="s-pad"
-      style={{ background: "var(--bg2)", borderTop: "1px solid var(--border)" }}
-    >
-      <div style={{ maxWidth: "660px", margin: "0 auto" }}>
-        <ScrollReveal>
-          <div className="section-label" style={{ marginBottom: "16px", justifyContent: "center" }}>
-            04 / contact
-          </div>
-          <h2 style={{
-            fontFamily: "var(--font-display)", fontSize: "clamp(40px, 6vw, 72px)",
-            fontWeight: 600, marginBottom: "24px", lineHeight: 1, textAlign: "center",
-          }}>
-            Let&apos;s Work<br />
-            <span style={{ color: "var(--accent)" }}>Together.</span>
-          </h2>
-          <p style={{
-            fontSize: "15px", color: "var(--muted)",
-            marginBottom: "48px", lineHeight: 1.8, textAlign: "center",
-          }}>
-            {personal.availability.note} Fill in the form or reach me directly.
-          </p>
-        </ScrollReveal>
+    <div className="contact-pane">
+      <p className="win-blurb">
+        {personal.availability.note} Fill in the form or reach me directly.
+      </p>
 
         <ScrollReveal delay={100}>
           {submitted ? (
@@ -299,7 +279,6 @@ export default function Contact() {
             Next.js · TypeScript · Tailwind CSS · {new Date().getFullYear()}
           </div>
         </div>
-      </div>
-    </section>
+    </div>
   );
 }
