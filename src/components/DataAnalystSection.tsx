@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { dataAnalystProjects } from "@/lib/data";
+import { dataAnalystProjects } from "@/lib/data/analytics";
 import ScrollReveal from "./ScrollReveal";
 import Mark, { Numeral } from "./ui/mark";
 

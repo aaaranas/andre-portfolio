@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Mark from "./ui/mark";
 import type { Certification } from "@/lib/types";
-import { personal } from "@/lib/data";
+import { personal } from "@/lib/data/personal";
 
 /**
  * Visual stand-in for a credential.

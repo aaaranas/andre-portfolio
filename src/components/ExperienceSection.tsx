@@ -1,5 +1,5 @@
 "use client";
-import { experience } from "@/lib/data";
+import { experience } from "@/lib/data/experience";
 import ScrollReveal from "./ScrollReveal";
 import Mark from "./ui/mark";
 

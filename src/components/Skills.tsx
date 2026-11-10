@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { skills } from "@/lib/data";
+import { skills } from "@/lib/data/skills";
 
 const categories = Object.keys(skills) as Array<keyof typeof skills>;
 

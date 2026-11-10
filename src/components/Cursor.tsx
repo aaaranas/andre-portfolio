@@ -1,85 +1,89 @@
 "use client";
 import { useEffect, useRef } from "react";
 
+/**
+ * A pointer that belongs to the OS: a dot that tracks exactly and a ring that
+ * trails it, squaring up over anything clickable.
+ *
+ * The previous version ran requestAnimationFrame for the life of the page —
+ * including on phones, where the cursor is never drawn — and re-queried every
+ * link and button on each DOM mutation to rebind hover listeners. This one
+ * only animates while the ring is catching up, uses one delegated listener,
+ * and never starts for touch input or reduced motion.
+ */
+const INTERACTIVE = "a, button, [role='button'], [role='tab'], input, textarea, select, summary, label";
+
 export default function Cursor() {
-  const dotRef  = useRef<HTMLDivElement>(null);
-  const blobRef = useRef<HTMLDivElement>(null);
-  const labelRef = useRef<HTMLSpanElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const dot  = dotRef.current;
-    const blob = blobRef.current;
-    const label = labelRef.current;
-    if (!dot || !blob || !label) return;
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
 
-    let mx = 0, my = 0, bx = 0, by = 0, raf: number;
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || calm) return; // CSS leaves the native cursor alone
 
-    let woken = false;
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX; my = e.clientY;
-      if (!woken) {
-        // avoid the flash at (0,0) before the pointer is ever seen
-        woken = true;
-        bx = mx; by = my;
+    const root = document.documentElement;
+    root.classList.add("has-cursor");
+
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    let raf = 0;
+    let awake = false;
+
+    const frame = () => {
+      rx += (mx - rx) * 0.2;
+      ry += (my - ry) * 0.2;
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+      // Settled: stop until the pointer moves again.
+      raf = Math.abs(mx - rx) > 0.1 || Math.abs(my - ry) > 0.1 ? requestAnimationFrame(frame) : 0;
+    };
+
+    const onMove = (e: PointerEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (!awake) {
+        // First sighting: start the ring on the pointer, not at the corner.
+        awake = true;
+        rx = mx;
+        ry = my;
         dot.style.opacity = "1";
-        blob.style.opacity = "1";
+        ring.style.opacity = "1";
       }
-      dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+      if (!raf) raf = requestAnimationFrame(frame);
     };
 
-    const animate = () => {
-      bx += (mx - bx) * 0.1;
-      by += (my - by) * 0.1;
-      blob.style.transform = `translate(${bx}px,${by}px) translate(-50%,-50%)`;
-      raf = requestAnimationFrame(animate);
+    const onOver = (e: PointerEvent) => {
+      const target = e.target instanceof Element ? e.target : null;
+      root.classList.toggle("cursor-active", !!target?.closest(INTERACTIVE));
     };
 
-    const setProject = () => {
-      document.body.classList.add("cursor-on-project");
-      document.body.classList.remove("cursor-on-link");
-      label.textContent = "VIEW";
-    };
-    const setLink = () => {
-      document.body.classList.add("cursor-on-link");
-      document.body.classList.remove("cursor-on-project");
-      label.textContent = "";
-    };
-    const clearState = () => {
-      document.body.classList.remove("cursor-on-project","cursor-on-link");
-      label.textContent = "";
+    const onLeave = () => {
+      awake = false;
+      dot.style.opacity = "0";
+      ring.style.opacity = "0";
     };
 
-    const bindAll = () => {
-      document.querySelectorAll("[data-cursor='project']").forEach((el) => {
-        (el as HTMLElement).addEventListener("mouseenter", setProject);
-        (el as HTMLElement).addEventListener("mouseleave", clearState);
-      });
-      document.querySelectorAll("a,button").forEach((el) => {
-        (el as HTMLElement).addEventListener("mouseenter", setLink);
-        (el as HTMLElement).addEventListener("mouseleave", clearState);
-      });
-    };
-
-    const obs = new MutationObserver(bindAll);
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    bindAll();
-    window.addEventListener("mousemove", onMove);
-    raf = requestAnimationFrame(animate);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("pointerover", onOver, { passive: true });
+    root.addEventListener("pointerleave", onLeave);
 
     return () => {
-      window.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(raf);
-      obs.disconnect();
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerover", onOver);
+      root.removeEventListener("pointerleave", onLeave);
+      if (raf) cancelAnimationFrame(raf);
+      root.classList.remove("has-cursor", "cursor-active");
     };
   }, []);
 
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" style={{ opacity: 0 }} />
-      <div ref={blobRef} className="cursor-blob" style={{ opacity: 0 }}>
-        <span ref={labelRef} className="cursor-label" />
-      </div>
+      <div ref={dotRef} className="cursor-dot" aria-hidden />
+      <div ref={ringRef} className="cursor-ring" aria-hidden />
     </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { automationProjects } from "@/lib/data";
+import { automationProjects } from "@/lib/data/automation";
 import ScrollReveal from "./ScrollReveal";
 import Mark, { Numeral } from "./ui/mark";
 

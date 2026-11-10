@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo, useState } from "react";
-import { projects, type Project } from "@/lib/data";
+import { projects, type Project } from "@/lib/data/projects";
 import ScrollReveal from "./ScrollReveal";
 import Mark, { Numeral } from "./ui/mark";
 

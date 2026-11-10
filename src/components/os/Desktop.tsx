@@ -15,17 +15,18 @@
  *      link and back/forward move between them for free.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { personal, projects, allRoles, certifications } from "@/lib/data";
-import { APPS, type AppId, isAppId } from "./apps";
+import { personal } from "@/lib/data/personal";
+import type { Summary } from "@/lib/summary";
+import { APPS, type AppId, isAppId, prefetch } from "./apps";
 import { useTheme } from "./useTheme";
 import Mark from "../ui/mark";
 
-const BOOT_LINES = [
+const bootLines = (s: Summary) => [
   "GRUB loading stage2 ...",
   "multiboot header ok · i386 protected mode",
   "GDT 5 entries · IDT 256 entries · PIC remapped 32–47",
   "PS/2 keyboard attached on IRQ1",
-  `mounting /dev/portfolio · ${projects.length} builds · ${allRoles.length} roles · ${certifications.length} credentials`,
+  `mounting /dev/portfolio · ${s.counts.builds} builds · ${s.counts.roles} roles · ${s.counts.credentials} credentials`,
   "starting ama-shell ...",
 ];
 
@@ -55,7 +56,8 @@ function readHash() {
   return window.location.hash.replace("#", "");
 }
 
-export default function Desktop() {
+export default function Desktop({ summary }: { summary: Summary }) {
+  const BOOT_LINES = useMemo(() => bootLines(summary), [summary]);
   const hash = useSyncExternalStore(subscribeHash, readHash, () => "");
   const active: AppId = isAppId(hash) ? hash : "readme";
 
@@ -65,6 +67,8 @@ export default function Desktop() {
   const [visited, setVisited] = useState<AppId[]>([]);
   const [clock, setClock] = useState("");
   const tick = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pane = useRef<HTMLElement>(null);
+  const firstPaint = useRef(true);
   const { theme, toggle } = useTheme();
 
   const opened = useMemo(
@@ -101,7 +105,7 @@ export default function Desktop() {
       });
     }, 190);
     return () => { if (tick.current) clearInterval(tick.current); };
-  }, [booting, finishBoot]);
+  }, [booting, finishBoot, BOOT_LINES.length]);
 
   /* ── any key or pointer skips the splash ── */
   useEffect(() => {
@@ -143,6 +147,28 @@ export default function Desktop() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [booting, launch]);
+
+  /* ── switching apps is a navigation: land focus in the new content ── */
+  useEffect(() => {
+    if (firstPaint.current) {
+      firstPaint.current = false;
+      return;
+    }
+    // The shell focuses its own prompt when it mounts.
+    if (active !== "shell") pane.current?.focus({ preventScroll: true });
+  }, [active]);
+
+  /* ── once the page is idle, warm the app most visitors open next ── */
+  useEffect(() => {
+    if (booting) return;
+    const warm = () => prefetch("work");
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(warm, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = setTimeout(warm, 2500);
+    return () => clearTimeout(id);
+  }, [booting]);
 
   /* ── status-bar clock ── */
   useEffect(() => {
@@ -206,12 +232,14 @@ export default function Desktop() {
                   <button
                     className={`desk-app${isActive ? " is-active" : ""}`}
                     onClick={() => launch(a.id)}
+                    onPointerEnter={() => prefetch(a.id)}
+                    onFocus={() => prefetch(a.id)}
                     aria-current={isActive ? "page" : undefined}
                   >
                     <span className="desk-app-n">{String(i + 1).padStart(2, "0")}</span>
                     <span className="desk-app-text">
                       <span className="desk-app-label">{a.label}</span>
-                      <span className="desk-app-hint">{a.hint}</span>
+                      <span className="desk-app-hint">{a.hint(summary)}</span>
                     </span>
                     {opened.includes(a.id) && <span className="desk-app-dot" aria-hidden />}
                   </button>
@@ -224,7 +252,7 @@ export default function Desktop() {
           </p>
         </nav>
 
-        <main className="desk-pane">
+        <main className="desk-pane" id="pane" ref={pane} tabIndex={-1}>
           <article className="win" aria-label={App.label}>
             <header className="win-bar">
               <span className="win-dots" aria-hidden>
@@ -238,7 +266,7 @@ export default function Desktop() {
               )}
             </header>
             <div className="win-body" key={App.id}>
-              <Content launch={launch} />
+              <Content launch={launch} summary={summary} />
             </div>
           </article>
         </main>

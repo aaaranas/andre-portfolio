@@ -1,5 +1,5 @@
 "use client";
-import { education } from "@/lib/data";
+import { education } from "@/lib/data/education";
 import ScrollReveal from "./ScrollReveal";
 
 export default function EducationBlock() {

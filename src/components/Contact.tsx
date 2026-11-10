@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { personal } from "@/lib/data";
+import { personal } from "@/lib/data/personal";
 import ScrollReveal from "./ScrollReveal";
 import Mark from "./ui/mark";
 

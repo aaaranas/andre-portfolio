@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { certifications } from "@/lib/data";
+import { certifications } from "@/lib/data/certifications";
 import ScrollReveal from "./ScrollReveal";
 import Mark, { Monogram } from "./ui/mark";
 import { Badge } from "@/components/ui/badge";

@@ -26,12 +26,12 @@ const WIDTH = 1280;
 const HEIGHT = 720;
 
 /**
- * Pull { id, name, live } out of src/lib/data.ts without importing TypeScript.
+ * Pull { id, name, live } out of src/lib/data/projects.ts without importing TypeScript.
  * The project entries are plain object literals, so a scan is enough and keeps
  * this script dependency-free.
  */
 async function readProjects() {
-  const src = await readFile(path.join(ROOT, "src", "lib", "data.ts"), "utf8");
+  const src = await readFile(path.join(ROOT, "src", "lib", "data", "projects.ts"), "utf8");
   const body = src.slice(
     src.indexOf("export const projects"),
     src.indexOf("export const projectCategories"),
