@@ -86,9 +86,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
+        {/*
+          Runs before first paint. Applies the saved theme, and decides whether
+          this visit gets the boot splash: once per session, never on a deep
+          link, never for reduced motion. It also ends the splash — on a timer,
+          or the first key or click — so the splash needs no hydrated React
+          and plays while the bundle is still downloading. The handlers are
+          attached before sessionStorage is touched, so a browser that blocks
+          storage still gets a splash that ends.
+        */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var d=document.documentElement;var t=localStorage.getItem('theme');if(t==='light')d.setAttribute('data-theme','light');var seen=sessionStorage.getItem('ama-booted')==='1';var deep=location.hash.length>1;var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;if(!seen&&!deep&&!reduced)d.setAttribute('data-boot','1')}catch(e){}`,
+            __html: `try{var d=document.documentElement;if(localStorage.getItem('theme')==='light')d.setAttribute('data-theme','light');var seen=false;try{seen=sessionStorage.getItem('ama-booted')==='1'}catch(e){}var deep=location.hash.length>1;var calm=matchMedia('(prefers-reduced-motion: reduce)').matches;if(!seen&&!deep&&!calm){d.setAttribute('data-boot','1');var end=function(){d.removeAttribute('data-boot');removeEventListener('keydown',end);removeEventListener('pointerdown',end)};addEventListener('keydown',end);addEventListener('pointerdown',end);setTimeout(end,1700);try{sessionStorage.setItem('ama-booted','1')}catch(e){}}}catch(e){}`,
           }}
         />
         <script

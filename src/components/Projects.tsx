@@ -1,5 +1,7 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
+import Image from "next/image";
+import { PREVIEWS } from "@/lib/previews";
 import { projects, type Project } from "@/lib/data/projects";
 import ScrollReveal from "./ScrollReveal";
 import Mark, { Numeral } from "./ui/mark";
@@ -8,34 +10,26 @@ import Mark, { Numeral } from "./ui/mark";
 function BrowserPreview({ project }: { project: Project }) {
   const { id, live: url, name } = project;
   /**
-   * Our own capture first (committed by `npm run previews`), the hosted
-   * screenshot service only as a stand-in for a project not captured yet, and
-   * a plain card if neither answers.
+   * Three stages, tried in order:
+   *   local  — our own capture, if the manifest says one exists. Asking the
+   *            manifest first means an uncaptured project costs no request;
+   *            probing for the file used to 404 once per card on every load.
+   *   remote — the hosted screenshot service, as a stand-in until captured.
+   *   none   — a plain card.
    */
-  const sources = useMemo(
-    () => [
-      `/previews/${id}.png`,
-      `https://image.thum.io/get/width/800/crop/450/noanimate/allowJPG/${url}`,
-    ],
-    [id, url],
-  );
-  const [sourceIndex, setSourceIndex] = useState(0);
-  const imgError = sourceIndex >= sources.length;
-  const nextSource = useCallback(() => setSourceIndex((i) => i + 1), []);
+  const local = PREVIEWS[id];
+  const [stage, setStage] = useState<"local" | "remote" | "none">(local ? "local" : "remote");
+  const imgError = stage === "none";
+  const remoteSrc = `https://image.thum.io/get/width/800/crop/450/noanimate/allowJPG/${url}`;
 
   /**
-   * The server renders the first source, so the browser can finish failing it
+   * The server renders the remote <img>, so the browser can finish failing it
    * before React hydrates and an onError handler exists to hear it. The ref
-   * runs on commit and catches that already-broken case; onError covers every
-   * load after. Keyed on sourceIndex so it re-checks each time the src changes.
+   * runs on commit and catches that already-broken case.
    */
-  const checkLoaded = useCallback(
-    (el: HTMLImageElement | null) => {
-      if (el && el.complete && el.naturalWidth === 0) nextSource();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sourceIndex, nextSource],
-  );
+  const checkLoaded = useCallback((el: HTMLImageElement | null) => {
+    if (el && el.complete && el.naturalWidth === 0) setStage("none");
+  }, []);
 
   return (
     <a
@@ -96,13 +90,31 @@ function BrowserPreview({ project }: { project: Project }) {
           background: "var(--bg)",
         }}
       >
-        {!imgError ? (
+        {stage === "local" && local ? (
+          <Image
+            src={local.src}
+            width={local.width}
+            height={local.height}
+            alt={`${name} home page`}
+            sizes="(max-width: 820px) 100vw, 420px"
+            onError={() => setStage("remote")}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "top",
+              display: "block",
+            }}
+          />
+        ) : !imgError ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             ref={checkLoaded}
-            src={sources[sourceIndex]}
+            src={remoteSrc}
             alt={`${name} home page`}
-            onError={nextSource}
+            loading="lazy"
+            decoding="async"
+            onError={() => setStage("none")}
             style={{
               width: "100%",
               height: "100%",

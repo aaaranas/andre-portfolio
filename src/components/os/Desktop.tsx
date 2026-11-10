@@ -8,7 +8,9 @@
  *
  * Three rules keep it usable for someone who only wants to read a CV:
  *   1. The boot sequence runs once per session and never for a visitor who
- *      asked for reduced motion. Any key or click skips it.
+ *      asked for reduced motion. Any key or click skips it. It is CSS on
+ *      server-rendered markup, started by the pre-paint script, so it plays
+ *      while the JavaScript loads instead of queueing up behind it.
  *   2. One app fills the pane at a time. Stacking long windows in a scroll
  *      column would rebuild the endless page this replaced.
  *   3. The location hash *is* the window state, so every app is a shareable
@@ -30,13 +32,11 @@ const bootLines = (s: Summary) => [
   "starting ama-shell ...",
 ];
 
-const BOOT_KEY = "ama-booted";
-
 /*
- * Whether to show the splash is decided by the inline script in layout.tsx,
- * before first paint, and recorded as data-boot on <html>. That keeps the
- * decision out of a mount-time setState and out of hydration, and CSS hides
- * the desktop while the attribute is set so nothing flashes behind it.
+ * The splash belongs to the inline script in layout.tsx: it decides before
+ * first paint, sets data-boot on <html>, and clears it on a timer or on the
+ * first key or click. The stylesheet animates everything off that attribute.
+ * React only reads it, to hold keyboard shortcuts until the desktop is up.
  */
 function subscribeBoot(onChange: () => void) {
   const obs = new MutationObserver(onChange);
@@ -63,10 +63,8 @@ export default function Desktop({ summary }: { summary: Summary }) {
 
   // The desktop always renders, so a crawler is never served only a splash.
   const booting = useSyncExternalStore(subscribeBoot, readBoot, () => false);
-  const [line, setLine] = useState(0);
   const [visited, setVisited] = useState<AppId[]>([]);
   const [clock, setClock] = useState("");
-  const tick = useRef<ReturnType<typeof setInterval> | null>(null);
   const pane = useRef<HTMLElement>(null);
   const firstPaint = useRef(true);
   const { theme, toggle } = useTheme();
@@ -75,12 +73,6 @@ export default function Desktop({ summary }: { summary: Summary }) {
     () => Array.from(new Set<AppId>(["readme", ...visited, active])),
     [visited, active],
   );
-
-  const finishBoot = useCallback(() => {
-    if (tick.current) clearInterval(tick.current);
-    try { sessionStorage.setItem(BOOT_KEY, "1"); } catch { /* private mode */ }
-    document.documentElement.removeAttribute("data-boot");
-  }, []);
 
   const launch = useCallback((id: AppId) => {
     setVisited((v) => (v.includes(id) ? v : [...v, id]));
@@ -92,31 +84,6 @@ export default function Desktop({ summary }: { summary: Summary }) {
     setVisited((v) => v.filter((x) => x !== id));
     if (readHash() === id) window.location.hash = "readme";
   }, []);
-
-  /* ── run the boot log ── */
-  useEffect(() => {
-    if (!booting) return;
-    tick.current = setInterval(() => {
-      setLine((n) => {
-        if (n < BOOT_LINES.length) return n + 1;
-        if (tick.current) clearInterval(tick.current);
-        window.setTimeout(finishBoot, 360);
-        return n;
-      });
-    }, 190);
-    return () => { if (tick.current) clearInterval(tick.current); };
-  }, [booting, finishBoot, BOOT_LINES.length]);
-
-  /* ── any key or pointer skips the splash ── */
-  useEffect(() => {
-    if (!booting) return;
-    window.addEventListener("keydown", finishBoot);
-    window.addEventListener("pointerdown", finishBoot);
-    return () => {
-      window.removeEventListener("keydown", finishBoot);
-      window.removeEventListener("pointerdown", finishBoot);
-    };
-  }, [booting, finishBoot]);
 
   /* ── "/" or Cmd-K opens the shell; 1–6 switch apps ── */
   useEffect(() => {
@@ -182,25 +149,22 @@ export default function Desktop({ summary }: { summary: Summary }) {
   const App = APPS.find((a) => a.id === active) ?? APPS[0];
   const Content = App.content;
 
-  if (booting) {
-    return (
-      <main className="boot" aria-label="System starting">
+  return (
+    <>
+      {/* Decorative, and already in the server HTML so it can paint before any
+          script runs. Hidden unless the pre-paint script set data-boot. */}
+      <div className="boot" aria-hidden="true">
         <pre className="boot-log">
-          {BOOT_LINES.slice(0, line).map((l, i) => (
-            <div key={i}>
+          {BOOT_LINES.map((l, i) => (
+            <div key={i} style={{ animationDelay: `${i * 0.13}s` }}>
               <span className="boot-ok">[ ok ]</span> {l}
             </div>
           ))}
           <span className="boot-caret">_</span>
         </pre>
-        <button className="boot-skip" onClick={finishBoot}>
-          press any key to skip
-        </button>
-      </main>
-    );
-  }
+        <p className="boot-skip">press any key to skip</p>
+      </div>
 
-  return (
     <div className="desk">
       <header className="desk-bar">
         <span className="desk-brand">AMA&#8209;OS</span>
@@ -248,7 +212,7 @@ export default function Desktop({ summary }: { summary: Summary }) {
             })}
           </ul>
           <p className="desk-launcher-foot">
-            {opened.length} running · <kbd>/</kbd> shell · <kbd>1</kbd>–<kbd>{APPS.length}</kbd> switch
+            <kbd>/</kbd> shell · <kbd>1</kbd>–<kbd>{APPS.length}</kbd> switch
           </p>
         </nav>
 
@@ -272,5 +236,6 @@ export default function Desktop({ summary }: { summary: Summary }) {
         </main>
       </div>
     </div>
+    </>
   );
 }
