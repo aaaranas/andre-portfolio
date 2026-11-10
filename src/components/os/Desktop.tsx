@@ -66,6 +66,7 @@ export default function Desktop({ summary }: { summary: Summary }) {
   const [visited, setVisited] = useState<AppId[]>([]);
   const [clock, setClock] = useState("");
   const pane = useRef<HTMLElement>(null);
+  const launcher = useRef<HTMLElement>(null);
   const firstPaint = useRef(true);
   const { theme, toggle } = useTheme();
 
@@ -125,6 +126,13 @@ export default function Desktop({ summary }: { summary: Summary }) {
     if (active !== "shell") pane.current?.focus({ preventScroll: true });
   }, [active]);
 
+  /* ── on a phone the launcher is a scrolling strip: keep the open app's tab in view ── */
+  useEffect(() => {
+    launcher.current
+      ?.querySelector(".is-active")
+      ?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [active]);
+
   /* ── once the page is idle, warm the app most visitors open next ── */
   useEffect(() => {
     if (booting) return;
@@ -169,7 +177,7 @@ export default function Desktop({ summary }: { summary: Summary }) {
       <header className="desk-bar">
         <span className="desk-brand">AMA&#8209;OS</span>
         <span className="desk-sep">·</span>
-        <span>{personal.name}</span>
+        <span className="desk-name">{personal.name}</span>
         <span className="desk-spacer" />
         <span className="desk-quiet desk-hide-sm">{personal.subtitle}</span>
         <span className="desk-sep desk-hide-sm">·</span>
@@ -187,7 +195,7 @@ export default function Desktop({ summary }: { summary: Summary }) {
       </header>
 
       <div className="desk-body">
-        <nav className="desk-launcher" aria-label="Applications">
+        <nav className="desk-launcher" aria-label="Applications" ref={launcher}>
           <ul>
             {APPS.map((a, i) => {
               const isActive = a.id === active;

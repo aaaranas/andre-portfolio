@@ -55,7 +55,7 @@ export default function ExperienceList() {
                       marginBottom: "18px",
                     }}
                   >
-                    <h3
+                    <h2
                       style={{
                         fontFamily: "var(--font-display)",
                         fontSize: "22px",
@@ -65,7 +65,7 @@ export default function ExperienceList() {
                       }}
                     >
                       {company.company}
-                    </h3>
+                    </h2>
                     <span
                       style={{
                         fontFamily: "var(--font-mono)",
@@ -151,7 +151,7 @@ export default function ExperienceList() {
                               )}
                               {r.period}
                             </div>
-                            <h4
+                            <h3
                               style={{
                                 fontFamily: "var(--font-display)",
                                 fontSize: "17px",
@@ -161,7 +161,7 @@ export default function ExperienceList() {
                               }}
                             >
                               {r.role}
-                            </h4>
+                            </h3>
                             <p
                               style={{
                                 fontFamily: "var(--font-mono)",

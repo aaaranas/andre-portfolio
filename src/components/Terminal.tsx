@@ -716,7 +716,7 @@ export default function Terminal({
                           href={f.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{ color: "var(--accent)", textDecoration: "underline", textUnderlineOffset: "3px" }}
+                          className="term-link"
                         >
                           {f.text}
                         </a>
@@ -747,7 +747,7 @@ export default function Terminal({
                     href={l.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: "var(--accent)", textDecoration: "underline", textUnderlineOffset: "3px" }}
+                    className="term-link"
                   >
                     {l.text}
                   </a>

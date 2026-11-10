@@ -33,7 +33,7 @@ function CopyField({ label, value, href, isExternal }: {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div>
       <div style={{
         fontFamily: "var(--font-mono)", fontSize: "10px",
         color: "var(--muted)", letterSpacing: "0.15em",
@@ -128,12 +128,12 @@ export default function ContactForm() {
               borderRadius: "var(--r)", padding: "48px 40px", textAlign: "center", marginBottom: "48px",
             }}>
               <Mark name="check" size={40} color="var(--accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{
+              <h2 style={{
                 fontFamily: "var(--font-display)", fontSize: "24px",
                 fontWeight: 700, marginBottom: "10px", color: "var(--accent)",
               }}>
                 Message Sent!
-              </h3>
+              </h2>
               <p style={{ fontFamily: "var(--font-mono)", fontSize: "13px", color: "var(--muted)" }}>
                 Thanks, {form.name}! I&apos;ll get back to you within 24 hours.
               </p>
@@ -256,8 +256,8 @@ export default function ContactForm() {
 
         {/* Contact links */}
         <div className="contact-links" style={{
-          display: "flex", justifyContent: "center",
-          gap: "40px", paddingTop: "40px", borderTop: "1px solid var(--border)",
+          display: "flex", justifyContent: "flex-start",
+          gap: "16px 48px", paddingTop: "32px", borderTop: "1px solid var(--border)",
           flexWrap: "wrap",
         }}>
           <CopyField label="Email" value={personal.email} href={`mailto:${personal.email}`} />
@@ -267,15 +267,15 @@ export default function ContactForm() {
 
         {/* Footer */}
         <div style={{
-          marginTop: "64px", paddingTop: "32px", borderTop: "1px solid var(--border)",
+          marginTop: "40px", paddingTop: "24px", borderTop: "1px solid var(--border)",
           fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)",
-          textAlign: "center", lineHeight: 2,
+          lineHeight: 2,
         }}>
           <div>
             Designed &amp; Built by{" "}
             <span style={{ color: "var(--accent)" }}>Andre Milan A. Arañas</span>
           </div>
-          <div style={{ opacity: 0.6 }}>
+          <div style={{ color: "var(--dim)" }}>
             Next.js · TypeScript · Tailwind CSS · {new Date().getFullYear()}
           </div>
         </div>

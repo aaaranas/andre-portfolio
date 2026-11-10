@@ -66,9 +66,9 @@ export default function AutomationGrid() {
                       {proj.courseNote}
                     </span>
                   </div>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "19px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
+                  <h2 style={{ fontFamily: "var(--font-display)", fontSize: "19px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
                     {proj.name}
-                  </h3>
+                  </h2>
                   <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--accent3)", marginBottom: "12px" }}>
                     {proj.tagline}
                   </p>
@@ -154,7 +154,7 @@ export default function AutomationGrid() {
               {activeTab === "overview" && (
                 <div>
                   <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginBottom: "20px" }}>{activeProject.description}</p>
-                  <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>Workflow Steps</h4>
+                  <h3 style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>Workflow Steps</h3>
                   {activeProject.workflowSteps.map((step, i) => (
                     <div key={i} style={{ display: "flex", gap: "12px", marginBottom: "8px" }}>
                       <Mark name="arrow" size={13} color="var(--accent3)" style={{ marginTop: "2px" }} />

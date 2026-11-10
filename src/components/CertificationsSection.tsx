@@ -16,8 +16,8 @@ export default function CertificationsBlock() {
 
         <ul style={{ listStyle: "none", margin: 0, padding: 0, borderTop: "1px solid var(--border)" }}>
           {certifications.map((cert, idx) => (
-            <ScrollReveal key={cert.id} delay={idx * 50}>
-              <li>
+            <li key={cert.id}>
+              <ScrollReveal delay={idx * 50}>
                 <button
                   data-hover
                   onClick={() => setActiveCert(cert)}
@@ -58,8 +58,8 @@ export default function CertificationsBlock() {
                     view <Mark name="arrow" size={12} />
                   </span>
                 </button>
-              </li>
-            </ScrollReveal>
+              </ScrollReveal>
+            </li>
           ))}
         </ul>
 

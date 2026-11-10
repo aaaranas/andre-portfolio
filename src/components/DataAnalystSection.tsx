@@ -92,9 +92,9 @@ export default function DataGrid() {
                   <div style={{ marginBottom: "14px" }}>
                     <Numeral n={idx + 1} color="var(--accent2)" size={13} />
                   </div>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "19px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
+                  <h2 style={{ fontFamily: "var(--font-display)", fontSize: "19px", fontWeight: 700, color: "var(--text)", lineHeight: 1.3, marginBottom: "8px" }}>
                     {proj.name}
-                  </h3>
+                  </h2>
                   <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--accent2)", marginBottom: "12px" }}>
                     {proj.tagline}
                   </p>
