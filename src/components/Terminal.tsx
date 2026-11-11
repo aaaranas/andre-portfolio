@@ -19,10 +19,7 @@ import Mark from "./ui/mark";
    ──────────────────────────────────────────────────────────────── */
 
 type Tone = "out" | "muted" | "accent" | "err" | "head";
-export type Line = { text: string; tone?: Tone; href?: string; indent?: number; fetch?: Fetch };
-
-/** A portrait column with an info column beside it, neofetch-style. */
-export type Fetch = { portrait: string[]; info: Line[] };
+export type Line = { text: string; tone?: Tone; href?: string; indent?: number };
 
 const out = (text: string, tone: Tone = "out", indent = 0): Line => ({ text, tone, indent });
 const link = (text: string, href: string, indent = 0): Line => ({ text, href, tone: "accent", indent });
@@ -100,44 +97,28 @@ function wrap(text: string, width = 78): string[] {
   return lines;
 }
 
-/**
- * A typographic monogram for the neofetch banner — the initials, drawn in the
- * same characters the shell already prints. Plain ASCII, so it renders in any
- * monospace fallback.
- */
-const WORDMARK = [
-  "   /\\     |\\  /|    /\\   ",
-  "  /  \\    | \\/ |   /  \\  ",
-  " /----\\   |    |  /----\\ ",
-  "/      \\  |    | /      \\",
-];
-const WORDMARK_COLS = Math.max(...WORDMARK.map((l) => l.length));
-
-/** The neofetch payload: ASCII portrait on the left, real numbers on the right. */
-function fetchBlock(): Fetch {
+/** The vitals, neofetch-style: every value is read from the data, not typed in. */
+function vitals(): Line[] {
   const deployed = projects.filter((p) => p.live).length;
   const techs = new Set(projects.flatMap((p) => p.stack)).size;
   const current = experience.filter((e) => e.roles.some((r) => r.current));
   const row = (k: string, v: string, tone: Tone = "out") => out(`${pad(k, 11)}${v}`, tone);
-  return {
-    portrait: WORDMARK,
-    info: [
-      out(`${personal.shortName.toLowerCase()}@portfolio`, "accent"),
-      out("-".repeat(28), "muted"),
-      row("name", personal.name),
-      row("role", personal.subtitle, "accent"),
-      row("school", `${personal.title} · UP Cebu`),
-      row("location", personal.location),
-      row("shell", "ama-shell 2.0"),
-      row("projects", `${projects.length} featured · ${deployed} deployed`),
-      row("stack", `${techs} technologies`),
-      row("roles", current.map((e) => e.company.replace(/^Freelance · /, "")).join(", ")),
-      row("status", personal.availability.label, "muted"),
-      blank(),
-      link(personal.github, personal.githubUrl),
-      link(personal.email, `mailto:${personal.email}`),
-    ],
-  };
+  return [
+    out(`${personal.shortName.toLowerCase()}@portfolio`, "accent"),
+    out("-".repeat(28), "muted"),
+    row("name", personal.name),
+    row("role", personal.subtitle, "accent"),
+    row("school", `${personal.title} · UP Cebu`),
+    row("location", personal.location),
+    row("shell", "ama-shell 2.0"),
+    row("projects", `${projects.length} featured · ${deployed} deployed`),
+    row("stack", `${techs} technologies`),
+    row("roles", current.map((e) => e.company.replace(/^Freelance · /, "")).join(", ")),
+    row("status", personal.availability.label, "muted"),
+    blank(),
+    link(personal.github, personal.githubUrl),
+    link(personal.email, `mailto:${personal.email}`),
+  ];
 }
 
 /* ── command registry ── */
@@ -159,9 +140,9 @@ const COMMANDS: Command[] = [
   {
     name: "neofetch",
     usage: "neofetch",
-    desc: "the monogram, plus the vitals",
+    desc: "the vitals at a glance",
     aliases: ["me", "whoareyou"],
-    run: () => [{ text: "", fetch: fetchBlock() }],
+    run: () => vitals(),
   },
   {
     name: "whoami",
@@ -466,7 +447,7 @@ COMMANDS.forEach((c) => {
 });
 
 const banner = (embedded: boolean): Line[] => [
-  { text: "", fetch: fetchBlock() },
+  ...vitals(),
   blank(),
   out(
     embedded
@@ -683,51 +664,7 @@ export default function Terminal({
           }}
         >
           {lines.map((l, i) =>
-            l.fetch ? (
-              <div key={i} className="term-fetch">
-                <pre
-                  role="img"
-                  aria-label="ASCII-art portrait of Andre Milan Arañas"
-                  style={{
-                    margin: 0,
-                    color: "var(--accent)",
-                    fontFamily: "var(--font-mono)",
-                    fontSize: `${Math.min(15, 330 / WORDMARK_COLS)}px`,
-                    lineHeight: 1.05,
-                    letterSpacing: 0,
-                    flexShrink: 0,
-                    userSelect: "none",
-                  }}
-                >
-                  {l.fetch.portrait.join("\n")}
-                </pre>
-                <div style={{ minWidth: 0 }}>
-                  {l.fetch.info.map((f, k) => (
-                    <div
-                      key={k}
-                      style={{
-                        color: toneColor[f.tone ?? "out"],
-                        whiteSpace: "pre-wrap",
-                        wordBreak: "break-word",
-                      }}
-                    >
-                      {f.href ? (
-                        <a
-                          href={f.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="term-link"
-                        >
-                          {f.text}
-                        </a>
-                      ) : (
-                        f.text || " "
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : l.indent === -1 ? (
+            l.indent === -1 ? (
               <div key={i} style={{ color: "var(--text)", marginTop: i ? "10px" : 0 }}>
                 <span style={{ color: "var(--accent)" }}>~/ama $</span> {l.text}
               </div>

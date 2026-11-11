@@ -1,8 +1,8 @@
 /**
  * Typographic marks, used instead of an icon pack.
  *
- * The portfolio speaks in monospace — a terminal in the header, an ASCII
- * portrait, command-line section labels. Arrows and ticks drawn from the same
+ * The portfolio speaks in monospace — a shell, a boot log, command-line
+ * labels. Arrows and ticks drawn from the same
  * typeface as the rest of the page belong to that language in a way imported
  * SVG glyphs never did, and they cost nothing to ship.
  */
