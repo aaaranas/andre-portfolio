@@ -108,7 +108,7 @@ function vitals(): Line[] {
     out("-".repeat(28), "muted"),
     row("name", personal.name),
     row("role", personal.subtitle, "accent"),
-    row("school", `${personal.title} · UP Cebu`),
+    row("degree", personal.title),
     row("location", personal.location),
     row("shell", "ama-shell 2.0"),
     row("projects", `${projects.length} featured · ${deployed} deployed`),

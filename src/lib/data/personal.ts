@@ -2,7 +2,7 @@ export const personal = {
   name: "Andre Milan A. Arañas",
   shortName: "Andre",
   title: "BS Computer Science",
-  subtitle: "Web Developer · eComia",
+  subtitle: "Software Developer · UP Cebu",
   email: "aaaranas@up.edu.ph",
   phone: "+639287056564",
   github: "github.com/aaaranas",
@@ -14,6 +14,6 @@ export const personal = {
   availability: {
     open: false,
     label: "not seeking internships",
-    note: "Not seeking internships at the moment — building with eComia and taking freelance work. Still happy to talk about collaborations and contract builds.",
+    note: "Not seeking internships at the moment — finishing the degree and taking freelance work. Still happy to talk about collaborations and contract builds.",
   },
 };

@@ -23,18 +23,18 @@ export type ExperienceEntry = {
 export const experience: ExperienceEntry[] = [
   {
     company: "eComia",
-    span: "Jun 2026 · Present",
-    /** Reads left to right in the company header: where the engagement started, where it is now. */
+    span: "Jun 2026 · Nov 2026",
+    /** Reads left to right in the company header: where the engagement started, where it ended up. */
     progression: ["Internship", "Project-Based"],
     roles: [
       {
         role: "Web Developer",
-        period: "Sep 2026 · Present",
+        period: "Sep 2026 · Nov 2026",
         type: "Project-Based",
         location: "Cebu City, PH · Hybrid",
-        current: true,
+        current: false,
         highlights: [
-          "Co-lead architecture and full-stack delivery of two internal web and mobile systems in a three-engineer team, from planning through deployment.",
+          "Co-led architecture and full-stack delivery of two internal web and mobile systems in a three-engineer team, from planning through deployment.",
           "Refactored legacy codebases into a cross-platform mobile scanner with offline sync, paired with a web portal for real-time tracking.",
           "Engineered a high-availability web platform with real-time data sync, dynamic visual feedback, and background processing for automated distribution.",
         ],
